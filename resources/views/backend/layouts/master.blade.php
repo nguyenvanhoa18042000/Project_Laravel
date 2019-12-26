@@ -25,6 +25,8 @@
 	<link rel="stylesheet" href="/backend/plugins/summernote/summernote-bs4.css">
 	<!-- Google Font: Source Sans Pro -->
 	<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="/backend/css/my_css.css">
+	@yield('css')
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 	<div class="wrapper">
@@ -87,5 +89,6 @@
 	<script src="/backend/dist/js/pages/dashboard.js"></script>
 	<!-- AdminLTE for demo purposes -->
 	<script src="/backend/dist/js/demo.js"></script>
+	@yield('script')
 </body>
 </html>
