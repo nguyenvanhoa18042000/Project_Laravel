@@ -52,12 +52,12 @@ $(document).ready(function(){
 		                    <tr>
 		                      <td>{{ $category->id }}</td>
 		                      <td>{{ $category->name }}</td>
-		                      <td>{{ $category->description_seo }}</td>
+		                      <td>{{ $category->description }}</td>
 		                      <td>
 		                      	@if($category->status==1)
-		                      		<a href="{{ route('backend.category.edit_status',$category->id) }}" class="btn btn_status btn-sm" data-toggle="tooltip" title="Ẩn"><i class="fa fa-eye" aria-hidden="true"></i></a>
+		                      		<a href="{{ route('backend.category.edit_status',$category->id) }}" class="btn btn_status btn-sm" data-toggle="tooltip" title="Ẩn"><i class="fa fa-globe"></i></a>
 		                      	@else 
-		                      		<a href="{{ route('backend.category.edit_status',$category->id) }}" class="btn btn_status btn-sm" data-toggle="tooltip" title="Hiển thị"><i class="fa fa-eye-slash" aria-hidden="true"></i></a>
+		                      		<a href="{{ route('backend.category.edit_status',$category->id) }}" class="btn btn_status btn-sm" data-toggle="tooltip" title="Hiển thị"><i class="fa fa-lock" aria-hidden="true"></i></a>
 		                      	@endif
 		                  	  </td>
 		                      <td>
@@ -70,6 +70,8 @@ $(document).ready(function(){
 	                @endif
                   </tbody>
                 </table>
+                <div style="float: right; margin-right: 2%">{!! $categories->links() !!}</div>
+              
               </div>
               <!-- /.card-body -->
         <!-- <div class="card-footer">Danh sách danh mục</div> -->

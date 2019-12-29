@@ -11,7 +11,7 @@ use Illuminate\Support\Str;
 class CategoryController extends Controller
 {
 	public function index(){
-		$categories = Category::select('id','name','description_seo','status')->get();
+		$categories = Category::orderBy('updated_at','DESC')->select('id','name','description','status')->paginate(7);
     	return view('backend.categories.index')->with([
     		'categories' => $categories
     	]);
@@ -43,8 +43,7 @@ class CategoryController extends Controller
     	try {
     		$name = $requestCategory->get('name');
 	    	$slug = str::slug($name);
-	    	$title_seo = $requestCategory->get('title_seo');
-	    	$description_seo = $requestCategory->get('description_seo');
+	    	$description_seo = $requestCategory->get('description');
 	    	if ($id) {
 	    		$category = Category::find($id);
 	    	}else{
@@ -52,8 +51,7 @@ class CategoryController extends Controller
 	    	}
 	    	$category->name = $name;
 	    	$category->slug = $slug;
-	    	$category->title_seo = $title_seo ? $title_seo : $name;
-	    	$category->description_seo = $description_seo;
+	    	$category->description = $description;
 	    	$category->updated_at = null;
 	    	$category->save();
     	} catch (Exception $e) {

@@ -42,28 +42,23 @@ Tạo danh mục
                 <div class="card-body">
                   <div class="form-group">
                     <label for="exampleInputEmail1">Tên danh mục</label>
-                    <input type="text" class="form-control" name="name" value="{{ old('name') }}">
+                    <input type="text" class="form-control" name="name" value="{{ old('name',isset($product->name) ? $product->name : '') }}">
                     @if($errors->has('name'))
                         <div class="error">{{ $errors->first('name') }}</div>
                     @endif
                   </div>
 
                   <div class="form-group">
-                    <label for="exampleInputEmail1">Tiêu đề</label>
-                    <input type="text" class="form-control" name="title_seo" value="{{ old('title_seo') }}">
-                  </div>
-
-                  <div class="form-group">
-                    <label for="exampleInputEmail1">Mô tả</label>
-                    <input type="text" class="form-control" name="description_seo" value="{{ old('description_seo') }}">
-                    @if($errors->has('description_seo'))
-                        <div class="error">{{ $errors->first('description_seo') }}</div>
+                    <label for="description">Mô tả</label>
+                    <input type="text" class="form-control" name="description" value="{{ old('descriptio') }}">
+                    @if($errors->has('description'))
+                        <div class="error">{{ $errors->first('description') }}</div>
                     @endif
                   </div>
 
                   <div class="form-group">
                     <div class="custom-control custom-checkbox">
-                      <input name="hot" class="custom-control-input" type="checkbox" id="customCheckbox2" checked>
+                      <input name="hot" value="1" class="custom-control-input" type="checkbox" id="customCheckbox2" checked>
                       <label for="customCheckbox2" class="custom-control-label">Nổi bật</label>
                     </div>
                   </div>

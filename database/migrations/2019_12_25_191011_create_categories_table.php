@@ -16,12 +16,12 @@ class CreateCategoriesTable extends Migration
         Schema::create('categories', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name')->unique();
+            $table->integer('parent_id')->nullable();
+            $table->tinyInteger('depth')->default(0)
             $table->string('slug')->index();
             $table->tinyInteger('status')->default(1)->index();
             $table->integer('total_product')->default(0);
-            $table->string('title_seo')->nullable();
-            $table->string('description_seo')->nullable();
-            $table->string('keyword_seo')->nullable();
+            $table->string('description')->nullable();
             $table->timestamps();
         });
     }

@@ -37,51 +37,88 @@ Tạo sản phẩm
           </div>
         </div>
         <!-- form start -->
-              <form role="form" method="POST" action="{{ route('backend.product.store') }}">
+            <form role="form" method="POST" action="{{ route('backend.product.store') }}">
                 {{ csrf_field() }}
                 <div class="card-body">
-                  <div class="form-group">
-                    <label for="exampleInputEmail1">Tên sản phẩm</label>
-                    <input type="text" class="form-control" name="name" value="{{ old('name') }}">
-                    @if($errors->has('name'))
-                        <div class="error">{{ $errors->first('name') }}</div>
-                    @endif
-                  </div>
+                	<div class="row">
+                		<div class="col-7" style="border: 1px solid #bab0b0">
+                			<div class="form-group">
+		                    <label for="name">Tên sản phẩm</label>
+		                    <input type="text" placeholder="Tên sản phẩm" class="form-control" name="name" value="{{ old('name') }}">
+		                    @if($errors->has('name'))
+		                        <div class="error">{{ $errors->first('name') }}</div>
+		                    @endif
+		                  </div>
 
-                  <div class="form-group">
-                    <label for="exampleInputEmail1">Tiêu đề</label>
-                    <input type="text" class="form-control" name="title_seo" value="{{ old('title_seo') }}">
-                  </div>
+		                  <div class="form-group">
+		                    <label for="description">Mô tả</label>
+		                   <textarea placeholder="Mô tả ngắn sản phẩm" class="form-control" placeholder="Nội dung" name="description" rows="3" cols="3"></textarea>
+		                   @if($errors->has('description'))
+		                        <div class="error">{{ $errors->first('description') }}</div>
+		                    @endif
+		                  </div>
 
-                  <div class="form-group">
-                    <label for="exampleInputEmail1">Mô tả</label>
-                    <input type="text" class="form-control" name="description_seo" value="{{ old('description_seo') }}">
-                    @if($errors->has('description_seo'))
-                        <div class="error">{{ $errors->first('description_seo') }}</div>
-                    @endif
-                  </div>
+		                  <div class="form-group">
+		                    <label for="content">Nội dung</label>
+		                    <textarea class="form-control" placeholder="Nội dung" name="content" rows="5" cols="5"></textarea>
+		                     @if($errors->has('content'))
+		                        <div class="error">{{ $errors->first('content') }}</div>
+		                    @endif
+		                  </div>
+		            </div>
 
-                  <div class="form-group">
-                    <label for="exampleInputEmail1">Gía sản phẩm</label>
-                    <input type="text" class="form-control" name="price" value="{{ old('price') }}">
-                  </div>
-
-                  <div class="form-group">
-                    <label>Nội dung</label>
-                    <textarea class="form-control" name="content" rows="5" cols="5"></textarea>
-                  </div>
-
-                  <div class="form-group">
-                    <div class="custom-control custom-checkbox">
-                      <input name="hot" class="custom-control-input" type="checkbox" id="customCheckbox2" checked>
-                      <label for="customCheckbox2" class="custom-control-label">Nổi bật</label>
-                    </div>
-                  </div>
+                		<div class="col-5" style="border: 1px solid #bab0b0;border-left: none;">
+                			<div class="form-group">
+			                    <label for="category_id">Loại sản phẩm</label>
+			                    <select name="category_id" class="form-control">
+			                    	<option value="">--Chọn loại sản phẩm--</option>
+			                    	@if(isset($categories))
+				                    	@foreach($categories as $category)
+				                    		@if($category->status == 1)
+				                    			<option value="{{ $category->id }}">{{ $category->name }}</option>
+				                    		@endif
+				                    	@endforeach
+				                    @endif
+			                    </select>
+			                    @if($errors->has('category_id'))
+		                        	<div class="error">{{ $errors->first('category_id') }}</div>
+		                    	@endif
+			                </div>
+			                <div class="form-group">
+			                    <label for="origin_price">Giá gốc sản phẩm</label>
+			                    <input type="number" placeholder="Giá gốc sản phẩm" class="form-control" name="origin_price" value="{{ old('origin_price') }}">
+			                    @if($errors->has('origin_price'))
+		                        	<div class="error">{{ $errors->first('origin_price') }}</div>
+		                    	@endif
+			                </div>
+			                <div class="form-group">
+			                    <label for="sale_price">Giá bán sản phẩm</label>
+			                    <input type="number" placeholder="Giá bán sản phẩm" class="form-control" name="sale_price" value="{{ old('sale_price') }}">
+			                    @if($errors->has('sale_price'))
+		                        	<div class="error">{{ $errors->first('sale_price') }}</div>
+		                    	@endif
+			                </div>
+			                <div class="form-group">
+			                    <label for="discount_percent">% Giảm giá</label>
+			                    <input type="number" placeholder="% Giảm giá" class="form-control" name="discount_percent" value="0">
+			                </div>
+			                <div class="form-group">
+			                    <label for="thumbnail">Ảnh sản phẩm</label>
+			                    <input type="file" class="form-control" name="thumbnail" value="{{ old('thumbnail') }}">
+			                </div>
+                			<div class="form-group">
+			                    <div class="custom-control custom-checkbox">
+			                      <input name="hot" value="1" class="custom-control-input" type="checkbox" id="customCheckbox2">
+			                      <label for="customCheckbox2" class="custom-control-label">Nổi bật</label>
+			                    </div>
+                  			</div>
+                		</div>
+                	</div> 
                 </div>
                 <!-- /.card-body -->
 
                   <button type="submit" class="btn btn-primary ml-4 mb-4">Lưu thông tin</button>
-              </form>
+            </form>
         <!-- end form -->
         <!-- /.card-body -->
         <div class="card-footer">Tạo mới sản phẩm</div>

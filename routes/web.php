@@ -48,3 +48,9 @@ Route::group([
     	Route::get('edit_status/{id}','ProductController@editStatus')->name('edit_status');
     });
 });
+Route::group([
+    'namespace' => 'Frontend',
+    'as' => 'frontend.'
+], function (){
+    Route::get('/', 'HomeController@index')->name('index');
+});

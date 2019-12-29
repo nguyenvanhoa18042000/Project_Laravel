@@ -1,6 +1,6 @@
 @extends('backend.layouts.master')
 @section('title')
-Tạo danh mục
+Chỉnh sửa danh mục
 @endsection
 @section('content-header')
 
@@ -57,15 +57,15 @@ Tạo danh mục
 
                   <div class="form-group">
                     <label for="exampleInputEmail1">Mô tả</label>
-                    <input type="text" class="form-control" name="description_seo" value="{{ old('description_seo',$category->description_seo) }}">
-                    @if($errors->has('description_seo'))
-                        <div class="error">{{ $errors->first('description_seo') }}</div>
+                    <input type="text" class="form-control" name="description" value="{{ old('description',$category->description) }}">
+                    @if($errors->has('description'))
+                        <div class="error">{{ $errors->first('description') }}</div>
                     @endif
                   </div>
 
                   <div class="form-group">
                     <div class="custom-control custom-checkbox">
-                      <input name="hot" class="custom-control-input" type="checkbox" id="customCheckbox2" checked>
+                      <input name="hot" class="custom-control-input" type="checkbox" id="customCheckbox2">
                       <label for="customCheckbox2" class="custom-control-label">Nổi bật</label>
                     </div>
                   </div>
