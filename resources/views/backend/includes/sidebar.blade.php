@@ -15,7 +15,7 @@
                     <img src="/backend/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
                 </div>
                 <div class="info">
-                    <a href="#" class="d-block">Nguyễn Công Hoan</a>
+                    <a href="#" class="d-block">Nguyễn Văn Hòa</a>
                 </div>
             </div>
 
@@ -97,7 +97,7 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="pages/UI/icons.html" class="nav-link">
+                                <a href="{{ route('backend.user.index') }}" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Danh sách</p>
                                 </a>

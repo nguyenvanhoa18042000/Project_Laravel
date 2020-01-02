@@ -6,15 +6,30 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Requests\RequestProduct;
 use App\Models\Product;
+use App\Models\Order;
 use App\Models\Category;
 use Illuminate\Support\Str;
 
 class ProductController extends Controller
 {
-	public function index(){
-		$products = Product::orderBy('updated_at','DESC')->paginate(4);
+	public function index(Request $request){
+		$products = Product::with('category:id,name');
+		if($request->name) $products->where('name','like','%'.$request->name.'%');
+		if($request->category_id) $products->where('category_id',$request->category_id);
+		$products = $products->orderBy('updated_at','DESC')->paginate(4);
+		$categories = $this->getCategories();
 		return view('backend.products.index')->with([
-			'products' => $products
+			'products' => $products,
+			'categories' =>$categories
+		]);
+	}
+
+	public function showImages($id){
+		$product = Product::find($id);
+		$images = $product->images;
+		return view('backend.products.show_image')->with([
+			'images' => $images,
+			'product' => $product
 		]);
 	}
 
@@ -32,8 +47,10 @@ class ProductController extends Controller
 
 	public function edit($id){
 		$product = Product::find($id);
+		$categories = Category::all();
     	return view('backend.products.edit')->with([
-    		'product' => $product
+    		'product' => $product,
+    		'categories' => $categories
     	]);
 	}
 

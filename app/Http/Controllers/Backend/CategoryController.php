@@ -10,6 +10,13 @@ use Illuminate\Support\Str;
 
 class CategoryController extends Controller
 {
+    public function showProducts($category_id){
+        $products = Category::find($category_id)->products()->orderBy('updated_at','DESC')->paginate(4);
+        return view('backend.products.index')->with([
+            'products' => $products
+        ]);
+    }
+
 	public function index(){
 		$categories = Category::orderBy('updated_at','DESC')->select('id','name','description','status')->paginate(7);
     	return view('backend.categories.index')->with([

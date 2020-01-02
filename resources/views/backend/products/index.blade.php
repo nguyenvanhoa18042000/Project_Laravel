@@ -1,6 +1,6 @@
 @extends('backend.layouts.master')
 @section('title')
-Tạo sản phẩm
+Danh sách sản phẩm
 @endsection
 @section('script')
 <script>
@@ -38,15 +38,21 @@ $(document).ready(function(){
               <div class="card-body table-responsive p-0">
                 <form class="form-inline" action="" style="margin-bottom: 1%; margin-left: 1%">
                   <div class="form-group">
-                    <input type="text" placeholder="Tên sản phẩm" class="form-control" id="name">
+                    <input type="text" name="name" placeholder="Tên sản phẩm" class="form-control" id="name" value="{{(\Request::get('name')!='') ? \Request::get('name') : '' }}">
                   </div>
                   <div class="form-group">
-                      <select class="form-control" name="" id="">
-                          <option value="">Danh mục</option>
+                      <select class="form-control" name="category_id" id="">
+                        <option value="">--Danh mục--</option>
+                        @if(isset($categories))
+                          @foreach ($categories as $category)
+                            <option value="{{$category->id}}" @if (\Request::get('category_id') == $category->id ) selected @endif>{{$category->name}}</option>
+                          @endforeach
+                        @endif
+                          
                       </select>
                   </div>
                   <button type="submit" class="btn btn-default"><i class="fas fa-search"></i></button>
-              </form>
+                </form>
                 <table class="table table-hover">
                   <thead>
                     <tr>
@@ -71,7 +77,7 @@ $(document).ready(function(){
                                     <li><span>{{$product->discount_percent}}</span> %</li>
                                 </ul>
                               </td>
-                              <td>{{ $product->category_id }}</td>
+                              <td>{{ isset($product->category->name) ? $product->category->name :'' }}</td>
                               <td>
                                 <a 
                                 @if($product->status == 1) data-toggle="tooltip" title="Ẩn" 
@@ -89,7 +95,7 @@ $(document).ready(function(){
                     @endif
                   </tbody>
                 </table>
-                <div style="float: right; margin-right: 2%">{!! $products->links() !!}</div>
+               <div style="float: right; margin-right: 2%">{!! $products->links() !!}</div>
               </div>
               <!-- /.card-body -->
         <!-- <div class="card-footer">Danh sách danh mục</div> -->

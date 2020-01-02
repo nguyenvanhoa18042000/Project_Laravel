@@ -37,6 +37,19 @@
     transform: translateY(-1px);
     color: white;
 }
+.btn_active{
+    color: green;
+    font-size: 25px;
+    padding-top: 0;
+}
+.btn_active:hover{color: green}
+
+.btn_inactive{
+    color: #595252;
+    font-size: 25px;
+    padding-top: 0;
+}
+
 td > a {
     display:inline-block;
     max-width:100%;

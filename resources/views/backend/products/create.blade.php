@@ -2,6 +2,22 @@
 @section('title')
 Tạo sản phẩm
 @endsection
+@section('css')
+ <link rel="stylesheet" href="backend/plugins/summernote/summernote-bs4.css">
+@endsection
+@section('script')
+<script src="backend/plugins/summernote/summernote-bs4.min.js"></script>
+<script>
+  $(document).ready(function () {
+    $('#textarea').summernote({
+    	placeholder: 'Nội dung chi tiết sản phẩm...',
+        height: 250,
+	    minHeight: 150,
+	    maxHeight: 500
+    });
+  })
+</script>
+@endsection
 @section('content-header')
 
     <div class="container-fluid">
@@ -60,7 +76,7 @@ Tạo sản phẩm
 
 		                  <div class="form-group">
 		                    <label for="content">Nội dung</label>
-		                    <textarea class="form-control" placeholder="Nội dung" name="content" rows="5" cols="5"></textarea>
+		                    <textarea id="textarea" class="form-control" name="content"></textarea>
 		                     @if($errors->has('content'))
 		                        <div class="error">{{ $errors->first('content') }}</div>
 		                    @endif

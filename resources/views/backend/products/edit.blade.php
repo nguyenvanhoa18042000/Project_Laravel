@@ -37,7 +37,7 @@ Cập nhật sản phẩm
           </div>
         </div>
         <!-- form start -->
-          <form role="form" method="POST" action="{{ route('backend.product.store') }}">
+          <form role="form" method="POST" action="{{ route('backend.product.update',$product->id) }}">
                 {{ csrf_field() }}
                 {{ method_field('PUT') }}
                 <div class="card-body">
@@ -76,7 +76,9 @@ Cập nhật sản phẩm
                             @if(isset($categories))
                               @foreach($categories as $category)
                                 @if($category->status == 1)
-                                  <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                  <option value="{{ $category->id }}" 
+                                    @if ($product->category_id == $category->id) selected @endif>{{ $category->name }}
+                                  </option>
                                 @endif
                               @endforeach
                             @endif
@@ -87,21 +89,21 @@ Cập nhật sản phẩm
                       </div>
                       <div class="form-group">
                           <label for="origin_price">Giá gốc sản phẩm</label>
-                          <input type="number" placeholder="Giá gốc sản phẩm" class="form-control" name="origin_price" value="{{ old('origin_price') }}">
+                          <input type="number" placeholder="Giá gốc sản phẩm" class="form-control" name="origin_price" value="{{ old('origin_price',$product->origin_price) }}">
                           @if($errors->has('origin_price'))
                               <div class="error">{{ $errors->first('origin_price') }}</div>
                           @endif
                         </div>
                       <div class="form-group">
                           <label for="sale_price">Giá bán sản phẩm</label>
-                          <input type="number" placeholder="Giá bán sản phẩm" class="form-control" name="sale_price" value="{{ old('sale_price') }}">
+                          <input type="number" placeholder="Giá bán sản phẩm" class="form-control" name="sale_price" value="{{ old('sale_price',$product->sale_price) }}">
                           @if($errors->has('sale_price'))
                               <div class="error">{{ $errors->first('sale_price') }}</div>
                           @endif
                         </div>
                       <div class="form-group">
                           <label for="discount_percent">% Giảm giá</label>
-                          <input type="number" placeholder="% Giảm giá" class="form-control" name="discount_percent" value="0">
+                          <input type="number" placeholder="% Giảm giá" class="form-control" name="discount_percent" value="{{ old('discount_percent',$product->discount_percent) }}">
                       </div>
                       <div class="form-group">
                           <label for="thumbnail">Ảnh sản phẩm</label>

@@ -17,7 +17,7 @@ class CreateCategoriesTable extends Migration
             $table->bigIncrements('id');
             $table->string('name')->unique();
             $table->integer('parent_id')->nullable();
-            $table->tinyInteger('depth')->default(0)
+            $table->tinyInteger('depth')->default(0);
             $table->string('slug')->index();
             $table->tinyInteger('status')->default(1)->index();
             $table->integer('total_product')->default(0);

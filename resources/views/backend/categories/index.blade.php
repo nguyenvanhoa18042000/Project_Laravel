@@ -61,6 +61,8 @@ $(document).ready(function(){
 		                      	@endif
 		                  	  </td>
 		                      <td>
+                            <a href="{{ route('backend.category.show_products',$category->id) }}" class="btn btn-success btn-sm " data-toggle="tooltip" title="Bài viết của danh mục" style="margin-right: 5%"><i class="fas fa-list"></i></a>
+
 		                      	<a href="{{ route('backend.category.edit',$category->id) }}" class="btn btn_edit btn-sm " data-toggle="tooltip" title="Chỉnh sửa"><i class="fas fa-edit"></i></a>
 
 		                      	<a href="{{ route('backend.category.destroy',$category->id) }}" class="btn btn_delete btn-sm" data-toggle="tooltip" title="Xóa"><i class="fa fa-trash" aria-hidden="true"></i></a>

@@ -33,6 +33,7 @@ Route::group([
     	Route::put('update/{id}','CategoryController@update')->name('update');
     	Route::get('delete/{id}','CategoryController@destroy')->name('destroy');
     	Route::get('edit_status/{id}','CategoryController@editStatus')->name('edit_status');
+        Route::get('show_products_by_category/{category_id}','CategoryController@showProducts')->name('show_products');
     });
 
     Route::group([
@@ -41,13 +42,38 @@ Route::group([
     ],function(){
     	Route::get('index', 'ProductController@index')->name('index');
     	Route::get('create', 'ProductController@create')->name('create');
+        Route::get('show', 'ProductController@show')->name('show');
     	Route::post('store', 'ProductController@store')->name('store');
     	Route::get('edit/{id}', 'ProductController@edit')->name('edit');
     	Route::put('update/{id}','ProductController@update')->name('update');
     	Route::get('delete/{id}','ProductController@destroy')->name('destroy');
     	Route::get('edit_status/{id}','ProductController@editStatus')->name('edit_status');
+        Route::get('show_images_by_product/{id}','ProductController@showImages')->name('show_images');
+    });
+
+    Route::group([
+        'prefix' => 'user',
+        'as' => 'user.'
+    ],function(){
+        Route::get('index', 'UserController@index')->name('index');
+        Route::get('create', 'UserController@create')->name('create');
+        Route::get('show', 'UserController@show')->name('show');
+        Route::post('store', 'UserController@store')->name('store');
+        Route::post('block', 'UserController@blockUser')->name('block');
+        Route::get('delete/{id}','UserController@destroy')->name('destroy');
+        Route::get('edit_status/{id}','UserController@editStatus')->name('edit_status');
+        Route::get('open_or_block/{id}','UserController@openOrBlock')->name('open_or_block');
+        Route::get('show_products_by_user_id/{id}','UserController@showProducts')->name('show_products');
+    });
+
+    Route::group([
+        'prefix' => 'order',
+        'as' => 'order.'
+    ],function(){
+        Route::get('show_products_by_order_id/{order_id}', 'OrderController@showProducts')->name('show_products');
     });
 });
+
 Route::group([
     'namespace' => 'Frontend',
     'as' => 'frontend.'
