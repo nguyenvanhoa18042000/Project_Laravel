@@ -50,9 +50,10 @@ class UserController extends Controller
     public function showProducts(Request $request,$id){
         $products = User::withTrashed()->where('id',$id)->first()->products()->orderBy('updated_at','DESC')->paginate(4);
         $categories=Category::all();
-        // if($request->name) $products->where('name','like','%'.$request->name.'%');
-        // if($request->category_id) $products->where('category_id',$request->category_id);
-        // $products = $products->orderBy('updated_at','DESC')->paginate(4);
+        //dd($request->all());
+        if($request->name) $products->where('name','like','%'.$request->name.'%');
+        if($request->category_id) $products->where('category_id',$request->category_id);
+        //$products = $products->orderBy('updated_at','DESC')->paginate(4);
         // dd($products);
         return view('backend.products.index')->with([
             'products' => $products,

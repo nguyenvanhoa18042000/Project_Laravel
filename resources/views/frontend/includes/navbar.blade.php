@@ -17,41 +17,34 @@
                     <div class="header-top-right">
                         <ul class="ht-menu">
                             <!-- Begin Setting Area -->
+                            @if(Auth::user())
                             <li>
-                                <div class="ht-setting-trigger"><span>Setting</span></div>
+                                <div class="ht-setting-trigger" style="font-size: 15px;"><span>{{Auth::user()->name}}</span></div>
                                 <div class="setting ht-setting">
                                     <ul class="ht-setting-list">
-                                        <li><a href="login-register.html">My Account</a></li>
-                                        <li><a href="checkout.html">Checkout</a></li>
-                                        <li><a href="login-register.html">Sign In</a></li>
+                                        <li><a href="" style="color: black">Trang cá nhân</a></li>
+                                        <li>
+                                            <a href="{{ route('logout') }}" style="color: black"
+                                               onclick="event.preventDefault();
+                                                             document.getElementById('logout-form').submit();">
+                                                Đăng xuất
+                                            </a>
+
+                                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                                @csrf
+                                            </form>
+                                        </li>
                                     </ul>
                                 </div>
                             </li>
-                            <!-- Setting Area End Here -->
-                            <!-- Begin Currency Area -->
+                            @else
                             <li>
-                                <span class="currency-selector-wrapper">Currency :</span>
-                                <div class="ht-currency-trigger"><span>USD $</span></div>
-                                <div class="currency ht-currency">
-                                    <ul class="ht-setting-list">
-                                        <li><a href="#">EUR €</a></li>
-                                        <li class="active"><a href="#">USD $</a></li>
-                                    </ul>
-                                </div>
+                                <div class="" style="font-size: 15px;"><a href="{{route('login')}}">Đăng nhập</a></div>
                             </li>
-                            <!-- Currency Area End Here -->
-                            <!-- Begin Language Area -->
+                            @endif
                             <li>
-                                <span class="language-selector-wrapper">Language :</span>
-                                <div class="ht-language-trigger"><span>English</span></div>
-                                <div class="language ht-language">
-                                    <ul class="ht-setting-list">
-                                        <li class="active"><a href="#"><img src="frontend/images/menu/flag-icon/1.jpg" alt="">English</a></li>
-                                        <li><a href="#"><img src="frontend/images/menu/flag-icon/2.jpg" alt="">Français</a></li>
-                                    </ul>
-                                </div>
+                                <div class="" style="font-size: 15px;"><a  href="{{route('register')}}">Đăng ký</a></div>
                             </li>
-                            <!-- Language Area End Here -->
                         </ul>
                     </div>
                 </div>

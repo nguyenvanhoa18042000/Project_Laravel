@@ -17,10 +17,11 @@ Route::get('/', function () {
 
 Route::group([
     'namespace' => 'Backend',
+    'middleware' => 'auth',
     'prefix' => 'admin',
     'as' => 'backend.'
 ], function (){
-    Route::get('/dashboard', 'DashboardController@index')->name('dashboard');
+    Route::get('/home', 'DashboardController@index')->name('home');
 
     Route::group([
     	'prefix' => 'category',
@@ -78,5 +79,11 @@ Route::group([
     'namespace' => 'Frontend',
     'as' => 'frontend.'
 ], function (){
-    Route::get('/', 'HomeController@index')->name('index');
+    Route::get('/home', 'HomeController@index')->name('home');
 });
+
+Auth::routes();
+// Route::get('/login','Auth\LoginController@showFormLogin')->name('show_form_login');
+// Route::post('/loginStore','Auth\LoginController@loginStore')->name('login_store');
+// Route::get('/logout','Auth\LoginController@logout')->name('logout');
+ //Route::get('/register-store','Auth\RegisterController@register')->name('register.store');
