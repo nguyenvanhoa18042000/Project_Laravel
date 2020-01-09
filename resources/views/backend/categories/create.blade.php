@@ -1,3 +1,4 @@
+
 @extends('backend.layouts.master')
 @section('title')
 Tạo danh mục
@@ -49,6 +50,23 @@ Tạo danh mục
                   </div>
 
                   <div class="form-group">
+                    <label for="parent_id">Danh mục cha</label>
+                    <select name="parent_id" class="form-control">
+                      <option value="">--Chọn danh mục cha--</option>
+                      @if(isset($categories))
+                        @foreach($categories as $category)
+                          @if($category->parent_id == NULL)
+                            <option value="{{ $category->id }}">{{ $category->name }}</option>
+                          @endif
+                        @endforeach
+                      @endif
+                    </select>
+                    @if($errors->has('parent_id'))
+                        <div class="error">{{ $errors->first('parent_id') }}</div>
+                    @endif
+                </div>
+
+                  <div class="form-group">
                     <label for="description">Mô tả</label>
                     <input type="text" class="form-control" name="description" value="{{ old('descriptio') }}">
                     @if($errors->has('description'))
@@ -56,12 +74,12 @@ Tạo danh mục
                     @endif
                   </div>
 
-                  <div class="form-group">
+                  <!-- <div class="form-group">
                     <div class="custom-control custom-checkbox">
                       <input name="hot" value="1" class="custom-control-input" type="checkbox" id="customCheckbox2" checked>
                       <label for="customCheckbox2" class="custom-control-label">Nổi bật</label>
                     </div>
-                  </div>
+                  </div> -->
                 </div>
                 <!-- /.card-body -->
 

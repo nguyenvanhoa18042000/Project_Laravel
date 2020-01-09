@@ -5,6 +5,7 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>@yield('title')</title>
+	<link rel="stylesheet" href="/backend/plugins/bootstrap/css/bootstrap.min.css">
 	<!-- Font Awesome -->
 	<link rel="stylesheet" href="/backend/plugins/fontawesome-free/css/all.min.css">
 	<!-- Ionicons -->
@@ -54,9 +55,10 @@
 	</div>
 	</div>
 	<!-- ./wrapper -->
-
+	
 	<!-- jQuery -->
 	<script src="/backend/plugins/jquery/jquery.min.js"></script>
+	<script src="/backend/plugins/bootstrap/js/bootstrap.min.js"></script>
 	<!-- jQuery UI 1.11.4 -->
 	<script src="/backend/plugins/jquery-ui/jquery-ui.min.js"></script>
 	<!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
@@ -65,6 +67,7 @@
 	</script>
 	<!-- Bootstrap 4 -->
 	<script src="/backend/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+
 	<!-- ChartJS -->
 	<script src="/backend/plugins/chart.js/Chart.min.js"></script>
 	<!-- Sparkline -->

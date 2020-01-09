@@ -9,6 +9,7 @@ use App\Models\Product;
 use App\Models\Order;
 use App\Models\Category;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Auth;
 
 class ProductController extends Controller
 {
@@ -42,7 +43,7 @@ class ProductController extends Controller
 
 	public function store(RequestProduct $requestProduct){
 		$this->insertOrUpdate($requestProduct);
-    	return redirect()->back();
+    	return redirect()->route('backend.product.index');
 	}
 
 	public function edit($id){
@@ -56,7 +57,7 @@ class ProductController extends Controller
 
 	public function update(RequestProduct $requestProduct,$id){
 		$this->insertOrUpdate($requestProduct,$id);
-    	return redirect()->back();
+    	return redirect()->route('backend.product.index');
 	}
 
 	public function getCategories(){
@@ -86,6 +87,7 @@ class ProductController extends Controller
 			$product->description = $description;
 			$product->content = $content;
 			$product->category_id = $category_id;
+			$product->user_id = Auth::user()->id;
 			$product->origin_price = $origin_price;
 			$product->sale_price = $sale_price;
 			$product->hot = $hot=='on' ? 1 : 0;

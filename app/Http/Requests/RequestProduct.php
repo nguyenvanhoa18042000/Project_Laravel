@@ -27,8 +27,8 @@ class RequestProduct extends FormRequest
             'name' => 'required|unique:products,name,'.$this->id,
             'category_id' => 'required',
             'description' => 'required',
-            'origin_price' => 'required',
-            'sale_price' => 'required',
+            'origin_price' => 'required|numeric',
+            'sale_price' => 'required|numeric',
             'content' => 'required',
         ];
     }
@@ -42,6 +42,8 @@ class RequestProduct extends FormRequest
             'content.required' => 'Trường này không được để trống',
             'origin_price.required' => 'Trường này không được để trống',
             'sale_price.required' => 'Trường này không được để trống',
+            'origin_price.numeric' => 'Trường này phải là số',
+            'sale_price.numeric' => 'Trường này phải là số',
         ];
     }
 }

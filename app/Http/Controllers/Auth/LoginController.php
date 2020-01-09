@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 
 class LoginController extends Controller
 {
@@ -47,6 +48,7 @@ class LoginController extends Controller
 
     public function login(Request $request)
     {
+        if(Auth::user()==null){
         $email = $request->get('email');
         $password = $request->get('password');
         if (Auth::attempt(['email' => $email, 'password' => $password, 'role' => 2])) {
@@ -55,6 +57,18 @@ class LoginController extends Controller
             return redirect()->route('frontend.home');
         }else{
             return $this->sendFailedLoginResponse($request);
+        }
+        // if (Auth::attempt(['email' => $email, 'password' => $password])) {
+        //     if (Auth::user()->role == 2 ) {
+        //         return redirect()->route('backend.home');
+        //     }elseif (Auth::user()->role==0 || Auth::user()->role==1) {
+        //         return redirect()->route('frontend.home');
+        //     }else{
+        //         return $this->sendFailedLoginResponse($request);
+        //     }
+        // }else{
+            
+        // }
         }
     }
 

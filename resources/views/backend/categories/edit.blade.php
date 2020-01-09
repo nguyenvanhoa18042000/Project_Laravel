@@ -51,9 +51,23 @@ Chỉnh sửa danh mục
                   </div>
 
                   <div class="form-group">
-                    <label for="exampleInputEmail1">Tiêu đề</label>
-                    <input type="text" class="form-control" name="title_seo" value="{{ old('title_seo',$category->title_seo) }}">
-                  </div>
+                    <label for="parent_id">Danh mục cha</label>
+                    <select name="parent_id" class="form-control">
+                      <option value="">--Chọn danh mục cha--</option>
+                      @if(isset($categories))
+                        @foreach($categories as $cate)
+                          @if($cate->parent_id == NULL)
+                          <option value="{{ $cate->id }}" 
+                            @if ($category->parent_id == $cate->id) selected @endif>{{ $cate->name }}
+                          </option>
+                          @endif
+                        @endforeach
+                      @endif
+                    </select>
+                    @if($errors->has('parent_id'))
+                        <div class="error">{{ $errors->first('parent_id') }}</div>
+                    @endif
+                </div>
 
                   <div class="form-group">
                     <label for="exampleInputEmail1">Mô tả</label>
@@ -63,12 +77,12 @@ Chỉnh sửa danh mục
                     @endif
                   </div>
 
-                  <div class="form-group">
+                  <!-- <div class="form-group">
                     <div class="custom-control custom-checkbox">
                       <input name="hot" class="custom-control-input" type="checkbox" id="customCheckbox2">
                       <label for="customCheckbox2" class="custom-control-label">Nổi bật</label>
                     </div>
-                  </div>
+                  </div> -->
                 </div>
                 <!-- /.card-body -->
 

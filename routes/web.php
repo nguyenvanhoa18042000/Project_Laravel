@@ -58,7 +58,7 @@ Route::group([
     ],function(){
         Route::get('index', 'UserController@index')->name('index');
         Route::get('create', 'UserController@create')->name('create');
-        Route::get('show', 'UserController@show')->name('show');
+        Route::get('show/{id}', 'UserController@show')->name('show');
         Route::post('store', 'UserController@store')->name('store');
         Route::post('block', 'UserController@blockUser')->name('block');
         Route::get('delete/{id}','UserController@destroy')->name('destroy');

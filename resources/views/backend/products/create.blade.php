@@ -57,7 +57,7 @@ Tạo sản phẩm
                 {{ csrf_field() }}
                 <div class="card-body">
                 	<div class="row">
-                		<div class="col-7" style="border: 1px solid #bab0b0">
+                		<div class="col-6" style="border: 1px solid #bab0b0">
                 			<div class="form-group">
 		                    <label for="name">Tên sản phẩm</label>
 		                    <input type="text" placeholder="Tên sản phẩm" class="form-control" name="name" value="{{ old('name') }}">
@@ -75,31 +75,30 @@ Tạo sản phẩm
 		                  </div>
 
 		                  <div class="form-group">
-		                    <label for="content">Nội dung</label>
-		                    <textarea id="textarea" class="form-control" name="content"></textarea>
-		                     @if($errors->has('content'))
-		                        <div class="error">{{ $errors->first('content') }}</div>
-		                    @endif
-		                  </div>
+		                    <label for="category_id">Loại sản phẩm</label>
+		                    <select name="category_id" class="form-control">
+		                    	<option value="">--Chọn loại sản phẩm--</option>
+		                    	@if(isset($categories))
+			                    	@foreach($categories as $category)
+			                    		@if($category->parent_id == NULL)
+			                    			<option value="{{ $category->id }}">{{ $category->name }}</option>
+			                    		@endif
+			                    	@endforeach
+			                    @endif
+		                    </select>
+		                    @if($errors->has('category_id'))
+	                        	<div class="error">{{ $errors->first('category_id') }}</div>
+	                    	@endif
+		                </div>
+		                <div class="form-group">
+		                    <div class="custom-control custom-checkbox">
+		                      <input name="hot" value="1" class="custom-control-input" type="checkbox" id="customCheckbox2">
+		                      <label for="customCheckbox2" class="custom-control-label">Nổi bật</label>
+		                    </div>
+              			</div>
 		            </div>
 
-                		<div class="col-5" style="border: 1px solid #bab0b0;border-left: none;">
-                			<div class="form-group">
-			                    <label for="category_id">Loại sản phẩm</label>
-			                    <select name="category_id" class="form-control">
-			                    	<option value="">--Chọn loại sản phẩm--</option>
-			                    	@if(isset($categories))
-				                    	@foreach($categories as $category)
-				                    		@if($category->status == 1)
-				                    			<option value="{{ $category->id }}">{{ $category->name }}</option>
-				                    		@endif
-				                    	@endforeach
-				                    @endif
-			                    </select>
-			                    @if($errors->has('category_id'))
-		                        	<div class="error">{{ $errors->first('category_id') }}</div>
-		                    	@endif
-			                </div>
+                		<div class="col-6" style="border: 1px solid #bab0b0;border-left: none;">
 			                <div class="form-group">
 			                    <label for="origin_price">Giá gốc sản phẩm</label>
 			                    <input type="number" placeholder="Giá gốc sản phẩm" class="form-control" name="origin_price" value="{{ old('origin_price') }}">
@@ -122,13 +121,17 @@ Tạo sản phẩm
 			                    <label for="thumbnail">Ảnh sản phẩm</label>
 			                    <input type="file" class="form-control" name="thumbnail" value="{{ old('thumbnail') }}">
 			                </div>
-                			<div class="form-group">
-			                    <div class="custom-control custom-checkbox">
-			                      <input name="hot" value="1" class="custom-control-input" type="checkbox" id="customCheckbox2">
-			                      <label for="customCheckbox2" class="custom-control-label">Nổi bật</label>
-			                    </div>
-                  			</div>
                 		</div>
+					<div class="col-12">
+						<div class="form-group">
+		                    <label for="content">Nội dung</label>
+		                    <textarea id="textarea" class="form-control" name="content"></textarea>
+		                     @if($errors->has('content'))
+		                        <div class="error">{{ $errors->first('content') }}</div>
+		                    @endif
+		                </div>
+		            </div>
+
                 	</div> 
                 </div>
                 <!-- /.card-body -->

@@ -2,6 +2,22 @@
 @section('title')
 Cập nhật sản phẩm
 @endsection
+@section('css')
+ <link rel="stylesheet" href="backend/plugins/summernote/summernote-bs4.css">
+@endsection
+@section('script')
+<script src="backend/plugins/summernote/summernote-bs4.min.js"></script>
+<script>
+  $(document).ready(function () {
+    $('#textarea').summernote({
+      placeholder: 'Nội dung chi tiết sản phẩm...',
+        height: 250,
+      minHeight: 150,
+      maxHeight: 500
+    });
+  })
+</script>
+@endsection
 @section('content-header')
 
     <div class="container-fluid">
@@ -42,7 +58,7 @@ Cập nhật sản phẩm
                 {{ method_field('PUT') }}
                 <div class="card-body">
                   <div class="row">
-                    <div class="col-7" style="border: 1px solid #bab0b0">
+                    <div class="col-6" style="border: 1px solid #bab0b0">
                       <div class="form-group">
                         <label for="name">Tên sản phẩm</label>
                         <input type="text" placeholder="Tên sản phẩm" class="form-control" name="name" value="{{ old('name',$product->name) }}">
@@ -58,17 +74,6 @@ Cập nhật sản phẩm
                             <div class="error">{{ $errors->first('description') }}</div>
                         @endif
                       </div>
-
-                      <div class="form-group">
-                        <label for="content">Nội dung</label>
-                        <textarea class="form-control" placeholder="Nội dung" name="content" rows="5" cols="5">{{ old('content',$product->content) }}</textarea>
-                         @if($errors->has('content'))
-                            <div class="error">{{ $errors->first('content') }}</div>
-                        @endif
-                      </div>
-                </div>
-
-                    <div class="col-5" style="border: 1px solid #bab0b0;border-left: none;">
                       <div class="form-group">
                           <label for="category_id">Loại sản phẩm</label>
                           <select name="category_id" class="form-control">
@@ -87,6 +92,16 @@ Cập nhật sản phẩm
                               <div class="error">{{ $errors->first('category_id') }}</div>
                           @endif
                       </div>
+                      <div class="form-group">
+                          <div class="custom-control custom-checkbox">
+                            <input name="hot" value="1" class="custom-control-input" type="checkbox" id="customCheckbox2" @if($product->hot == 1) checked  @endif>
+                            <label for="customCheckbox2" class="custom-control-label">Nổi bật</label>
+                          </div>
+                        </div>
+                </div>
+
+                    <div class="col-6" style="border: 1px solid #bab0b0;border-left: none;">
+                      
                       <div class="form-group">
                           <label for="origin_price">Giá gốc sản phẩm</label>
                           <input type="number" placeholder="Giá gốc sản phẩm" class="form-control" name="origin_price" value="{{ old('origin_price',$product->origin_price) }}">
@@ -109,11 +124,15 @@ Cập nhật sản phẩm
                           <label for="thumbnail">Ảnh sản phẩm</label>
                           <input type="file" class="form-control" name="" value="{{ old('thumbnail') }}">
                       </div>
-                      <div class="form-group">
-                          <div class="custom-control custom-checkbox">
-                            <input name="hot" value="1" class="custom-control-input" type="checkbox" id="customCheckbox2" @if($product->hot == 1) checked  @endif>
-                            <label for="customCheckbox2" class="custom-control-label">Nổi bật</label>
-                          </div>
+                      
+                    </div>
+                    <div class="col-12">
+                        <div class="form-group">
+                          <label for="content">Nội dung</label>
+                          <textarea id="textarea" class="form-control" name="content">{!! old('content',$product->content) !!}</textarea>
+                           @if($errors->has('content'))
+                              <div class="error">{!! $errors->first('content') !!}</div>
+                          @endif
                         </div>
                     </div>
                   </div> 

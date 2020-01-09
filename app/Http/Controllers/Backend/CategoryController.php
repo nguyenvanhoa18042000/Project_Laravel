@@ -25,24 +25,29 @@ class CategoryController extends Controller
     }
 
     public function create(){
-    	return view('backend.categories.create');
+        $categories = Category::orderBy('updated_at','DESC')->select('id','name','parent_id','depth')->where('status','1')->get();
+    	return view('backend.categories.create')->with([
+            'categories' => $categories
+        ]);
     }
 
     public function store(RequestCategory $requestCategory){
     	$this->insertOrUpdate($requestCategory);
-    	return redirect()->back();
+    	return redirect()->route('backend.category.index');
     }
 
     public function edit($id){
     	$category = Category::find($id);
+        $categories = Category::orderBy('updated_at','DESC')->select('id','name','parent_id','depth')->where('status','1')->get();
     	return view('backend.categories.edit')->with([
-    		'category' => $category
+    		'category' => $category,
+            'categories' => $categories
     	]);
     }
 
     public function update(RequestCategory $requestCategory, $id){
     	$this->insertOrUpdate($requestCategory,$id);
-    	return redirect()->back();
+    	return redirect()->route('backend.category.index');
     }
 
     public function insertOrUpdate($requestCategory, $id=''){
@@ -50,7 +55,8 @@ class CategoryController extends Controller
     	try {
     		$name = $requestCategory->get('name');
 	    	$slug = str::slug($name);
-	    	$description_seo = $requestCategory->get('description');
+	    	$description = $requestCategory->get('description');
+            $parent_id = $requestCategory->get('parent_id');
 	    	if ($id) {
 	    		$category = Category::find($id);
 	    	}else{
@@ -58,8 +64,8 @@ class CategoryController extends Controller
 	    	}
 	    	$category->name = $name;
 	    	$category->slug = $slug;
+            $category->parent_id = $parent_id;
 	    	$category->description = $description;
-	    	$category->updated_at = null;
 	    	$category->save();
     	} catch (Exception $e) {
     		$status = 0;

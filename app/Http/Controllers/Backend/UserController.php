@@ -9,20 +9,21 @@ use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
-    public function test($id){
-  //   	$user = User::find($id);
-		// $userInfo = $user->user_info;
-		// dd($userInfo);
-
-		$user_info = Userinfo::find($id);
-		$user = $user_info->use;
-		dd($user);
-    }
     public function index(){
-    	$users = User::withTrashed()->get();
+    	$users = User::withTrashed()->orderBy('role','DESC')->paginate(5);
     	return view('backend.users.index')->with([
     		'users' => $users
     	]);
+    }
+
+    public function show(Request $request,$id){
+        
+    }
+
+    public function destroy($id){
+        $user = User::withTrashed()->where('id',$id)->first();
+        $user->forceDelete();
+        return redirect()->back();
     }
 
     public function editStatus($id){
