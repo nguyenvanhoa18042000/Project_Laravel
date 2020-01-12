@@ -18,6 +18,7 @@ class CreateProductsTable extends Migration
             $table->string('name')->nullable();
             $table->text('description')->nullable();
             $table->text('content')->nullable();
+            $table->string('image')->nullable();
             $table->string('slug')->index();
             $table->integer('category_id')->index();
             $table->integer('user_id')->default(1);
@@ -25,7 +26,7 @@ class CreateProductsTable extends Migration
             $table->integer('price')->default(0);
             $table->integer('amount')->default(0);
             $table->integer('amount_sold')->default(0);
-            $table->tinyInteger('sale')->default(0);
+            $table->tinyInteger('discount_percent')->default(0);
             $table->tinyInteger('status')->default(1)->index();
             $table->tinyInteger('hot')->default(0);
             $table->timestamps();

@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class RequestCategory extends FormRequest
+class RequestNewsCategory extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,7 +24,7 @@ class RequestCategory extends FormRequest
     public function rules()
     {
         $rules = [
-            'name' => 'bail|required|min:5|max:100|unique:categories,name,'.$this->id,
+            'name' => 'bail|required|min:5|max:100|unique:news_categories,name,'.$this->id,
             'description' => 'bail|required|'
         ];
         return $rules;
@@ -47,5 +47,4 @@ class RequestCategory extends FormRequest
         ];
         return $attributes;
     }
-
 }

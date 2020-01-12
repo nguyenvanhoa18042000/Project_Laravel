@@ -23,12 +23,14 @@
             <nav class="mt-2">
                 <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                     <!-- Add icons to the links using the .nav-icon class
-                         with font-awesome or any other icon font library -->
-                    <li class="nav-item has-treeview menu-open">
-                        <a href="./index.html" class="nav-link active">
-                            <i class="nav-icon fas fa-tachometer-alt"></i>
+                         with font-awesome or any other icon font library 
+                         thẻ li có class="menu-open" sau has-treeview 
+                         thẻ a có class= "active" sau nav-link -->
+                    <li class="nav-item has-treeview">
+                        <a href="{{route('backend.home')}}" class="nav-link add-click">
+                            <i class="nav-icon fas fa-home"></i>
                             <p>
-                                Dashboard
+                                Trang chủ
                             </p>
                         </a>
 
@@ -39,19 +41,19 @@
                             <p>
                                 Quản lý sản phẩm
                                 <i class="fas fa-angle-left right"></i>
-                                <span class="badge badge-info right">6</span>
+                                <!-- <span class="badge badge-info right">6</span> -->
                             </p>
                         </a>
                         <ul class="nav nav-treeview">
                             <li class="nav-item">
-                                <a href="{{ route('backend.product.create') }}" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
+                                <a href="{{ route('backend.product.create') }}" class="nav-link" style="margin-left: 11%">
+                                    <i class="nav-icon fas fa-plus"></i>
                                     <p>Tạo mới</p>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{ route('backend.product.index') }}" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
+                                <a href="{{ route('backend.product.index') }}" class="nav-link" style="margin-left: 11%">
+                                    <i class="nav-icon fa fa-list-alt" aria-hidden="true"></i>
                                     <p>Danh sách</p>
                                 </a>
                             </li>
@@ -68,22 +70,23 @@
                         </a>
                         <ul class="nav nav-treeview">
                             <li class="nav-item">
-                                <a href="{{ route('backend.category.create') }}" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
+                                <a href="{{ route('backend.category.create') }}" class="nav-link" style="margin-left: 11%">
+                                    <i class="nav-icon fas fa-plus"></i>
                                     <p>Tạo mới</p>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{ route('backend.category.index') }}" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
+                                <a href="{{ route('backend.category.index') }}" class="nav-link" style="margin-left: 11%">
+                                    <i class="nav-icon fa fa-list-alt" aria-hidden="true"></i>
                                     <p>Danh sách</p>
                                 </a>
                             </li>
                         </ul>
                     </li>
+                    @if(Auth::user()->role == 2)
                     <li class="nav-item has-treeview">
                         <a href="#" class="nav-link">
-                            <i class="nav-icon fas fa-tree"></i>
+                            <i class="nav-icon fas fa-user"></i>
                             <p>
                                 Quản lý người dùng
                                 <i class="fas fa-angle-left right"></i>
@@ -91,16 +94,68 @@
                         </a>
                         <ul class="nav nav-treeview">
                             <li class="nav-item">
-                                <a href="pages/UI/general.html" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
+                                <a href="{{ route('backend.user.create') }}" class="nav-link" style="margin-left: 11%">
+                                    <i class="nav-icon fas fa-plus"></i>
                                     <p>Tạo mới</p>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{ route('backend.user.index') }}" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
+                                <a href="{{ route('backend.user.index') }}" class="nav-link" style="margin-left: 11%">
+                                    <i class="nav-icon fa fa-list-alt" aria-hidden="true"></i>
                                     <p>Danh sách</p>
                                 </a>
+                            </li>
+                        </ul>
+                    </li>
+                    @endif
+                    <li class="nav-item has-treeview">
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon fas fa-newspaper"></i>
+                            <p>
+                                Quản lý tin tức
+                                <i class="right fas fa-angle-left"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="#" class="nav-link" style="margin-left: 9%">
+                                    <i class="nav-icon fas fa-chart-pie"></i>
+                                    <p>Danh mục</p>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a href="{{ route('backend.news_category.create') }}" class="nav-link" style="margin-left: 17%">
+                                            <i class="nav-icon fas fa-plus"></i>
+                                            <p>Tạo mới</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="{{ route('backend.news_category.index') }}" class="nav-link" style="margin-left: 17%">
+                                            <i class="nav-icon fa fa-list-alt" aria-hidden="true"></i>
+                                            <p>Danh sách</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#" class="nav-link" style="margin-left: 9%">
+                                    <i class="nav-icon far fa-newspaper"></i>
+                                    <p>Bài viết</p>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a href="{{ route('backend.post.create') }}" class="nav-link" style="margin-left: 17%">
+                                            <i class="nav-icon fas fa-plus"></i>
+                                            <p>Tạo mới</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="{{ route('backend.post.index') }}" class="nav-link" style="margin-left: 17%">
+                                            <i class="nav-icon fa fa-list-alt" aria-hidden="true"></i>
+                                            <p>Danh sách</p>
+                                        </a>
+                                    </li>
+                                </ul>
                             </li>
                         </ul>
                     </li>

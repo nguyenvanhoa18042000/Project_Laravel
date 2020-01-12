@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Backend;
 use App\Models\User;
 use App\Models\Category;
-use App\Models\Userinfo;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Http\Requests\RequestUser;
+use Illuminate\Support\Facades\Storage;
+
 
 class UserController extends Controller
 {
@@ -16,8 +18,27 @@ class UserController extends Controller
     	]);
     }
 
+    public function create(){
+        return view('backend.users.create');
+    }
+
     public function show(Request $request,$id){
-        
+        $user = User::withTrashed()->where('id',$id)->first();
+        return view('backend.users.detail')->with([
+            'user' => $user
+        ]);
+    }
+
+     public function store(RequestUser $requestUser){
+        $user = new User();
+        $user->name = $requestUser->get('name');
+        $user->email = $requestUser->get('email');
+        $user->password = bcrypt($requestUser->get('password'));
+        $user->address = $requestUser->get('address');
+        $user->phone = $requestUser->get('phone');
+        $user->role = $requestUser->get('role');
+        $user->save();
+        return redirect()->route('backend.user.index');
     }
 
     public function destroy($id){

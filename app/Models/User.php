@@ -12,7 +12,7 @@ class User extends Authenticatable
 {
     use Notifiable;
 	use SoftDeletes;
-	protected $dates = ['deleted_at'];
+	protected $dates = ['deleted_at','created_at','updated_at'];
 	protected $fillable = [
         'name', 'email', 'password','phone','address',
     ];

@@ -51,24 +51,15 @@ class LoginController extends Controller
         if(Auth::user()==null){
         $email = $request->get('email');
         $password = $request->get('password');
-        if (Auth::attempt(['email' => $email, 'password' => $password, 'role' => 2])) {
-             return redirect()->route('backend.home');
-        }elseif(Auth::attempt(['email' => $email, 'password' => $password, 'role' => [0,1]])){
-            return redirect()->route('frontend.home');
-        }else{
-            return $this->sendFailedLoginResponse($request);
+        if (Auth::attempt(['email' => $email, 'password' => $password])) {
+            if(Auth::user()->role == 1 || Auth::user()->role == 2){
+                return redirect()->route('backend.home');
+            }elseif(Auth::user()->role == 0){
+                return redirect()->route('frontend.home');
+            }else{
+                return $this->sendFailedLoginResponse($request);
+            }
         }
-        // if (Auth::attempt(['email' => $email, 'password' => $password])) {
-        //     if (Auth::user()->role == 2 ) {
-        //         return redirect()->route('backend.home');
-        //     }elseif (Auth::user()->role==0 || Auth::user()->role==1) {
-        //         return redirect()->route('frontend.home');
-        //     }else{
-        //         return $this->sendFailedLoginResponse($request);
-        //     }
-        // }else{
-            
-        // }
         }
     }
 

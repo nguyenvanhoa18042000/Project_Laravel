@@ -37,15 +37,15 @@ Danh sách người dùng
   <div class="card">
   </div>
   <!-- /.card-header -->
-  <div class="card-body table-responsive p-0">
+  <div class="card-body table-responsive p-0 add-border-radius">
     <table class="table table-hover">
-      <thead>
+      <thead class="add-background-thead">
         <tr>
           <th>ID</th>
           <th>Tên người dùng</th>
           <!-- <th>Ảnh đại diện</th> -->
           <th>Trạng thái</th>
-          <th>Vai trò</th>
+          <th>Quyền</th>
           <th>Thao tác</th>
         </tr>
       </thead>
@@ -66,9 +66,9 @@ Danh sách người dùng
         </td>
         <td>
           @if($user->role == 2)
-          Quản trị viên
+          Quản lý
           @elseif ($user->role == 1)
-          Nhân viên
+          Quản trị viên
           @else
           Khách hàng
           @endif

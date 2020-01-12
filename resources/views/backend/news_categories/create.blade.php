@@ -1,19 +1,21 @@
+
 @extends('backend.layouts.master')
 @section('title')
-Chỉnh sửa danh mục
+Tạo danh mục tin tức
 @endsection
 @section('content-header')
 
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1 class="m-0 text-dark">Quản lí danh mục</h1>
+                <h1 class="m-0 text-dark">Quản lí tin tức</h1>
             </div><!-- /.col -->
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item"><a href="#">Trang chủ</a></li>
-                    <li class="breadcrumb-item active">Quản lí danh mục</li>
-                    <li class="breadcrumb-item active">Cập nhật</li>
+                    <li class="breadcrumb-item active">Quản lí tin tức</li>
+                    <li class="breadcrumb-item active">Danh mục</li>
+                    <li class="breadcrumb-item active">Tạo mới</li>
                 </ol>
             </div><!-- /.col -->
         </div>
@@ -27,7 +29,7 @@ Chỉnh sửa danh mục
       <!-- Default box -->
       <div class="card">
         <div class="card-header">
-          <h3 class="card-title">Tạo mới danh mục</h3>
+          <h3 class="card-title">Tạo mới danh mục tin tức</h3>
 
           <div class="card-tools">
             <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
@@ -37,14 +39,12 @@ Chỉnh sửa danh mục
           </div>
         </div>
         <!-- form start -->
-              <form role="form" method="POST" action="{{ route('backend.category.update',$category->id) }}">
+              <form role="form" method="POST" action="{{ route('backend.news_category.store') }}">
                 {{ csrf_field() }}
-                {{ method_field('PUT') }}
-
                 <div class="card-body">
                   <div class="form-group">
                     <label for="exampleInputEmail1">Tên danh mục</label>
-                    <input type="text" class="form-control" name="name" value="{{ old('name',$category->name) }}">
+                    <input type="text" class="form-control" placeholder="Nhập danh mục tin tức" name="name" value="{{ old('name',isset($product->name) ? $product->name : '') }}">
                     @if($errors->has('name'))
                         <div class="error">{{ $errors->first('name') }}</div>
                     @endif
@@ -54,12 +54,10 @@ Chỉnh sửa danh mục
                     <label for="parent_id">Danh mục cha</label>
                     <select name="parent_id" class="form-control">
                       <option value="">--Chọn danh mục cha--</option>
-                      @if(isset($categories))
-                        @foreach($categories as $cate)
-                          @if($cate->parent_id == NULL)
-                          <option value="{{ $cate->id }}" 
-                            @if ($category->parent_id == $cate->id) selected @endif>{{ $cate->name }}
-                          </option>
+                      @if(isset($news_categories))
+                        @foreach($news_categories as $news_category)
+                          @if($news_category->parent_id == NULL)
+                            <option value="{{ $news_category->id }}">{{ $news_category->name }}</option>
                           @endif
                         @endforeach
                       @endif
@@ -70,8 +68,8 @@ Chỉnh sửa danh mục
                 </div>
 
                   <div class="form-group">
-                    <label for="exampleInputEmail1">Mô tả</label>
-                    <input type="text" class="form-control" name="description" value="{{ old('description',$category->description) }}">
+                    <label for="description">Mô tả</label>
+                    <input type="text" class="form-control" name="description" placeholder="Nhập mô tả danh mục tin tức" value="{{ old('description') }}">
                     @if($errors->has('description'))
                         <div class="error">{{ $errors->first('description') }}</div>
                     @endif
@@ -80,12 +78,11 @@ Chỉnh sửa danh mục
                 <!-- /.card-body -->
 
                   <button type="submit" class="btn btn-primary ml-4 mb-4">Lưu thông tin</button>
-                  <a href="{{ URL::previous() }}" type="button" class="btn btn-danger ml-1 mb-4" style="color: white">Hủy bỏ</a>
+                  <a href="{{ route('backend.home') }}" type="button" class="btn btn-danger ml-1 mb-4" style="color: white">Hủy bỏ</a>
               </form>
         <!-- end form -->
-
         <!-- /.card-body -->
-        <div class="card-footer">Tạo mới danh mục</div>
+        <div class="card-footer">Tạo mới danh mục tin tức</div>
           
         </div>
       </div>

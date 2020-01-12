@@ -38,6 +38,20 @@ Route::group([
     });
 
     Route::group([
+        'prefix' => 'news_category',
+        'as' => 'news_category.'
+    ],function(){
+        Route::get('index', 'NewsCategoryController@index')->name('index');
+        Route::get('create', 'NewsCategoryController@create')->name('create');
+        Route::post('store', 'NewsCategoryController@store')->name('store');
+        Route::get('edit/{id}', 'NewsCategoryController@edit')->name('edit');
+        Route::put('update/{id}','NewsCategoryController@update')->name('update');
+        Route::get('delete/{id}','NewsCategoryController@destroy')->name('destroy');
+        Route::get('edit_status/{id}','NewsCategoryController@editStatus')->name('edit_status');
+        Route::get('show_posts_by_news_category/{news_category_id}','NewsCategoryController@showPosts')->name('show_posts');
+    });
+
+    Route::group([
     	'prefix' => 'product',
     	'as' => 'product.'
     ],function(){
@@ -68,6 +82,31 @@ Route::group([
     });
 
     Route::group([
+        'prefix' => 'post',
+        'as' => 'post.'
+    ],function(){
+        Route::get('index', 'PostController@index')->name('index');
+        Route::get('create', 'PostController@create')->name('create');
+        Route::get('show/{id}', 'PostController@show')->name('show');
+        Route::post('store', 'PostController@store')->name('store');
+        Route::post('block', 'PostController@blockUser')->name('block');
+        Route::get('delete/{id}','PostController@destroy')->name('destroy');
+        Route::get('edit_status/{id}','PostController@editStatus')->name('edit_status');
+    });
+
+    Route::group([
+        'prefix' => 'image',
+        'as' => 'image.'
+    ],function(){
+        Route::get('index', 'ImageController@index')->name('index');
+        Route::get('create', 'ImageController@create')->name('create');
+        Route::get('show/{id}', 'ImageController@show')->name('show');
+        Route::post('store', 'ImageController@store')->name('store');
+        Route::get('delete/{id}','ImageController@destroy')->name('destroy');
+        Route::get('edit_status/{id}','ImageController@editStatus')->name('edit_status');
+    });
+
+    Route::group([
         'prefix' => 'order',
         'as' => 'order.'
     ],function(){
@@ -83,7 +122,3 @@ Route::group([
 });
 
 Auth::routes();
-// Route::get('/login','Auth\LoginController@showFormLogin')->name('show_form_login');
-// Route::post('/loginStore','Auth\LoginController@loginStore')->name('login_store');
-// Route::get('/logout','Auth\LoginController@logout')->name('logout');
- //Route::get('/register-store','Auth\RegisterController@register')->name('register.store');

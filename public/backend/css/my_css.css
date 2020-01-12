@@ -56,3 +56,12 @@ td > a {
     overflow:hidden;
     text-overflow:ellipsis;
 }
+
+.add-border-radius{
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+.add-background-thead{
+    color: white;
+    background-color: #6c7ae0;
+}

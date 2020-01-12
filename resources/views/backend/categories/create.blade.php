@@ -68,22 +68,16 @@ Tạo danh mục
 
                   <div class="form-group">
                     <label for="description">Mô tả</label>
-                    <input type="text" class="form-control" name="description" value="{{ old('descriptio') }}">
+                    <input type="text" class="form-control" name="description" value="{{ old('description') }}">
                     @if($errors->has('description'))
                         <div class="error">{{ $errors->first('description') }}</div>
                     @endif
                   </div>
-
-                  <!-- <div class="form-group">
-                    <div class="custom-control custom-checkbox">
-                      <input name="hot" value="1" class="custom-control-input" type="checkbox" id="customCheckbox2" checked>
-                      <label for="customCheckbox2" class="custom-control-label">Nổi bật</label>
-                    </div>
-                  </div> -->
                 </div>
                 <!-- /.card-body -->
 
                   <button type="submit" class="btn btn-primary ml-4 mb-4">Lưu thông tin</button>
+                  <a href="{{ route('backend.home') }}" type="button" class="btn btn-danger ml-1 mb-4" style="color: white">Hủy bỏ</a>
               </form>
         <!-- end form -->
         <!-- /.card-body -->

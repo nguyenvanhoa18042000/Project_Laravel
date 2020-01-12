@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\RequestCategory;
 use App\Models\Category;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
 
 class CategoryController extends Controller
 {
