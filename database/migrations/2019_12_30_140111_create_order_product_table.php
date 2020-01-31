@@ -17,6 +17,10 @@ class CreateOrderProductTable extends Migration
             $table->bigIncrements('id');
             $table->integer('order_id');
             $table->integer('product_id');
+            $table->integer('quantity')->default(0);
+            $table->integer('origin_price')->default(0);
+            $table->integer('sale_price')->default(0);
+            $table->integer('discount_percent')->default(0);
             $table->timestamps();
         });
     }

@@ -52,7 +52,7 @@ Chi tiết người dùng
       <tbody>
         <tr>
           <td width="50%">Tên người dùng</td>
-          <td width="50%">{{$user->name}}</td>
+          <td width="50%"><img style="width:50px;height: 50px; border-radius: 50%;margin-right: 1%;" src='{{asset($user->avatar)}}'>{{$user->name}}</td>
         </tr>
         <tr>
           <td>Email</td>

@@ -16,12 +16,16 @@ class User extends Authenticatable
 	protected $fillable = [
         'name', 'email', 'password','phone','address',
     ];
-	
-    public function user_info(){
-    	return $this->hasOne(Userinfo::class);
+
+    public function orders(){
+        return $this->hasMany(Order::class);
     }
 
     public function products(){
     	return $this->hasMany(Product::class);
+    }
+
+    public function posts(){
+        return $this->hasMany(Post::class);
     }
 }

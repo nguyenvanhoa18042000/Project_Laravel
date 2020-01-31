@@ -55,9 +55,27 @@ class RegisterController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
-            'phone' => 'required',
-            'address' => 'required',
-        ]);
+            'phone' => 'required||digits:10',
+            'address' => 'required|min:10',
+            ],
+            [
+                'required' => ':attribute Không được để trống',
+                'email' => ':attribute không đúng định dạng',
+                'min' => ':attribute Không được nhỏ hơn :min ký tự',
+                'max' => ':attribute Không được vượt quá :max ký tự',
+                'digits' => ':attribute phải là số có 10 chữ số',
+                'size' => ':attribute phải có 10 chữ số',
+                'unique' => ':attribute đã tồn tại',
+                'confirmed' => ':attribute nhập lại không chính xác',
+            ],
+            [
+                'name' => 'Họ và tên',
+                'email' => 'Email đăng kí',
+                'password' => 'Mật khẩu',
+                'phone' => 'Số điện thoại',
+                'address' => 'Địa chỉ',
+            ]
+        );
     }
 
     /**
@@ -79,7 +97,7 @@ class RegisterController extends Controller
 
     public function showRegistrationForm()
     {
-        return view('auth.register');
+        return view('auth.my_form_register');
     }
 
 }

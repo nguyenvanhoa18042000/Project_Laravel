@@ -18,13 +18,15 @@ class CreatePostsTable extends Migration
             $table->string('title')->nullable();
             $table->text('description')->nullable();
             $table->text('content')->nullable();
-            $table->string('avatar')->nullable();
+            $table->string('image')->nullable();
             $table->string('slug')->index();
             $table->integer('news_category_id')->index();
-            $table->tinyInteger('status')->default(1)->index();
+            $table->integer('status')->default(1)->index();
             $table->integer('user_id')->default(1);
             $table->integer('view_count')->default(0);
+            $table->integer('hot')->default(0);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

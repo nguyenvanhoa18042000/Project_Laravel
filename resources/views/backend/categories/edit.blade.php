@@ -2,6 +2,17 @@
 @section('title')
 Chỉnh sửa danh mục
 @endsection
+@section('css')
+<style>
+  .select2-container--default .select2-selection--multiple .select2-selection__choice {
+    background-color: #007bff !important;
+    border-color: #006fe6 !important;
+  }
+  .select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
+    color: white !important;
+  }
+</style>
+@endsection
 @section('content-header')
 
     <div class="container-fluid">
@@ -53,7 +64,9 @@ Chỉnh sửa danh mục
                   <div class="form-group">
                     <label for="parent_id">Danh mục cha</label>
                     <select name="parent_id" class="form-control">
-                      <option value="">--Chọn danh mục cha--</option>
+                      @if($category->parent_id == NULL)
+                        <option value="" selected>Danh mục cha</option>
+                      @endif
                       @if(isset($categories))
                         @foreach($categories as $cate)
                           @if($cate->parent_id == NULL)
@@ -67,6 +80,24 @@ Chỉnh sửa danh mục
                     @if($errors->has('parent_id'))
                         <div class="error">{{ $errors->first('parent_id') }}</div>
                     @endif
+                </div>
+
+                <div class="form-group">
+                  <label>Thương hiệu kinh doanh</label>
+                  <select class="select2" name="trademarks[]" multiple="multiple" data-placeholder="Chọn các thương hiệu sản phẩm bạn muốn bán ..." style="width: 100%;">
+                    @if(isset($trademarks))
+                      @foreach($trademarks as $trademark)
+                       
+                          <option value="{{$trademark->id}}"
+                             @foreach($trademarks_edit as $trademark_edit)
+                              @if($trademark->id == $trademark_edit->id) selected @endif
+                             @endforeach>
+                          {{$trademark->name}}
+                          </option>
+                        
+                      @endforeach
+                    @endif
+                  </select>
                 </div>
 
                   <div class="form-group">

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
@@ -46,20 +47,44 @@ class LoginController extends Controller
         return view('auth.my_form_login');
     }
 
-    public function login(Request $request)
-    {
-        if(Auth::user()==null){
-        $email = $request->get('email');
-        $password = $request->get('password');
-        if (Auth::attempt(['email' => $email, 'password' => $password])) {
-            if(Auth::user()->role == 1 || Auth::user()->role == 2){
-                return redirect()->route('backend.home');
-            }elseif(Auth::user()->role == 0){
-                return redirect()->route('frontend.home');
-            }else{
-                return $this->sendFailedLoginResponse($request);
-            }
+    public function login(Request $request){
+        $validator = Validator::make($request->all(),
+            [
+                'email' => 'bail|required|email',
+                'password' => 'bail|required|min:8',
+            ],
+            [
+                'required' => ':attribute Không được để trống',
+                'email' => ':attribute không đúng định dạng',
+                'min' => ':attribute Không được nhỏ hơn :min ký tự',
+            ],
+            [
+                'email' => 'Email',
+                'password' => 'Mật khẩu',
+            ]
+        );
+        if ($validator->fails()){
+            return back()
+                ->withErrors($validator)
+                ->withInput();
         }
+
+        if(Auth::user() == NULL){
+            $email = $request->get('email');
+            $password = $request->get('password');
+            if (Auth::attempt(['email' => $email, 'password' => $password])) {
+                if(Auth::user()->role == 1 || Auth::user()->role == 2){
+                    return redirect()->route('backend.home');
+                }elseif(Auth::user()->role == 0){
+                    return redirect()->route('frontend.home');
+                }else{
+                    return $this->sendFailedLoginResponse($request);
+                }
+            }else{
+                return back()->with('error','Email hoặc mật khẩu không chính xác');
+            }
+        }else{
+            return redirect()->route('frontend.home');
         }
     }
 

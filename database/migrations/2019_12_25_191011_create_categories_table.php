@@ -17,13 +17,13 @@ class CreateCategoriesTable extends Migration
             $table->bigIncrements('id');
             $table->string('name')->unique();
             $table->integer('parent_id')->nullable();
-            $table->tinyInteger('depth')->default(0);
+            $table->integer('depth')->default(0);
             $table->string('slug')->index();
-            $table->tinyInteger('status')->default(1)->index();
             $table->integer('total_product')->default(0);
             $table->string('description')->nullable();
-            $table->Integer('user_id')->default(1);
+            $table->integer('user_id')->default(1);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

@@ -15,6 +15,18 @@ Cập nhật sản phẩm
       minHeight: 150,
       maxHeight: 500
     });
+    $('#textarea_for_description').summernote({
+      placeholder: 'Nội dung chi tiết sản phẩm...',
+      height: 150,
+      minHeight: 50,
+      maxHeight: 200
+    });
+    $('#categories').change(function(){
+      var idCategory = $(this).val();
+      $.get("../../../admin/ajax/get_trademarks/"+idCategory,function(data){
+        $('#trademarks').html(data);
+      });
+    });
   })
 </script>
 <script>
@@ -23,19 +35,20 @@ Cập nhật sản phẩm
       var reader = new FileReader();
 
       reader.onload = function(e) {
-        $('#out_img').attr('src', e.target.result);
+        $('#out_img_edit').attr('src', e.target.result);
       }
 
       reader.readAsDataURL(input.files[0]);
     }
   }
 
-  $("#inp_img").change(function() {
+  $("#inp_img_edit").change(function() {
     readURL(this);
   });
-  //var $name = 'https://images.unsplash.com/photo-1557090495-fc9312e77b28?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=668&q=80';
+
   var upload = new FileUploadWithPreview('myupload',{
     presetFiles: [
+      // 'images/product/detail/1.1.jpg',
     ],
   });
 </script>
@@ -75,7 +88,7 @@ Cập nhật sản phẩm
           </div>
         </div>
         <!-- form start -->
-        <form role="form" method="POST" action="{{ route('backend.product.update',$product->id) }}">
+        <form role="form" method="POST" action="{{ route('backend.product.update',$product->id) }}" enctype="multipart/form-data">
           {{ csrf_field() }}
           {{ method_field('PUT') }}
           <div class="card-body">
@@ -90,17 +103,25 @@ Cập nhật sản phẩm
               </div>
 
               <div class="form-group">
+                <label for="slug">Slug</label>
+                <input type="text" placeholder="" class="form-control" name="slug" value="{{ old('name',$product->slug) }}">
+              </div>
+              @if($errors->has('slug'))
+              <div class="error">{{ $errors->first('slug') }}</div>
+              @endif
+
+              <div class="form-group">
                 <label for="category_id">Loại sản phẩm</label>
-                <select name="category_id" class="form-control">
-                  <option value="">--Chọn loại sản phẩm--</option>
-                  @if(isset($categories))
-                  @foreach($categories as $category)
-                  @if($category->status == 1)
-                  <option value="{{ $category->id }}" 
-                    @if ($product->category_id == $category->id) selected @endif>{{ $category->name }}
-                  </option>
+                <select name="category_id" id="categories" class="form-control">
+                  @if($product->category->deleted_at != NULL)
+                    <option value="{{$product->category_id}}">{{$product->category->name}}</option>
                   @endif
-                  @endforeach
+                  @if(isset($categories))
+                    @foreach($categories as $category)
+                      <option value="{{ $category->id }}" 
+                        @if ($product->category_id == $category->id) selected @endif>{{ $category->name }}
+                      </option>
+                    @endforeach
                   @endif
                 </select>
                 @if($errors->has('category_id'))
@@ -109,29 +130,27 @@ Cập nhật sản phẩm
               </div>
 
               <div class="form-group">
-                <label for="origin_price">Số lượng sản phẩm (>=0)</label>
-                <input type="number" placeholder="Số lượng sản phẩm" class="form-control" name="amount" value="{{ old('amount',$product->amount) }}">
-                @if($errors->has('amount'))
-                <div class="error">{{ $errors->first('amount') }}</div>
-                @endif
-              </div>
+                  <label for="trademark_id">Thương hiệu</label>
+                  <select name="trademark_id" id="trademarks" class="form-control">
+                    @foreach($product->category->trademarks as $trademark_of_product)
+                      <option value="{{$trademark_of_product->id}}" @if($product->trademark_id == $trademark_of_product->id) selected @endif>{{$trademark_of_product->name}}</option>
+                    @endforeach
+                  </select>
+                  @if($errors->has('trademark_id'))
+                  <div class="error">{{ $errors->first('trademark_id') }}</div>
+                  @endif
+                </div>
 
               <div style="text-align: center; margin-top: 2%">
-                <img id="out_img" src="{{ asset('images/product/main/'.$product->image) }}" style="width:59%; height: 261px;">
+                <img id="out_img_edit" src="{{ asset($product->image) }}" style="width:57%; height: 261px;">
               </div>
+
               <div class="form-group">
                 <label for="image">Ảnh sản phẩm (JPEG, JPG, PNG)</label>
-                <input id="inp_img" type="file" class="form-control" name="image" value="{{ old('image',$product->image) }}">
+                <input name="image" id="inp_img_edit" type="file" class="form-control">
                 @if($errors->has('image'))
                 <div class="error">{{ $errors->first('image') }}</div>
                 @endif
-              </div>
-
-              <div class="form-group">
-                <div class="custom-control custom-checkbox">
-                  <input name="hot" value="1" class="custom-control-input" type="checkbox" id="customCheckbox2" @if($product->hot == 1) checked  @endif>
-                  <label for="customCheckbox2" class="custom-control-label">Nổi bật</label>
-                </div>
               </div>
             </div>
 
@@ -155,6 +174,15 @@ Cập nhật sản phẩm
                 <label for="discount_percent">% Giảm giá</label>
                 <input type="number" placeholder="% Giảm giá" class="form-control" name="discount_percent" value="{{ old('discount_percent',$product->discount_percent) }}">
               </div>
+
+              <div class="form-group">
+                <label for="origin_price">Số lượng sản phẩm (>=0)</label>
+                <input type="number" placeholder="Số lượng sản phẩm" class="form-control" name="amount" value="{{ old('amount',$product->amount) }}">
+                @if($errors->has('amount'))
+                <div class="error">{{ $errors->first('amount') }}</div>
+                @endif
+              </div>
+
               <div class="form-group">
                 <div class="custom-file-container" data-upload-id="myupload">
                   <div class="custom-file-container__image-preview" style="overflow: hidden; margin: 1%;"></div>
@@ -168,10 +196,12 @@ Cập nhật sản phẩm
                 </div>
               </div>
             </div>
+          </div>
+          <div class="row">
             <div class="col-12">
               <div class="form-group">
                 <label for="description">Mô tả</label>
-                <textarea placeholder="Mô tả ngắn sản phẩm" class="form-control" placeholder="Nội dung" name="description" rows="3" cols="3">{{ old('description',$product->description) }}</textarea>
+                <textarea id="textarea_for_description" class="form-control" name="description">{!! old('description',$product->description) !!}</textarea>
                 @if($errors->has('description'))
                 <div class="error">{{ $errors->first('description') }}</div>
                 @endif
@@ -184,12 +214,19 @@ Cập nhật sản phẩm
                 <div class="error">{{ $errors->first('content') }}</div>
                 @endif
               </div>
+
+              <div class="form-group">
+                  <div class="custom-control custom-checkbox">
+                    <input name="hot" value="1" @if($product->hot == 1) checked @endif class="custom-control-input" type="checkbox" id="customCheckbox2">
+                    <label for="customCheckbox2" class="custom-control-label">Sản phẩm nổi bật</label>
+                  </div>
+                </div>
             </div>
           </div>
+          <button type="submit" class="btn btn-primary mb-2">Lưu thông tin</button>
+          <a href="{{ URL::previous() }}" type="button" class="btn btn-danger ml-1 mb-2" style="color: white">Hủy bỏ</a>
+        </div>
           <!-- /.card-body -->
-
-          <button type="submit" class="btn btn-primary mb-4">Lưu thông tin</button>
-          <a href="{{ URL::previous() }}" type="button" class="btn btn-danger ml-1 mb-4" style="color: white">Hủy bỏ</a>
         </form>
         <!-- end form -->
 

@@ -21,15 +21,18 @@ class CreateProductsTable extends Migration
             $table->string('image')->nullable();
             $table->string('slug')->index();
             $table->integer('category_id')->index();
+            $table->integer('trademark_id')->default(0);
             $table->integer('user_id')->default(1);
             $table->integer('origin_price')->default(0);
             $table->integer('price')->default(0);
             $table->integer('amount')->default(0);
             $table->integer('amount_sold')->default(0);
-            $table->tinyInteger('discount_percent')->default(0);
-            $table->tinyInteger('status')->default(1)->index();
-            $table->tinyInteger('hot')->default(0);
+            $table->integer('discount_percent')->default(0);
+            $table->integer('hot')->default(1);
+            $table->integer('total_rating')->default(0)->comment('Tổng số đánh giá');
+            $table->integer('total_number_star')->default(0)->comment('Tổng số điểm đánh giá');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

@@ -17,7 +17,7 @@
 					<input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
 					@error('email')
                         <span class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
+                            <strong style="font-size: 15px;font-style: italic;color: red;">{{ $message }}</strong>
                         </span>
                     @enderror
 
@@ -26,9 +26,14 @@
 
                     @error('password')
                         <span class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
+                            <strong style="font-size: 15px;font-style: italic;color: red;">{{ $message }}</strong>
                         </span>
                     @enderror
+                    @if ($message = Session::get('error'))
+                    	<span class="invalid-feedback" role="alert">
+                            <strong style="font-size: 15px;font-style: italic;color: red;">{{ $message }}</strong>
+                        </span>
+                    @endif
 					<input type="submit" name="" value="Sign In">
 					<a href="#">Forget Password</a>
 				</form>

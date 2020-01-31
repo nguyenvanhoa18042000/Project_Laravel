@@ -1,0 +1,184 @@
+.list_text{
+    display: inline-block;
+    margin-left: 10px;
+    position: relative;
+    color: #fff;
+    background: #52b858;
+    padding: 2px 8px;
+    box-sizing: border-box;
+    font-size: 12px;
+    border-radius: 2px;
+    display: none;
+}
+.list_text:after{
+    right: 100%;
+    top: 50%;
+    border: solid transparent;
+    content: " ";
+    height: 0;width: 0;
+    position: absolute;
+    pointer-events: none;
+    border-color: rgba(82,184,88,0);
+    border-right-color:#52b858;
+    border-width: 6px;
+    margin-top: -6px;
+}
+.list_star .rating_active {
+    color: #ff9705;
+}
+.hide{display: none;}
+.show{display: block;}
+.qtv{
+    background: #f1c40f;
+    border-radius: 2px;
+    padding: 0 5px;
+    line-height: normal;
+    border: 1px solid #f1c40f;
+    font-size: 11px;
+    color: #333;
+    font-weight: normal;
+    display: inline-block;
+    margin: 5px 0 0 10px;
+}
+#move_to_rating:hover{
+    color: #fed700 !important;
+}
+.area_articleFull{
+    max-width: 100% !important;
+}
+.menunew{
+    clear: both;
+    flex-flow: row wrap;
+    flex: 1 100%;
+}
+.manunew a {
+    display: inline-block;
+    width: 12.32%;
+    border: 1px solid #eee;
+    height: 40px;
+    line-height: 40px;
+    vertical-align: middle;
+    text-align: center;
+    margin-left: -1px;
+    margin-bottom: -1px;
+    transition: all ease 300ms;
+    color: #288ad6;
+    text-decoration: none;
+}
+.manunew a img {
+    display: inline-block;
+    max-height: 25px;
+    vertical-align: middle;
+}
+.clr{
+    clear: both;
+}
+.choosedfilter {
+    display: block;
+    overflow: hidden;
+    background: #fff;
+    margin: 10px 0;
+}
+.choosedfilter a {
+    display: inline-block;
+    vertical-align: text-bottom;
+    padding: 6px;
+    background: #288ad6;
+    font-size: 12px;
+    color: #fff;
+    border-radius: 4px;
+    margin-right: 5px;
+}
+.choosedfilter a h2 {
+    display: inline;
+    color: #fff;
+    font-size: 12px;
+}
+.watching {
+    float: right;
+    white-space: nowrap;
+    line-height: 30px;
+}
+.watching h1 {
+    font: 14px/18px Helvetica,Arial,'DejaVu Sans','Liberation Sans',Freesans,sans-serif;
+    color: #333;
+    outline: none;
+    zoom: 1;
+    display: inline;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+.filter {
+    list-style: none;
+    display: block;
+    height: 40px;
+    width: 100%;
+    border-bottom: 1px solid #eee;
+    padding: 5px 0;
+    margin: 5px 0;
+}
+.filter li {
+    display: inline-block;
+    height: 40px;
+    width: auto;
+    vertical-align: top;
+    font-size: 14px;
+    position: relative;
+    white-space: nowrap;
+}
+.filter li a {
+    color: #288ad6;
+    display: inline-block;
+    vertical-align: top;
+    padding-right: 10px;
+    line-height: 40px;
+}
+.filter li.title a {
+    color: #333;
+}
+.filter li.barpage{
+    display: inline-block;
+    overflow: hidden;
+    vertical-align: top;
+    line-height: 40px;
+}
+.filter li label {
+    display: block;
+    padding: 5px 0 6px;
+    cursor: pointer;
+    position: relative;
+}
+.filter li.barpage label{
+    display: inline-block;
+    color: #288ad6;
+    margin-right: 10px;
+    cursor: pointer;
+}
+.filter li.barpage a{
+    display: inline;
+    line-height: normal;
+    padding-left: 0;
+    vertical-align: top;
+    line-height: 18px;
+}
+.icontgdd-checkbox {
+    background-position: -145px -30px;
+    width: 16px;
+    height: 16px;
+    vertical-align: sub;
+    margin-right: 3px;
+}
+.filter li.barpage i{
+    margin-right: 5px;
+}
+.filter li label span.n {
+    position: absolute;
+    right: 0;
+    top: 0;
+    color: #fff;
+    background-color: #f00;
+    font-size: 10px;
+    border-radius: 3px;
+    padding: 0 3px;
+    line-height: 1.3;
+}

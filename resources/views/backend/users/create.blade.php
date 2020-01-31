@@ -6,7 +6,23 @@ Tạo mới người dùng
 
 @endsection
 @section('script')
+<script>
+function readURL(input) {
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
 
+        reader.onload = function(e) {
+            $('#out_img').attr('src', e.target.result);
+        }
+
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+
+$("#inp_img").change(function() {
+    readURL(this);
+});
+</script>
 @endsection
 @section('content-header')
 <div class="content-header">
@@ -41,7 +57,7 @@ Tạo mới người dùng
                     </div>
                     <!-- /.card-header -->
                     <!-- form start -->
-                    <form role="form" action="{{ route('backend.user.store') }}" method="POST">
+                    <form role="form" action="{{ route('backend.user.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="card-body">
                             <div class="form-group">
@@ -58,6 +74,18 @@ Tạo mới người dùng
                                     <div class="error">{{ $errors->first('email') }}</div>
                                 @endif
                             </div>
+
+                            <div style="text-align: center; margin-top: 2%">
+                                    <img id="out_img" src="{{asset('storage/images/user_avatar/default-avatar.jpg')}}" style="width:250px; height: 250px; border-radius: 50%;">
+                                </div>
+                            <div class="form-group">
+                                <label for="avatar">Ảnh đại diện (jpeg, jpg, png)</label>
+                                <input id="inp_img" type="file" class="form-control" name="avatar">
+                                @if($errors->has('avatar'))
+                                <div class="error">{{ $errors->first('avatar') }}</div>
+                                @endif
+                            </div>
+
                             <div class="row form-group">
                                 <div class="col-6">
                                     <label for="exampleInputEmail1">Mật khẩu</label>
@@ -87,7 +115,7 @@ Tạo mới người dùng
                             </div>
                             <div class="form-group">
                                 <label>Quyền</label>
-                                <select class="form-control select2" style="width: 100%;" name="role">
+                                <select class="form-control" style="width: 100%;" name="role">
                                     <option value="2">Quản lý</option>
                                     <option value="1" selected>Quản trị viên</option>
                                     <option value="0">Khách hàng</option>

@@ -33,8 +33,10 @@ Route::group([
     	Route::get('edit/{id}', 'CategoryController@edit')->name('edit');
     	Route::put('update/{id}','CategoryController@update')->name('update');
     	Route::get('delete/{id}','CategoryController@destroy')->name('destroy');
-    	Route::get('edit_status/{id}','CategoryController@editStatus')->name('edit_status');
+        Route::get('forcedelete/{id}','CategoryController@forceDelete')->name('forcedelete');
+        Route::get('restore/{id}','CategoryController@restore')->name('restore');
         Route::get('show_products_by_category/{category_id}','CategoryController@showProducts')->name('show_products');
+        
     });
 
     Route::group([
@@ -59,11 +61,13 @@ Route::group([
     	Route::get('create', 'ProductController@create')->name('create');
         Route::get('show', 'ProductController@show')->name('show');
     	Route::post('store', 'ProductController@store')->name('store');
-    	Route::get('edit/{id}', 'ProductController@edit')->name('edit');
+        Route::get('edit/{id}', 'ProductController@edit')->name('edit');
     	Route::put('update/{id}','ProductController@update')->name('update');
     	Route::get('delete/{id}','ProductController@destroy')->name('destroy');
-    	Route::get('edit_status/{id}','ProductController@editStatus')->name('edit_status');
+        Route::get('forcedelete/{id}','ProductController@forceDelete')->name('forcedelete');
+        Route::get('restore/{id}','ProductController@restore')->name('restore');
         Route::get('show_images_by_product/{id}','ProductController@showImages')->name('show_images');
+        Route::get('change_hot/{id}','ProductController@changeHot')->name('change_hot');
     });
 
     Route::group([
@@ -76,9 +80,24 @@ Route::group([
         Route::post('store', 'UserController@store')->name('store');
         Route::post('block', 'UserController@blockUser')->name('block');
         Route::get('delete/{id}','UserController@destroy')->name('destroy');
+        Route::get('forcedelete/{id}','UserController@forceDelete')->name('forcedelete');
         Route::get('edit_status/{id}','UserController@editStatus')->name('edit_status');
         Route::get('open_or_block/{id}','UserController@openOrBlock')->name('open_or_block');
         Route::get('show_products_by_user_id/{id}','UserController@showProducts')->name('show_products');
+    });
+
+    Route::group([
+        'prefix' => 'trademark',
+        'as' => 'trademark.'
+    ],function(){
+        Route::get('index', 'TrademarkController@index')->name('index');
+        Route::get('create', 'TrademarkController@create')->name('create');
+        Route::post('store', 'TrademarkController@store')->name('store');
+        Route::get('edit/{id}', 'TrademarkController@edit')->name('edit');
+        // Route::put('update/{id}','TrademarkController@update')->name('update');
+        Route::get('delete/{id}','TrademarkController@destroy')->name('destroy');
+        // Route::get('edit_status/{id}','TrademarkController@editStatus')->name('edit_status');
+        // Route::get('show_posts_by_news_category/{news_category_id}','NewsCategoryController@showPosts')->name('show_posts');
     });
 
     Route::group([
@@ -88,8 +107,9 @@ Route::group([
         Route::get('index', 'PostController@index')->name('index');
         Route::get('create', 'PostController@create')->name('create');
         Route::get('show/{id}', 'PostController@show')->name('show');
+        Route::get('edit/{id}', 'PostController@edit')->name('edit');
+        Route::put('update/{id}', 'PostController@update')->name('update');
         Route::post('store', 'PostController@store')->name('store');
-        Route::post('block', 'PostController@blockUser')->name('block');
         Route::get('delete/{id}','PostController@destroy')->name('destroy');
         Route::get('edit_status/{id}','PostController@editStatus')->name('edit_status');
     });
@@ -110,7 +130,19 @@ Route::group([
         'prefix' => 'order',
         'as' => 'order.'
     ],function(){
+        Route::get('index', 'OrderController@index')->name('index');
+        Route::get('create', 'OrderController@create')->name('create');
+        Route::get('show/{id}', 'OrderController@show')->name('show');
+        Route::post('store', 'OrderController@store')->name('store');
+        Route::get('edit/{id}', 'OrderController@edit')->name('edit');
+        Route::put('update/{id}', 'OrderController@update')->name('update');
         Route::get('show_products_by_order_id/{order_id}', 'OrderController@showProducts')->name('show_products');
+    });
+
+    Route::group([
+        'prefix' => 'ajax'
+    ],function(){
+        Route::get('get_trademarks/{id}', 'TrademarkController@getTrademarks')->name('trademark.get');
     });
 });
 
@@ -119,6 +151,19 @@ Route::group([
     'as' => 'frontend.'
 ], function (){
     Route::get('/home', 'HomeController@index')->name('home');
+    Route::get('/home/detail_product/{id}', 'HomeController@detailProduct')->name('detail_product');
+    Route::get('/home/detail_category/{id}', 'HomeController@detailCategory')->name('detail_category');
+    Route::get('/home/detail_category/{idCategory}/trademark/{idTrademark}','HomeController@detailCategoryByTrademark')->name('detail_category_by_trademark');
+    Route::get('/home/detail_category/{idCategory}/price/{minPrice}/{maxPrice}','HomeController@detailCategoryByPrice')->name('detail_category_by_price');
+    Route::get('/home/detail_category/{idCategory}/trademark/{idTrademark}/price/{minPrice}/{maxPrice}','HomeController@detailCategoryByTrademarkAndPrice')->name('detail_category_by_trademark_and_price');
+});
+
+Route::group([
+'namespace' => 'Backend',
+'prefix' => 'ajax'
+// 'middleware' => 'CheckLoginUser'
+], function(){
+    Route::post('/rating_product/{id}', 'RatingController@store')->name('rating.store');
 });
 
 Auth::routes();

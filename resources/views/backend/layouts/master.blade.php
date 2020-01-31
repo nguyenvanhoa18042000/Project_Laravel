@@ -5,6 +5,7 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>@yield('title')</title>
+	<meta name="csrf_token" content="{{ csrf_token() }}">
 	<link rel="stylesheet" href="/backend/plugins/bootstrap/css/bootstrap.min.css">
 	<!-- Font Awesome -->
 	<link rel="stylesheet" href="/backend/plugins/fontawesome-free/css/all.min.css">
@@ -26,6 +27,9 @@
 	<link rel="stylesheet" href="/backend/plugins/summernote/summernote-bs4.css">
 	<!-- Google Font: Source Sans Pro -->
 	<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+
+	<link rel="stylesheet" href="/backend/plugins/select2/css/select2.min.css">
+	<link rel="stylesheet" href="/backend/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
 	<link rel="stylesheet" type="text/css" href="/backend/css/my_css.css">
 	@yield('css')
 </head>
@@ -57,6 +61,13 @@
 	<!-- ./wrapper -->
 	
 	<!-- jQuery -->
+	<script>
+		$.ajaxSetup({
+		  headers: {
+		    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+		  }
+		});
+	</script>
 	<script src="/backend/plugins/jquery/jquery.min.js"></script>
 	<script src="/backend/plugins/bootstrap/js/bootstrap.min.js"></script>
 	<!-- jQuery UI 1.11.4 -->
@@ -67,6 +78,8 @@
 	</script>
 	<!-- Bootstrap 4 -->
 	<script src="/backend/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+	<script src="/backend/plugins/select2/js/select2.full.min.js"></script>
 
 	<!-- ChartJS -->
 	<script src="/backend/plugins/chart.js/Chart.min.js"></script>
@@ -93,11 +106,13 @@
 	<!-- AdminLTE for demo purposes -->
 	<script src="/backend/dist/js/demo.js"></script>
 	<script type="text/javascript">
-		// $(function() {                       
-		//   $(".add-click").click(function() {  
-		//     $(this).parent().classList.add("open-menu");
-		//   });
-		// });
+		$(function() {                 
+			$('.select2').select2()
+			
+			$('.select2bs4').select2({
+		      theme: 'bootstrap4'
+		    })
+		});
 	</script>
 	@yield('script')
 </body>

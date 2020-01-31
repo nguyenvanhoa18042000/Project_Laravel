@@ -2,6 +2,11 @@
 @section('title')
 Danh sách sản phẩm
 @endsection
+@section('css')
+<style>
+  .rating .active{color: #ff9705;}
+</style>
+@endsection
 @section('script')
 <script>
 $(document).ready(function(){
@@ -58,23 +63,47 @@ $(document).ready(function(){
                   <thead class="add-background-thead">
                     <tr>
                       <th>ID</th>
-                      <th>Tên sản phẩm</th>
-                      <th>Loại sản phẩm</th>                     
-                      <th>Giá</th>
                       <th>Hình ảnh</th>
-                      <th>Số lượng</th>
-                      <th>Trạng thái</th>
-                      <!-- <th>Nổi bật</th> -->
+                      <th>Tên sản phẩm</th>
+                      <th>Danh mục</th>                     
+                      <th>Giá</th>   
+                      <th>Nổi bật</th>            
+                      <th>Số lượng</th>                     
                       <th>Thao tác</th>
                     </tr>
                   </thead>
                   <tbody>
                     @if(isset($products))
                         @foreach($products as $product)
+                          <?php
+                            $star = 0;
+                            if ($product->total_rating) {
+                              $star = round($product->total_number_star / $product->total_rating,1);
+                            }
+                          ?>
                              <tr>
                               <td>{{ $product->id }}</td>
+
+                              <td>
+                                <img src="{{asset($product->image)}}" style="width: 80px; height: 80px;">
+                              </td>
+
                               <td>
                                 {{ $product->name }}
+                                <ul style="padding-left: 10%;">
+                                  <li>
+                                    <span class="rating">
+                                      @for($i=1;$i<=5;$i++)
+                                        <i class="fas fa-star {{ $i <= $star ? 'active' : '' }}"></i>
+                                      @endfor
+                                    </span>
+                                    <span> {{$star}}</span>
+                                  </li>
+                                  <li>
+                                    <span>{{$product->total_rating}} đánh giá</span>
+                                  </li>
+                                </ul>
+                              </td>
                               </td>
 
                               <td>{{ isset($product->category->name) ? $product->category->name :'' }}
@@ -89,7 +118,19 @@ $(document).ready(function(){
                               </td>
 
                               <td>
-                                <img src="{{asset('storage/images/product/main/'.$product->image)}}" style="width: 100px; height: 100px;">
+                                @if($product->hot == 1)
+                                  @can('changeHot',$product)
+                                    <a href="{{ route('backend.product.change_hot',$product->id) }}" class="btn btn-success btn-sm" data-toggle="tooltip" title="Tắt nổi bật">Nổi bật</a>
+                                  @elsecan('notChangeHot',$product)
+                                    <a href="javascript:void(0)" style="cursor: default;" class="btn btn-success btn-sm" data-toggle="tooltip">Nổi bật</a>
+                                  @endcan
+                                @else
+                                  @can('changeHot',$product)
+                                  <a href="{{ route('backend.product.change_hot',$product->id) }}" class="btn btn-secondary btn-sm" data-toggle="tooltip" title="Bật nổi bật">Không</a>
+                                  @elsecan('notChangeHot',$product)
+                                  <a href="javascript:void(0)" style="cursor: default;" class="btn btn-secondary btn-sm" data-toggle="tooltip">Không</a>
+                                  @endcan
+                                @endif
                               </td>
 
                               <td>
@@ -100,16 +141,24 @@ $(document).ready(function(){
                               </td>
 
                               <td>
-                                <a 
-                                @if($product->status == 1) data-toggle="tooltip" title="Ẩn" 
-                                @else data-toggle="tooltip" title="Hiển thị" 
-                                @endif 
-                                class="btn btn-sm btn_status btn-primary" href="{{ route('backend.product.edit_status',$product->id) }}">{!! $product->getStatus($product->status)['name'] !!}</a>  
-                              </td>
-                              <td>
-                                <a href="{{ route('backend.product.edit',$product->id) }}" class="btn btn_edit btn-sm " data-toggle="tooltip" title="Chỉnh sửa"><i class="fas fa-edit"></i></a>
+                                <a target="_blank" href="{{ route('frontend.detail_product',$product->id) }}" class="btn btn-primary btn-sm " data-toggle="tooltip" title="Xem chi tiết" style="margin-right: 1%"><i class="fa fa-eye" aria-hidden="true"></i></a>
 
-                                <a href="{{ route('backend.product.destroy',$product->id) }}" class="btn btn_delete btn-sm" data-toggle="tooltip" title="Xóa"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                                @can('update',$product)
+                                 <a href="{{ route('backend.product.edit',$product->id) }}" class="btn btn_edit btn-sm " data-toggle="tooltip" title="Chỉnh sửa" style="margin-right: 1%"><i class="fas fa-edit"></i></a>
+                                @endcan
+                                
+                                @if($product->deleted_at == NULL)
+                                  @can('delete',$product)
+                                  <a href="{{ route('backend.product.destroy',$product->id) }}" class="btn btn_delete btn-sm" data-toggle="tooltip" title="Đưa vào thùng rác"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                                  @endcan
+                                @else
+                                  @can('restore',$product)
+                                  <a href="{{ route('backend.product.restore',$product->id) }}" class="btn btn-success btn-sm" data-toggle="tooltip" title="Khôi phục"style="margin-right: 1%"><i class="fa fa-undo" aria-hidden="true" ></i></a>
+                                  @endcan
+                                  @can('forceDelete',$product)
+                                  <a href="{{ route('backend.product.forcedelete',$product->id) }}" class="btn btn_delete btn-sm" data-toggle="tooltip" title="Xóa"><i class="fa fa-times" aria-hidden="true"></i></a>
+                                  @endcan
+                                @endif
                               </td>
                             </tr>
                         @endforeach

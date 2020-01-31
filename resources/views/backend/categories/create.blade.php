@@ -3,6 +3,17 @@
 @section('title')
 Tạo danh mục
 @endsection
+@section('css')
+<style>
+  .select2-container--default .select2-selection--multiple .select2-selection__choice {
+    background-color: #007bff !important;
+    border-color: #006fe6 !important;
+  }
+  .select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
+    color: white !important;
+  }
+</style>
+@endsection
 @section('content-header')
 
     <div class="container-fluid">
@@ -43,7 +54,7 @@ Tạo danh mục
                 <div class="card-body">
                   <div class="form-group">
                     <label for="exampleInputEmail1">Tên danh mục</label>
-                    <input type="text" class="form-control" name="name" value="{{ old('name',isset($product->name) ? $product->name : '') }}">
+                    <input type="text" class="form-control" name="name" value="{{ old('name',isset($product->name) ? $product->name : '') }}" placeholder="Tên danh mục ...">
                     @if($errors->has('name'))
                         <div class="error">{{ $errors->first('name') }}</div>
                     @endif
@@ -66,9 +77,20 @@ Tạo danh mục
                     @endif
                 </div>
 
+                <div class="form-group">
+                  <label>Thương hiệu kinh doanh</label>
+                  <select class="select2" name="trademarks[]" multiple="multiple" data-placeholder="Chọn các thương hiệu sản phẩm bạn muốn bán ..." style="width: 100%;">
+                    @if(isset($trademarks))
+                      @foreach($trademarks as $trademark)
+                        <option value="{{$trademark->id}}">{{$trademark->name}}</option>
+                      @endforeach
+                    @endif
+                  </select>
+                </div>
+
                   <div class="form-group">
                     <label for="description">Mô tả</label>
-                    <input type="text" class="form-control" name="description" value="{{ old('description') }}">
+                    <input type="text" class="form-control" name="description" value="{{ old('description') }}" placeholder="Mô tả danh mục ...">
                     @if($errors->has('description'))
                         <div class="error">{{ $errors->first('description') }}</div>
                     @endif

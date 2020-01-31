@@ -1,4 +1,3 @@
-
 @extends('frontend.layouts.master')
 @section('title')
 Trang chủ
@@ -11,7 +10,7 @@ Trang chủ
 <!-- Begin Slider With Category Menu Area -->
 <div class="slider-with-banner">
     <div class="container">
-        <div class="row">
+        <div class="row" style="margin-top: 1%;">
             <!-- Begin Category Menu Area -->
             <div class="col-lg-3">
                 <!--Category Menu Start-->

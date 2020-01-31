@@ -19,10 +19,18 @@
                             <!-- Begin Setting Area -->
                             @if(Auth::user())
                             <li>
-                                <div class="ht-setting-trigger" style="font-size: 15px;"><span>{{Auth::user()->name}}</span></div>
+                                <div class="ht-setting-trigger" style="font-size: 15px;">
+                                    <div style="width: 100px;">
+                                        <img src="{{asset(Auth::user()->avatar)}}" style="width: 30px;height: 30px;border-radius: 50%;margin-right: 6%"><span>{{Auth::user()->name}}</span>
+                                    </div>
+                                </div>
                                 <div class="setting ht-setting">
                                     <ul class="ht-setting-list">
+                                        @if(Auth::user()->role == 2 || Auth::user()->role == 1)
+                                        <li><a href="{{route('backend.home')}}" style="color: black">Trang hệ thống</a></li>
+                                        @else
                                         <li><a href="" style="color: black">Trang cá nhân</a></li>
+                                        @endif
                                         <li>
                                             <a href="{{ route('logout') }}" style="color: black"
                                                onclick="event.preventDefault();
@@ -41,10 +49,10 @@
                             <li>
                                 <div class="" style="font-size: 15px;"><a href="{{route('login')}}">Đăng nhập</a></div>
                             </li>
-                            @endif
                             <li>
                                 <div class="" style="font-size: 15px;"><a  href="{{route('register')}}">Đăng ký</a></div>
                             </li>
+                            @endif
                         </ul>
                     </div>
                 </div>
@@ -61,7 +69,7 @@
                 <div class="col-lg-3">
                     <div class="logo pb-sm-30 pb-xs-30">
                         <a href="index.html">
-                            <img src="frontend/images/menu/logo/1.jpg" alt="">
+                            <img src="{{asset('frontend/images/menu/logo/1.jpg')}}" alt="">
                         </a>
                     </div>
                 </div>
@@ -170,7 +178,7 @@
                                     <ul class="minicart-product-list">
                                         <li>
                                             <a href="single-product.html" class="minicart-product-image">
-                                                <img src="frontend/images/product/small-size/3.jpg" alt="cart products">
+                                                <img src="{{asset('frontend/images/product/small-size/3.jpg')}}" alt="cart products">
                                             </a>
                                             <div class="minicart-product-details">
                                                 <h6><a href="single-product.html">Aenean eu tristique</a></h6>
@@ -182,7 +190,7 @@
                                         </li>
                                         <li>
                                             <a href="single-product.html" class="minicart-product-image">
-                                                <img src="frontend/images/product/small-size/4.jpg" alt="cart products">
+                                                <img src="{{asset('frontend/images/product/small-size/4.jpg')}}" alt="cart products">
                                             </a>
                                             <div class="minicart-product-details">
                                                 <h6><a href="single-product.html">Aenean eu tristique</a></h6>
@@ -215,7 +223,7 @@
     </div>
     <!-- Header Middle Area End Here -->
     <!-- Begin Header Bottom Area -->
-    <div class="header-bottom header-sticky d-none d-lg-block">
+    <div class="header-bottom header-sticky d-none d-lg-block" style="margin-bottom: 0">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
@@ -341,9 +349,9 @@
                                 <li><a href="about-us.html">About Us</a></li>
                                 <li><a href="contact.html">Contact</a></li>
                                 <!-- Begin Header Bottom Menu Information Area -->
-                                <li class="hb-info f-right p-0 d-sm-none d-lg-block">
+                                <!-- <li class="hb-info f-right p-0 d-sm-none d-lg-block">
                                     <span>6688 London, Greater London BAS 23JK, UK</span>
-                                </li>
+                                </li> -->
                                 <!-- Header Bottom Menu Information Area End Here -->
                             </ul>
                         </nav>

@@ -15,6 +15,19 @@ Tạo sản phẩm
 			minHeight: 150,
 			maxHeight: 500
 		});
+		$('#textarea_for_description').summernote({
+			placeholder: 'Mô tả chi tiết sản phẩm...',
+			height: 150,
+			minHeight: 50,
+			maxHeight: 200
+		});
+
+		$('#categories').change(function(){
+			var idCategory = $(this).val();
+			$.get("../../admin/ajax/get_trademarks/"+idCategory,function(data){
+				$('#trademarks').html(data);
+			});
+		});
 	})
 </script>
 <script>
@@ -95,8 +108,16 @@ Tạo sản phẩm
 								</div>
 
 								<div class="form-group">
+									<label for="name">Slug</label>
+									<input type="text" placeholder="Slug sản phẩm" class="form-control" name="slug" value="{{ old('slug') }}">
+									@if($errors->has('slug'))
+									<div class="error">{{ $errors->first('slug') }}</div>
+									@endif
+								</div>
+
+								<div class="form-group">
 									<label for="category_id">Loại sản phẩm</label>
-									<select name="category_id" class="form-control">
+									<select name="category_id" id="categories" class="form-control">
 										<option value="">--Chọn loại sản phẩm--</option>
 										@if(isset($categories))
 										@foreach($categories as $category)
@@ -112,15 +133,17 @@ Tạo sản phẩm
 								</div>
 
 								<div class="form-group">
-									<label for="origin_price">Số lượng sản phẩm (>=0)</label>
-									<input type="number" placeholder="Số lượng sản phẩm" class="form-control" name="amount" value="{{ old('amount') }}">
-									@if($errors->has('amount'))
-									<div class="error">{{ $errors->first('amount') }}</div>
+									<label for="trademark_id">Thương hiệu</label>
+									<select name="trademark_id" id="trademarks" class="form-control">
+										<option value="">--Chọn thương hiệu--</option>
+									</select>
+									@if($errors->has('trademark_id'))
+									<div class="error">{{ $errors->first('trademark_id') }}</div>
 									@endif
 								</div>
 
 								<div style="text-align: center; margin-top: 2%">
-									<img id="out_img" src="{{ asset('images/product/default.png') }}" style="width:59%; height: 261px;">
+									<img id="out_img" src="{{ asset('storage/images/product/default.png') }}" style="width:59%; height: 261px;">
 								</div>
 								<div class="form-group">
 									<label for="image">Ảnh sản phẩm (JPEG, JPG, PNG)</label>
@@ -128,13 +151,6 @@ Tạo sản phẩm
 									@if($errors->has('image'))
 									<div class="error">{{ $errors->first('image') }}</div>
 									@endif
-								</div>
-	
-								<div class="form-group">
-									<div class="custom-control custom-checkbox">
-										<input name="hot" value="1" class="custom-control-input" type="checkbox" id="customCheckbox2">
-										<label for="customCheckbox2" class="custom-control-label">Nổi bật</label>
-									</div>
 								</div>
 							</div>
 
@@ -159,6 +175,15 @@ Tạo sản phẩm
 									<input type="number" placeholder="% Giảm giá" class="form-control" name="discount_percent" value="0">
 								</div>
 
+
+								<div class="form-group">
+									<label for="origin_price">Số lượng sản phẩm (>=0)</label>
+									<input type="number" placeholder="Số lượng sản phẩm" class="form-control" name="amount" value="{{ old('amount') }}">
+									@if($errors->has('amount'))
+									<div class="error">{{ $errors->first('amount') }}</div>
+									@endif
+								</div>
+
 								<div class="form-group">
 									<div class="custom-file-container" data-upload-id="myupload">
 										<div class="custom-file-container__image-preview" style="overflow: hidden; margin: 1%;"></div>
@@ -174,12 +199,13 @@ Tạo sản phẩm
 										@endif
 									</div>
 								</div>
+
 							</div>
 															
 							<div class="col-12">
 								<div class="form-group" style="margin-top: 1%;">
 									<label for="description">Mô tả</label>
-									<textarea placeholder="Mô tả ngắn sản phẩm" class="form-control" placeholder="Nội dung" name="description" rows="3" cols="3">{{ old('description') }}</textarea>
+									<textarea id="textarea_for_description" class="form-control" name="description"></textarea>
 									@if($errors->has('description'))
 									<div class="error">{{ $errors->first('description') }}</div>
 									@endif
@@ -192,6 +218,14 @@ Tạo sản phẩm
 									<div class="error">{{ $errors->first('content') }}</div>
 									@endif
 								</div>
+
+								<div class="form-group">
+									<div class="custom-control custom-checkbox">
+										<input name="hot" value="1" class="custom-control-input" type="checkbox" id="customCheckbox2">
+										<label for="customCheckbox2" class="custom-control-label">Sản phẩm nổi bật</label>
+									</div>
+								</div>
+
 							</div>
 
 						</div> 

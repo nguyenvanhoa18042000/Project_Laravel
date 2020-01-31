@@ -53,7 +53,7 @@ Tạo danh mục tin tức
                   <div class="form-group">
                     <label for="parent_id">Danh mục cha</label>
                     <select name="parent_id" class="form-control">
-                      <option value="">--Chọn danh mục cha--</option>
+                      <option value="">Danh mục cha</option>
                       @if(isset($news_categories))
                         @foreach($news_categories as $news_category)
                           @if($news_category->parent_id == NULL)

@@ -12,10 +12,10 @@
             <!-- Sidebar user panel (optional) -->
             <div class="user-panel mt-3 pb-3 mb-3 d-flex">
                 <div class="image">
-                    <img src="/backend/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+                    <img style="width: 40px; height: 40px; border-radius: 50%; margin-right: 1%;" src="{{asset(Auth::user()->avatar)}}"> 
                 </div>
                 <div class="info">
-                    <a href="#" class="d-block">Nguyễn Văn Hòa</a>
+                    <a href="#" class="d-block">{{Auth::user()->name}}</a>
                 </div>
             </div>
 
@@ -33,32 +33,6 @@
                                 Trang chủ
                             </p>
                         </a>
-
-                    </li>
-                    <li class="nav-item has-treeview">
-                        <a href="#" class="nav-link">
-                            <i class="nav-icon fas fa-shopping-basket"></i>
-                            <p>
-                                Quản lý sản phẩm
-                                <i class="fas fa-angle-left right"></i>
-                                <!-- <span class="badge badge-info right">6</span> -->
-                            </p>
-                        </a>
-                        <ul class="nav nav-treeview">
-                            <li class="nav-item">
-                                <a href="{{ route('backend.product.create') }}" class="nav-link" style="margin-left: 11%">
-                                    <i class="nav-icon fas fa-plus"></i>
-                                    <p>Tạo mới</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="{{ route('backend.product.index') }}" class="nav-link" style="margin-left: 11%">
-                                    <i class="nav-icon fa fa-list-alt" aria-hidden="true"></i>
-                                    <p>Danh sách</p>
-                                </a>
-                            </li>
-
-                        </ul>
                     </li>
                     <li class="nav-item has-treeview">
                         <a href="#" class="nav-link">
@@ -83,7 +57,91 @@
                             </li>
                         </ul>
                     </li>
-                    @if(Auth::user()->role == 2)
+                    <li class="nav-item has-treeview">
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon fab fa-product-hunt"></i>
+                            <!-- <i class="nav-icon fas fa-shopping-basket"></i> -->
+                            <p>
+                                Quản lý sản phẩm
+                                <i class="fas fa-angle-left right"></i>
+                                <!-- <span class="badge badge-info right">6</span> -->
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="{{ route('backend.product.create') }}" class="nav-link" style="margin-left: 11%">
+                                    <i class="nav-icon fas fa-plus"></i>
+                                    <p>Tạo mới</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('backend.product.index') }}" class="nav-link" style="margin-left: 11%">
+                                    <i class="nav-icon fa fa-list-alt" aria-hidden="true"></i>
+                                    <p>Danh sách</p>
+                                </a>
+                            </li>
+
+                        </ul>
+                    </li>
+                    <li class="nav-item has-treeview">
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon fa fa-trademark" aria-hidden="true"></i>
+                            <p>
+                                Quản lý thương hiệu
+                                <i class="fas fa-angle-left right"></i>
+                                <!-- <span class="badge badge-info right">6</span> -->
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="{{ route('backend.trademark.create') }}" class="nav-link" style="margin-left: 11%">
+                                    <i class="nav-icon fas fa-plus"></i>
+                                    <p>Tạo mới</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('backend.trademark.index') }}" class="nav-link" style="margin-left: 11%">
+                                    <i class="nav-icon fa fa-list-alt" aria-hidden="true"></i>
+                                    <p>Danh sách</p>
+                                </a>
+                            </li>
+
+                        </ul>
+                    </li>
+                    <li class="nav-item has-treeview">
+                        <a href="{{route('backend.home')}}" class="nav-link add-click">
+                            <i class="fa fa-star nav-icon" aria-hidden="true"></i>
+                            <p>
+                                Quản lí đánh giá
+                            </p>
+                        </a>
+                    </li>
+                    <li class="nav-item has-treeview">
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon fa fa-shopping-cart" aria-hidden="true"></i>
+                            <p>
+                                Quản lý đơn hàng
+                                <i class="fas fa-angle-left right"></i>
+                                <!-- <span class="badge badge-info right">6</span> -->
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="{{ route('backend.order.create') }}" class="nav-link" style="margin-left: 11%">
+                                    <i class="nav-icon fas fa-plus"></i>
+                                    <p>Tạo mới</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('backend.order.index') }}" class="nav-link" style="margin-left: 11%">
+                                    <i class="nav-icon fa fa-list-alt" aria-hidden="true"></i>
+                                    <p>Danh sách</p>
+                                </a>
+                            </li>
+
+                        </ul>
+                    </li>
+                    @if(Auth::user()->role > 0)
                     <li class="nav-item has-treeview">
                         <a href="#" class="nav-link">
                             <i class="nav-icon fas fa-user"></i>
@@ -93,12 +151,14 @@
                             </p>
                         </a>
                         <ul class="nav nav-treeview">
+                            @if(Auth::user()->role == 2)
                             <li class="nav-item">
                                 <a href="{{ route('backend.user.create') }}" class="nav-link" style="margin-left: 11%">
                                     <i class="nav-icon fas fa-plus"></i>
                                     <p>Tạo mới</p>
                                 </a>
                             </li>
+                            @endif
                             <li class="nav-item">
                                 <a href="{{ route('backend.user.index') }}" class="nav-link" style="margin-left: 11%">
                                     <i class="nav-icon fa fa-list-alt" aria-hidden="true"></i>
@@ -108,6 +168,7 @@
                         </ul>
                     </li>
                     @endif
+
                     <li class="nav-item has-treeview">
                         <a href="#" class="nav-link">
                             <i class="nav-icon fas fa-newspaper"></i>

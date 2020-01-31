@@ -41,8 +41,8 @@ $(document).ready(function(){
                     <tr>
                       <th>ID</th>
                       <th>Tên danh mục</th>
+                      <th>Danh mục cha</th>
                       <th>Mô tả</th>
-                      <th>Trạng thái</th>
                       <th>Thao tác</th>
                     </tr>
                   </thead>
@@ -52,20 +52,39 @@ $(document).ready(function(){
 		                    <tr>
 		                      <td>{{ $category->id }}</td>
 		                      <td>{{ $category->name }}</td>
+                          <td>
+                            @if($category->parent_id == NULL)
+                              Danh mục cha
+                            @else
+                              @foreach($categories as $cate)
+                                @if($category->parent_id == $cate->id)
+                                  {{$cate->name}}
+                                @else
+                                @continue
+                                @endif
+                              @endforeach
+                            @endif
+                          </td>
 		                      <td>{{ $category->description }}</td>
 		                      <td>
-		                      	@if($category->status==1)
-		                      		<a href="{{ route('backend.category.edit_status',$category->id) }}" class="btn btn_status btn-sm" data-toggle="tooltip" title="Ẩn"><i class="fa fa-globe"></i></a>
-		                      	@else 
-		                      		<a href="{{ route('backend.category.edit_status',$category->id) }}" class="btn btn_status btn-sm" data-toggle="tooltip" title="Hiển thị"><i class="fa fa-lock" aria-hidden="true"></i></a>
-		                      	@endif
-		                  	  </td>
-		                      <td>
-                            <a href="{{ route('backend.category.show_products',$category->id) }}" class="btn btn-success btn-sm " data-toggle="tooltip" title="Bài viết của danh mục" style="margin-right: 5%"><i class="fas fa-list"></i></a>
-
-		                      	<a href="{{ route('backend.category.edit',$category->id) }}" class="btn btn_edit btn-sm " data-toggle="tooltip" title="Chỉnh sửa"><i class="fas fa-edit"></i></a>
-
-		                      	<a href="{{ route('backend.category.destroy',$category->id) }}" class="btn btn_delete btn-sm" data-toggle="tooltip" title="Xóa"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                            <a href="{{ route('backend.category.show_products',$category->id) }}" class="btn btn-success btn-sm " data-toggle="tooltip" title="Sản phẩm của danh mục" style="margin-right: 1%"><i class="fas fa-list"></i></a>
+                            
+                            @can('update',$category)
+		                      	<a href="{{ route('backend.category.edit',$category->id) }}" class="btn btn_edit btn-sm " data-toggle="tooltip" title="Chỉnh sửa" style="margin-right: 1%"><i class="fas fa-edit"></i></a>
+                            @endcan
+                            
+                            @if($category->deleted_at == NULL)
+                              @can('delete',$category)
+                              <a href="{{ route('backend.category.destroy',$category->id) }}" class="btn btn_delete btn-sm" data-toggle="tooltip" title="Đưa vào thùng rác"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                              @endcan
+                            @else
+                              @can('restore',$category)
+                              <a href="{{ route('backend.category.restore',$category->id) }}" class="btn btn-success btn-sm" data-toggle="tooltip" title="Khôi phục"style="margin-right: 1%"><i class="fa fa-undo" aria-hidden="true" ></i></a>
+                              @endcan
+                              @can('forceDelete',$category)
+                              <a href="{{ route('backend.category.forcedelete',$category->id) }}" class="btn btn_delete btn-sm" data-toggle="tooltip" title="Xóa"><i class="fa fa-times" aria-hidden="true"></i></a>
+                              @endcan
+                            @endif
 		                      </td>
 		                  	</tr>
 		                @endforeach
