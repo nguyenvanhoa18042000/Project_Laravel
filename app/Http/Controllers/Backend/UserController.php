@@ -7,12 +7,14 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Requests\RequestUser;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Session;
 
 
 class UserController extends Controller
 {
     public function index(){
-        $this->authorize('isQtvOrAdmin', User::class);
+        $this->authorize('check', User::class);
     	$users = User::withTrashed()->orderBy('role','DESC')->paginate(5);
     	return view('backend.users.index')->with([
     		'users' => $users
@@ -25,7 +27,7 @@ class UserController extends Controller
     }
 
     public function show(Request $request,$id){
-        $this->authorize('isQtvOrAdmin', User::class);
+        $this->authorize('check', User::class);
         $user = User::withTrashed()->where('id',$id)->first();
         return view('backend.users.detail')->with([
             'user' => $user
@@ -51,43 +53,77 @@ class UserController extends Controller
         $user->address = $requestUser->get('address');
         $user->phone = $requestUser->get('phone');
         $user->role = $requestUser->get('role');
-        $user->save();
+        if($user->save()){
+            Session::flash('message', 'Thêm mới thành công');
+            Session::flash('alert-type', 'success');
+        }else{
+            Session::flash('message', 'Thêm mới thất bại');
+            Session::flash('alert-type', 'error');
+        }
         return redirect()->route('backend.user.index');
     }
 
     public function forceDelete($id){
+        
+        $user = User::onlyTrashed()->findOrFail($id);
         $this->authorize('isAdmin', User::class);
-        $user = User::onlyTrashed()->where('id',$id)->get();
-        $user->forceDelete();
+        if ($user->avatar != 'storage/images/user_avatar/default-avatar.jpg') {
+            File::delete($user->avatar);
+        }
+        if($user->forceDelete()){
+            Session::flash('message', 'Xóa thành công');
+            Session::flash('alert-type', 'success');
+        }else{
+            Session::flash('message', 'Xóa thất bại');
+            Session::flash('alert-type', 'error');
+        }
         return redirect()->back();
     }
 
     public function editStatus($id){
         $this->authorize('isAdmin', User::class);
-    	$user = User::withTrashed()->where('id',$id)->first();
+    	$user = User::withTrashed()->findOrFail($id);
     	if ($user->status == 1) {
     		$user->status = 0;
     	}else{
     		$user->status = 1;
     	}
-    	$user->update();
-    	return redirect()->route('backend.user.index');
+    	if($user->update()){
+            Session::flash('message', 'Thay đổi hoạt động thành công');
+            Session::flash('alert-type', 'success');
+        }else{
+            Session::flash('message', 'Thay đổi hoạt động thất bại');
+            Session::flash('alert-type', 'error');
+        }
+        return redirect()->route('backend.user.index');
     }
 
     public function openOrBlock($id){
+    	$user = User::withTrashed()->findOrFail($id);
         $this->authorize('isAdmin', User::class);
-    	$user = User::withTrashed()->where('id',$id)->first();
     	if ($user->trashed()) {
-    		$user->restore();
+    		if($user->restore()){
+                Session::flash('message', 'Mở khóa tài khoản thành công');
+                Session::flash('alert-type', 'success');
+            }else{
+                Session::flash('message', 'Mở khóa tài khoản thất bại');
+                Session::flash('alert-type', 'error');
+            }
     	}else{
-    		$user->delete();
+    		if($user->delete()){
+                Session::flash('message', 'Khóa tài khoản thành công');
+                Session::flash('alert-type', 'success');
+            }else{
+                Session::flash('message', 'Khóa tài khoản thất bại');
+                Session::flash('alert-type', 'error');
+            }
     	}
     	$user->save();
     	return redirect()->route('backend.user.index');
     }
 
     public function showProducts(Request $request,$id){
-        $this->authorize('isQtvOrAdmin', User::class);
+        $this->authorize('check', User::class);
         $products = User::withTrashed()->where('id',$id)->first()->products()->orderBy('updated_at','DESC')->paginate(4);
         $categories=Category::all();
         if($request->name) $products->where('name','like','%'.$request->name.'%');

@@ -6,7 +6,7 @@ use App\Models\Product;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class ProductPolicy
+class ProductImagePolicy
 {
     use HandlesAuthorization;
 
@@ -18,7 +18,7 @@ class ProductPolicy
      */
     public function viewAny(User $user)
     {
-        return $user->role > 0;
+        //
     }
 
     /**
@@ -30,7 +30,7 @@ class ProductPolicy
      */
     public function view(User $user, Product $product)
     {
-        return $user->role > 0;
+        //
     }
 
     /**
@@ -39,9 +39,9 @@ class ProductPolicy
      * @param  \App\Models\User  $user
      * @return mixed
      */
-    public function create(User $user)
+    public function create(User $user, Product $product)
     {
-        return $user->role > 0 && $user->status == 1;
+        return ($user->role == 2 && $user->status == 1) || ($user->id == $product->user_id && $user->status == 1);
     }
 
     /**
@@ -53,7 +53,7 @@ class ProductPolicy
      */
     public function update(User $user, Product $product)
     {
-        return ($user->role == 2 && $user->status == 1) || ($user->id == $product->user_id && $user->status == 1) ;
+        //
     }
 
     /**
@@ -65,7 +65,7 @@ class ProductPolicy
      */
     public function delete(User $user, Product $product)
     {
-        return $user->role == 2 && $user->status == 1;
+        //
     }
 
     /**
@@ -77,7 +77,7 @@ class ProductPolicy
      */
     public function restore(User $user, Product $product)
     {
-        return $user->role == 2 && $user->status == 1;
+        //
     }
 
     /**
@@ -89,19 +89,6 @@ class ProductPolicy
      */
     public function forceDelete(User $user, Product $product)
     {
-        return $user->role == 2 && $user->status == 1;
+        return ($user->role == 2 && $user->status == 1) || ($user->id == $product->user_id && $user->status == 1);
     }
-
-    public function changeHot(User $user, Product $product){
-        return ($user->role == 2 && $user->status == 1) || ($user->id == $product->user_id && $user->status == 1) ;
-    }
-
-    public function notChangeHot(User $user, Product $product){
-        return $user->role != 2 || $user->id != $product->user_id ;
-    }
-
-    public function actionProductImageDescription(User $user, Product $product){
-        return ($user->role == 2 && $user->status == 1) || ($user->id == $product->user_id && $user->status == 1) ;
-    }
-
 }

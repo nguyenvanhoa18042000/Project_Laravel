@@ -217,7 +217,7 @@ Cập nhật sản phẩm
 
               <div class="form-group">
                   <div class="custom-control custom-checkbox">
-                    <input name="hot" value="1" @if($product->hot == 1) checked @endif class="custom-control-input" type="checkbox" id="customCheckbox2">
+                    <input name="hot" @if($product->hot == 1) checked @endif class="custom-control-input" type="checkbox" id="customCheckbox2">
                     <label for="customCheckbox2" class="custom-control-label">Sản phẩm nổi bật</label>
                   </div>
                 </div>

@@ -86,15 +86,26 @@ Chỉnh sửa danh mục
                   <label>Thương hiệu kinh doanh</label>
                   <select class="select2" name="trademarks[]" multiple="multiple" data-placeholder="Chọn các thương hiệu sản phẩm bạn muốn bán ..." style="width: 100%;">
                     @if(isset($trademarks))
-                      @foreach($trademarks as $trademark)
-                       
-                          <option value="{{$trademark->id}}"
-                             @foreach($trademarks_edit as $trademark_edit)
-                              @if($trademark->id == $trademark_edit->id) selected @endif
-                             @endforeach>
-                          {{$trademark->name}}
+                      @foreach($trademarks_edit as $trademark_edit_v1)
+                        @if($trademark_edit_v1->deleted_at != NULL)
+                          <option value="{{$trademark_edit_v1->id}}"
+                          @foreach($trademarks_edit as $trademark_edit_v2)
+                            @if($trademark_edit_v1->id == $trademark_edit_v2->id) selected @endif
+                          @endforeach
+                          >
+                          {{$trademark_edit_v1->name}}
                           </option>
-                        
+                        @endif
+                      @endforeach
+
+                      @foreach($trademarks as $trademark)                     
+                          <option value="{{$trademark->id}}"
+                            @foreach($trademarks_edit as $trademark_edit)
+                              @if($trademark->id == $trademark_edit->id) selected @endif
+                            @endforeach
+                          >
+                          {{$trademark->name}}
+                          </option>  
                       @endforeach
                     @endif
                   </select>

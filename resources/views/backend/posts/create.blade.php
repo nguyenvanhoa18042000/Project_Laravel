@@ -142,7 +142,7 @@ Tạo mới bài viết
 
 								<div class="form-group">
 									<div class="custom-control custom-checkbox">
-										<input name="hot" value="1" class="custom-control-input" type="checkbox" id="customCheckbox2">
+										<input name="hot" checked class="custom-control-input" type="checkbox" id="customCheckbox2">
 										<label for="customCheckbox2" class="custom-control-label">Bài viết nổi bật</label>
 									</div>
 								</div>

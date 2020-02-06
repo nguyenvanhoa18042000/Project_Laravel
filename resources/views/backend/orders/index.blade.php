@@ -17,6 +17,7 @@ Danh sách đơn hàng
 
       $.ajax({
         url:url,
+        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
       }).done(function(result){
         console.log(result);
       });

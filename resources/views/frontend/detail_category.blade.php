@@ -214,7 +214,7 @@ Trang chủ
 											<!-- single-product-wrap start -->
 											<div class="single-product-wrap">
 												<div class="product-image">
-													<a href="single-product.html">
+													<a href="{{route('frontend.detail_product',$product->id)}}">
 														<img src="{{asset($product->image)}}" alt="Li's Product Image">
 													</a>
 													<span class="sticker">New</span>

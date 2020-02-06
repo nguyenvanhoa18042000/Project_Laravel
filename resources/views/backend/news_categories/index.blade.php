@@ -8,6 +8,25 @@ $(document).ready(function(){
   $('[data-toggle="tooltip"]').tooltip();
 });
 </script>
+
+<script>
+@if(Session::has('message'))
+toastr.options = {
+  "closeButton": true,
+  "progressBar": true,
+  "timeOut": "3000",
+}
+var type="{{Session::get('alert-type')}}"
+switch(type){
+  case 'success':
+    toastr.success("{{ Session::get('message') }}");
+    break;
+  case 'error':
+    toastr.error("{{ Session::get('message') }}");
+    break;
+}
+@endif
+</script>
 @endsection
 @section('content-header')
 
@@ -42,8 +61,8 @@ $(document).ready(function(){
                     <tr>
                       <th>ID</th>
                       <th>Tên danh mục</th>
+                      <th>Danh mục chứa</th>
                       <th>Mô tả</th>
-                      <th>Trạng thái</th>
                       <th>Thao tác</th>
                     </tr>
                   </thead>
@@ -53,20 +72,37 @@ $(document).ready(function(){
 		                    <tr>
 		                      <td>{{ $news_category->id }}</td>
 		                      <td>{{ $news_category->name }}</td>
+                          <td>
+                            @if($news_category->parent_id == NULL)
+                              Danh mục cha
+                            @else
+                              @foreach($news_categories as $news_cate)
+                                @if($news_category->parent_id == $news_cate->id)
+                                  {{$news_cate->name}}
+                                @else
+                                  @continue
+                                @endif
+                              @endforeach
+                            @endif
+                          </td>
 		                      <td>{{ $news_category->description }}</td>
 		                      <td>
-		                      	@if($news_category->status==1)
-		                      		<a href="{{ route('backend.news_category.edit_status',$news_category->id) }}" class="btn btn_status btn-sm" data-toggle="tooltip" title="Ẩn"><i class="fa fa-globe"></i></a>
-		                      	@else 
-		                      		<a href="{{ route('backend.news_category.edit_status',$news_category->id) }}" class="btn btn_status btn-sm" data-toggle="tooltip" title="Hiển thị"><i class="fa fa-lock" aria-hidden="true"></i></a>
-		                      	@endif
-		                  	  </td>
-		                      <td>
-                            <a href="{{ route('backend.news_category.show_posts',$news_category->id) }}" class="btn btn-success btn-sm " data-toggle="tooltip" title="Bài viết của danh mục" style="margin-right: 5%"><i class="fas fa-list"></i></a>
+                            <a href="{{ route('backend.news_category.show_posts',$news_category->id) }}" class="btn btn-success btn-sm " data-toggle="tooltip" title="Bài viết của danh mục" style="margin-right: 4%"><i class="fas fa-list"></i></a>
 
 		                      	<a href="{{ route('backend.news_category.edit',$news_category->id) }}" class="btn btn_edit btn-sm " data-toggle="tooltip" title="Chỉnh sửa"><i class="fas fa-edit"></i></a>
 
-		                      	<a href="{{ route('backend.news_category.destroy',$news_category->id) }}" class="btn btn_delete btn-sm" data-toggle="tooltip" title="Xóa"><i class="fa fa-trash" aria-hidden="true"></i></a>
+		                      	@if($news_category->deleted_at == NULL)
+                              @can('delete',$news_category)
+                              <a href="{{ route('backend.news_category.destroy',$news_category->id) }}" class="btn btn_delete btn-sm" data-toggle="tooltip" title="Đưa vào thùng rác"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                              @endcan
+                            @else
+                              @can('restore',$news_category)
+                              <a href="{{ route('backend.news_category.restore',$news_category->id) }}" class="btn btn-success btn-sm" data-toggle="tooltip" title="Khôi phục"style="margin:0 4% 0% 0"><i class="fa fa-undo" aria-hidden="true" ></i></a>
+                              @endcan
+                              @can('forceDelete',$news_category)
+                              <a href="{{ route('backend.news_category.forcedelete',$news_category->id) }}" class="btn btn_delete btn-sm" data-toggle="tooltip" title="Xóa"><i class="fa fa-times" aria-hidden="true"></i></a>
+                              @endcan
+                            @endif
 		                      </td>
 		                  	</tr>
 		                @endforeach

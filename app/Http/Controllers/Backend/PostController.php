@@ -11,10 +11,11 @@ use App\Models\NewsCategory;
 use App\Models\Post;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Session;
 
 class PostController extends Controller{
 	public function index(){
-		$posts = post::with('news_category:id,name');
+		$posts = post::with('news_category:id,name')->withTrashed();
 		$posts = $posts->orderBy('updated_at','DESC')->paginate(4);
 		$news_categories = NewsCategory::all();
 		return view('backend.posts.index')->with([
@@ -52,11 +53,11 @@ class PostController extends Controller{
 		$post->image = 'storage/images/post/'.$name_image;
 
 		$post->save();
-    	return redirect()->route('backend.posts.index');
+    	return redirect()->route('backend.post.index');
     }
 
 	public function edit($id){
-		$post = Post::findOrFail($id);
+		$post = Post::withTrashed()->findOrFail($id);
 		$news_categories = NewsCategory::all();
 		return view('backend.posts.edit')->with([
 			'post' => $post,
@@ -65,7 +66,7 @@ class PostController extends Controller{
 	}    
 
 	public function update(RequestPost $requestPost,$id){
-		$post = Post::findOrFail($id);
+		$post = Post::withTrashed()->findOrFail($id);
 
 		$post->title = $requestPost->get('title');
 		$post->description = $requestPost->get('description');
@@ -89,20 +90,21 @@ class PostController extends Controller{
 	}
 
 	public function destroy($id){
-		$post = Product::findOrFail($id);
-		Storage::disk('public')->delete('images/post/'.$name_image);
+		$post = Post::findOrFail($id);
 		$post->delete();
 		return redirect()->route('backend.post.index');
 	}
 
-	public function editStatus($id){
-    	$post = Post::find($id);
-    	if($post->status==1){
-    		$post->status = 0;
-    	}else{
-    		$post->status = 1;
-    	}
-    	$post->save();
-    	return redirect()->back();
-    }
+	public function forceDelete($id){
+		$post = Post::onlyTrashed()->findOrFail($id);
+		File::delete($post->image);
+		$post->forceDelete();
+		return redirect()->route('backend.post.index');
+	}
+
+	public function restore($id){
+		$post = Post::onlyTrashed()->findOrFail($id);
+		$post->restore();
+		return redirect()->route('backend.post.index');
+	}
 }

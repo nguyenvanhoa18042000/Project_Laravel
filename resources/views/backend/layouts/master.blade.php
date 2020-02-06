@@ -30,6 +30,7 @@
 
 	<link rel="stylesheet" href="/backend/plugins/select2/css/select2.min.css">
 	<link rel="stylesheet" href="/backend/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
+	<link rel="stylesheet" type="text/css" href="/backend/plugins/toastr/toastr.min.css">
 	<link rel="stylesheet" type="text/css" href="/backend/css/my_css.css">
 	@yield('css')
 </head>
@@ -103,6 +104,7 @@
 	<script src="/backend/dist/js/adminlte.js"></script>
 	<!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 	<script src="/backend/dist/js/pages/dashboard.js"></script>
+	<script type="text/javascript" src="/backend/plugins/toastr/toastr.min.js"></script>
 	<!-- AdminLTE for demo purposes -->
 	<script src="/backend/dist/js/demo.js"></script>
 	<script type="text/javascript">

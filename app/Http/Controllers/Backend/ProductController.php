@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Backend;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Requests\RequestProduct;
+use App\Http\Requests\RequestProductImage;
 use App\Models\Product;
 use App\Models\Order;
 use App\Models\Category;
@@ -14,6 +15,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Session;
 
 class ProductController extends Controller
 {
@@ -69,7 +71,7 @@ class ProductController extends Controller
 			Storage::disk('public')->putFileAs('images/product/main', $requestProduct->file('image'), $name_image);
 			$product->image = 'storage/images/product/main/'.$name_image;
 
-			$product->save();
+			$save = $product->save();
 			$product_id = $product->id;
 
 			if ($requestProduct->hasFile('images')){
@@ -88,6 +90,13 @@ class ProductController extends Controller
 					}
 				}
 			}
+	    	if($save){
+	    		Session::flash('message', 'Thêm mới thành công');
+	    		Session::flash('alert-type', 'success');
+			}else{
+				Session::flash('message', 'Thêm mới thất bại');
+	    		Session::flash('alert-type', 'error');
+	    	}
 	    	return redirect()->route('backend.product.index');
 	    }else{abort(403);}
 	}
@@ -131,7 +140,7 @@ class ProductController extends Controller
 				$product->image = 'storage/images/product/main/'.$name_image;
 			}
 
-			$product->update();
+			$update = $product->update();
 			$product_id = $product->id;
 
 			if ($requestProduct->hasFile('images')){
@@ -150,6 +159,13 @@ class ProductController extends Controller
 					}
 				}
 			}
+			if($update){
+	    		Session::flash('message', 'Chỉnh sửa thành công');
+	    		Session::flash('alert-type', 'success');
+			}else{
+				Session::flash('message', 'Chỉnh sửa thất bại');
+	    		Session::flash('alert-type', 'error');
+	    	}
 	    	return redirect()->route('backend.product.index');
 	    }else{abort(403);}
 	}
@@ -158,9 +174,14 @@ class ProductController extends Controller
 		$product = Product::withTrashed()->findOrFail($id);
 
 		if(Auth::user()->can('delete',$product)){
-			$product_images = ProductImage::where('product_id',$product->id)->get();
-			$product->delete();
-			return redirect()->route('backend.product.index');
+			if($product->delete()){
+	    		Session::flash('message', 'Đưa vào thùng rác thành công');
+	    		Session::flash('alert-type', 'success');
+			}else{
+				Session::flash('message', 'Đưa vào thùng rác thất bại');
+	    		Session::flash('alert-type', 'error');
+	    	}
+	    	return redirect()->route('backend.product.index');
 		}else{abort(403);}
 	}
 
@@ -174,10 +195,17 @@ class ProductController extends Controller
 			foreach ($product_images as $product_image) {
 				File::delete($product_image->path);
 			}
-	        $product->product_images()->forceDelete();
+			$product->product_images()->forceDelete();
 	        $product->ratings()->forceDelete();
-	        $product->forceDelete();
-			return redirect()->route('backend.product.index');
+
+			if($product->forceDelete()){
+	    		Session::flash('message', 'Xóa thành công');
+	    		Session::flash('alert-type', 'success');
+			}else{
+				Session::flash('message', 'Xóa thất bại');
+	    		Session::flash('alert-type', 'error');
+	    	}
+	    	return redirect()->route('backend.product.index');
 		}else{abort(403);}
 	}
 
@@ -185,8 +213,14 @@ class ProductController extends Controller
 		$product = Product::onlyTrashed()->findOrFail($id);
 
 		if(Auth::user()->can('restore',$product)){
-			$product->restore();
-			return redirect()->route('backend.product.index');
+			if($product->restore()){
+	    		Session::flash('message', 'Khôi phục thành công');
+	    		Session::flash('alert-type', 'success');
+			}else{
+				Session::flash('message', 'Khôi phục thất bại');
+	    		Session::flash('alert-type', 'error');
+	    	}
+	    	return redirect()->route('backend.product.index');
 		}else{abort(403);}
 	}
 
@@ -194,23 +228,82 @@ class ProductController extends Controller
 		$product = Product::withTrashed()->findOrFail($id);
 
 		if(Auth::user()->can('changeHot',$product)){
-	    	if($product->hot == 1){
-	    		$product->hot = 0;
-	    	}else{
-	    		$product->hot = 1;
+	    	$product->hot = !$product->hot;
+	    	if($product->update()){
+	    		Session::flash('message', 'Thay đổi nổi bật thành công');
+	    		Session::flash('alert-type', 'success');
+			}else{
+				Session::flash('message', 'Thay đổi nổi bật thất bại');
+	    		Session::flash('alert-type', 'error');
 	    	}
-	    	$product->update();
 	    	return redirect()->back();
 	    }else{abort(403);}
 	}
 
-	public function showImages($id){
-		$product = Product::find($id);
-		$images = $product->images;
-		return view('backend.products.show_image')->with([
-			'images' => $images,
-			'product' => $product
+	public function getImageDescription($id){
+		$this->authorize('viewAny',Product::class);
+		$product = Product::withTrashed()->findOrFail($id);
+		$product_images = $product->product_images()->paginate(5);
+		return view('backend.product_images.index')->with([
+			'product_images' => $product_images,
+			'product' => $product,
 		]);
+	}
+
+	public function addImageDescription($idProduct){
+		$product = Product::withTrashed()->findOrFail($idProduct);
+		$this->authorize('actionProductImageDescription',$product);
+		return view('backend.product_images.create')->with(['idProduct' => $idProduct]);
+	}
+
+	public function storeImageDescription(RequestProductImage $requestProductImage){
+		$product_image = new ProductImage();
+		$idProduct = $requestProductImage->get('idProduct');
+		$product = Product::withTrashed()->findOrFail($idProduct);
+		$this->authorize('actionProductImageDescription',$product);
+
+		if ($requestProductImage->hasFile('paths')){
+			$paths = $requestProductImage->file('paths');
+			foreach ($paths as $path) {
+				$product_image = new ProductImage();
+				if (isset($path)) {
+					$name_product_image = date('YmdHis')."_".$path->getClientOriginalName();
+					$product_image->name = $name_product_image;
+					$product_image->path = 'storage/images/product/detail/'.$name_product_image;
+
+					$product_image->product_id = $idProduct;
+
+					Storage::disk('public')->putFileAs('images/product/detail', $path, $name_product_image);
+					$product_image->save();
+					if(!$product_image->save()){
+						Session::flash('errorSave','error');
+					}
+				}
+			}
+		}
+
+		if(!Session::has('errorSave')){
+    		Session::flash('message', 'Thêm ảnh mô tả thành công');
+    		Session::flash('alert-type', 'success');
+		}else{
+			Session::flash('message', 'Thêm ảnh mô tả thất bại');
+    		Session::flash('alert-type', 'error');
+    	}
+    	return redirect()->route('backend.product.get.image.description',$idProduct);
+	}
+
+	public function forceDeleteImageDescription($idProductImage){
+		$product_image = ProductImage::findOrFail($idProductImage);
+		File::delete($product_image->path);
+
+		if($product_image->delete()){
+    		Session::flash('message', 'Xóa ảnh mô tả thành công');
+    		Session::flash('alert-type', 'success');
+		}else{
+			Session::flash('message', 'Xóa ảnh mô tả thất bại');
+    		Session::flash('alert-type', 'error');
+    	}
+		return redirect()->back();
 	}
 }
 ?>

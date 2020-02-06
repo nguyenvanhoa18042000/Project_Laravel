@@ -18,7 +18,7 @@ class PostPolicy
      */
     public function viewAny(User $user)
     {
-        //
+        return $user->role > 0;
     }
 
     /**
@@ -41,10 +41,7 @@ class PostPolicy
      */
     public function create(User $user)
     {
-        if ($user->role === 2) {
-            return true;
-        }
-        return false;
+        return $user->role > 0 && $user->status == 1;
     }
 
     /**
@@ -56,7 +53,7 @@ class PostPolicy
      */
     public function update(User $user, Post $post)
     {
-        return $user->role == 2 || $user->id == $post->user_id;
+        return ($user->role == 2 && $user->status == 1) || ($user->id == $post->user_id && $user->status == 1);
     }
 
     /**
@@ -68,7 +65,7 @@ class PostPolicy
      */
     public function delete(User $user, Post $post)
     {
-        //
+        return ($user->role == 2 && $user->status == 1);
     }
 
     /**
@@ -80,7 +77,7 @@ class PostPolicy
      */
     public function restore(User $user, Post $post)
     {
-        //
+        return ($user->role == 2 && $user->status == 1);
     }
 
     /**
@@ -92,6 +89,6 @@ class PostPolicy
      */
     public function forceDelete(User $user, Post $post)
     {
-        //
+        return ($user->role == 2 && $user->status == 1);
     }
 }

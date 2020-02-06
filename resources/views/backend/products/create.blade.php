@@ -188,7 +188,7 @@ Tạo sản phẩm
 									<div class="custom-file-container" data-upload-id="myupload">
 										<div class="custom-file-container__image-preview" style="overflow: hidden; margin: 1%;"></div>
 
-										<label>Ảnh chi tiết sản phẩm (JPEG, JPG, PNG) <a href="javascript:void(0)" class="custom-file-container__image-clear">&times;</a></label>
+										<label>Ảnh mô tả sản phẩm (jpeg, jpg, png) <a href="javascript:void(0)" class="custom-file-container__image-clear">&times;</a></label>
 										<label class="custom-file-container__custom-file">
 											<input type="file" name="images[]" class="custom-file-container__custom-file__custom-file-input" accept="image/*" multiple aria-label="Mutiple Select Files">
 											<input type="hidden" name="MAX_FILE_SIZE" value="10485760" >
@@ -221,7 +221,7 @@ Tạo sản phẩm
 
 								<div class="form-group">
 									<div class="custom-control custom-checkbox">
-										<input name="hot" value="1" class="custom-control-input" type="checkbox" id="customCheckbox2">
+										<input name="hot" checked class="custom-control-input" type="checkbox" id="customCheckbox2">
 										<label for="customCheckbox2" class="custom-control-label">Sản phẩm nổi bật</label>
 									</div>
 								</div>

@@ -12,14 +12,14 @@ class Rating extends Model
     use SoftDeletes;
     protected $table = 'ratings';
     protected $dates = ['deleted_at','created_at','updated_at'];
-	protected $with = ['user'];
+	// protected $with = ['user'];
 	 //luôn muốn user theo comment nào đó
 
     public function product(){
-    	return $this->belongsTo(Product::class,'product_id','id');
+    	return $this->belongsTo(Product::class);
     }
 
     public function user(){
-        return $this->belongsTo(User::class,'user_id','id')->withTrashed();
+        return $this->belongsTo(User::class)->withTrashed();
     }
 }

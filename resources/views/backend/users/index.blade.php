@@ -10,6 +10,25 @@ Danh sách người dùng
     $('[data-toggle="tooltip"]').tooltip();
   });
 </script>
+
+<script>
+@if(Session::has('message'))
+toastr.options = {
+  "closeButton": true,
+  "progressBar": true,
+  "timeOut": "3000",
+}
+var type="{{Session::get('alert-type')}}"
+switch(type){
+  case 'success':
+    toastr.success("{{ Session::get('message') }}");
+    break;
+  case 'error':
+    toastr.error("{{ Session::get('message') }}");
+    break;
+}
+@endif
+</script>
 @endsection
 @section('content-header')
 
@@ -88,9 +107,9 @@ Danh sách người dùng
          <a href="{{ route('backend.user.show',$user->id) }}" class="btn btn-primary btn-sm js_user_item" data-toggle="tooltip" data-id="{{$user->id}}" title="Xem chi tiết" style="margin-right: 5%"><i class="fas fa-eye"></i></a>
         @endcan
 
-        @if($user->role > 0)
+        @can('viewAny',App\Models\User::class)
          <a href="{{ route('backend.user.show_products',$user->id) }}" class="btn btn-success btn-sm " data-toggle="tooltip" title="Các sản phẩm đã đăng" style="margin-right: 5%"><i class="fas fa-list"></i></a>
-        @endif
+        @endcan
 
 
         @can('isAdmin',App\Models\User::class)

@@ -109,7 +109,7 @@
                         </ul>
                     </li>
                     <li class="nav-item has-treeview">
-                        <a href="{{route('backend.home')}}" class="nav-link add-click">
+                        <a href="{{route('backend.rating.index')}}" class="nav-link add-click">
                             <i class="fa fa-star nav-icon" aria-hidden="true"></i>
                             <p>
                                 Quản lí đánh giá

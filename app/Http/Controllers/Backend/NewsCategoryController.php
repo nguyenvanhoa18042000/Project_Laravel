@@ -8,11 +8,12 @@ use App\Http\Requests\RequestNewsCategory;
 use App\Models\NewsCategory;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Session;
 
 class NewsCategoryController extends Controller{
 
 	public function index(){
-		$news_categories = NewsCategory::orderBy('updated_at','DESC')->select('id','name','description','status')->paginate(7);
+		$news_categories = NewsCategory::withTrashed()->orderBy('updated_at','DESC')->select('id','name','parent_id','description','deleted_at')->paginate(7);
     	return view('backend.news_categories.index')->with([
     		'news_categories' => $news_categories
     	]);
@@ -26,20 +27,26 @@ class NewsCategoryController extends Controller{
     }
 
     public function create(){
-        $news_categories = NewsCategory::orderBy('updated_at','DESC')->select('id','name','parent_id','depth')->where('status','1')->get();
+        $news_categories = NewsCategory::orderBy('updated_at','DESC')->select('id','name','parent_id','depth')->get();
     	return view('backend.news_categories.create')->with([
             'news_categories' => $news_categories
         ]);
     }
 
     public function store(RequestNewsCategory $requestNewsCategory){
-    	$this->insertOrUpdate($requestNewsCategory);
+        $news_category = new NewsCategory();
+
+    	$news_category->name = $requestNewsCategory->get('name');
+        $news_category->slug = str::slug($requestNewsCategory->get('name'));
+        $news_category->description = $requestNewsCategory->get('description');
+        $news_category->parent_id = $requestNewsCategory->get('parent_id');
+        $news_category->save();
     	return redirect()->route('backend.news_category.index');
     }
 
     public function edit($id){
-    	$news_category = NewsCategory::find($id);
-        $news_categories = NewsCategory::orderBy('updated_at','DESC')->select('id','name','parent_id','depth')->where('status','1')->get();
+    	$news_category = NewsCategory::withTrashed()->find($id);      
+        $news_categories = NewsCategory::orderBy('updated_at','DESC')->select('id','name','parent_id','depth')->get();
     	return view('backend.news_categories.edit')->with([
     		'news_category' => $news_category,
             'news_categories' => $news_categories
@@ -47,32 +54,14 @@ class NewsCategoryController extends Controller{
     }
 
     public function update(RequestNewsCategory $requestNewsCategory, $id){
-    	$this->insertOrUpdate($requestNewsCategory,$id);
-    	return redirect()->route('backend.news_category.index');
-    }
+        $news_category = NewsCategory::withTrashed()->findOrFail($id);
 
-    public function insertOrUpdate($requestNewsCategory, $id=''){
-    	$status = 1;
-    	try {
-    		$name = $requestNewsCategory->get('name');
-	    	$slug = str::slug($name);
-	    	$description = $requestNewsCategory->get('description');
-            $parent_id = $requestNewsCategory->get('parent_id');
-	    	if ($id) {
-	    		$news_category = NewsCategory::find($id);
-	    	}else{
-	    		$news_category = new NewsCategory();
-	    	}
-	    	$news_category->name = $name;
-	    	$news_category->slug = $slug;
-            $news_category->parent_id = $parent_id;
-	    	$news_category->description = $description;
-	    	$news_category->save();
-    	} catch (Exception $e) {
-    		$status = 0;
-    		Log::error('[Error insertOrUpdate news categories]'.$e->getMessages());
-    	}
-    	return $status;
+    	$news_category->name = $requestNewsCategory->get('name');
+        $news_category->slug = str::slug($requestNewsCategory->get('name'));
+        $news_category->description = $requestNewsCategory->get('description');
+        $news_category->parent_id = $requestNewsCategory->get('parent_id');
+        $news_category->update();
+    	return redirect()->route('backend.news_category.index');
     }
 
     public function destroy($id){
@@ -81,14 +70,22 @@ class NewsCategoryController extends Controller{
         return redirect()->back();
     }
 
-    public function editStatus($id){
-    	$news_category = NewsCategory::find($id);
-    	if($news_category->status==1){
-    		$news_category->status = 0;
-    	}else{
-    		$news_category->status = 1;
-    	}
-    	$news_category->save();
-    	return redirect()->back();
+    public function forceDelete($id){
+        $news_category = NewsCategory::onlyTrashed()->findOrFail($id);
+        $news_category->forceDelete();
+        return redirect()->back();
     }
+
+    public function restore($id){
+        $news_category = NewsCategory::onlyTrashed()->findOrFail($id);
+        $news_category->restore();
+        return redirect()->back();
+    }
+
+
+
+
+
+
+
 }

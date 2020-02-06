@@ -27,7 +27,7 @@ class UserPolicy
         return $user->role == 2 && $user->status == 1;
     }
 
-    public function isQtvOrAdmin(User $user){
-        return ($user->role == 1 && $user->status == 1) || ($user->role == 2 && $user->status == 1);
+    public function check(User $user){
+        return $user->role > 0 && $user->status == 1;
     }
 }

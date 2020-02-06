@@ -43,7 +43,7 @@ class RequestProduct extends FormRequest
                 'images.*' => 'bail|image|mimes:jpeg,png,jpg|max:10485760',
                 'origin_price' => 'bail|required|numeric',
                 'sale_price' => 'bail|required|numeric',
-                'content' => 'bail|required',
+                'content' => 'bail|required|min:100',
             ];
             break;
             }
@@ -65,9 +65,9 @@ class RequestProduct extends FormRequest
             break;
         }
         default:break;
+        }
+        return $rules;
     }
-    return $rules;
-}
 
 public function messages(){
     $messages = [

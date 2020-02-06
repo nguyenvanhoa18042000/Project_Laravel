@@ -35,10 +35,10 @@ class Product extends Model
         return $this->belongsTo(Category::class,'category_id','id')->withTrashed();
     }
     public function product_images(){
-        return $this->hasMany(ProductImage::class);
+        return $this->hasMany(ProductImage::class,'product_id','id');
     }
     public function ratings(){
-        return $this->hasMany(Rating::class)->withTrashed();
+        return $this->hasMany(Rating::class,'product_id','id')->withTrashed();
     }
     public function orders(){
         return $this->belongsToMany(Order::class);
@@ -50,10 +50,10 @@ class Product extends Model
     public static function boot() {
         parent::boot();
 
-        static::deleted(function($product) { 
-            $product->ratings()->delete();
-            $product->product_images()->delete();
-            // $product->users()->detach();
-        });
+        // static::deleted(function($product) { 
+        //     $product->ratings()->delete();
+        //     $product->product_images()->delete();
+        //     // $product->users()->detach();
+        // });
     }
 }

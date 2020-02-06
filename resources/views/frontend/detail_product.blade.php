@@ -110,7 +110,9 @@ $(function(){
 						@endforeach
 					</div>
 					<div class="product-details-thumbs slider-thumbs-1">
-						<div class="sm-image"><img src="{{asset($product->image)}}" alt="product image thumb"></div>
+						@if($product->product_images->count() != 0)
+							<div class="sm-image"><img src="{{asset($product->image)}}" alt="product image thumb"></div>
+						@endif
 						@foreach($product->product_images as $product_image)
 							@if($product_image->path != NULL)
 								<div class="sm-image">

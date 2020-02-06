@@ -15,7 +15,7 @@ class OrderController extends Controller{
 
 	public function show(Request $request,$id){
 		if ($request->ajax()) {
-			$order = Order::where('id',$id)->get();
+			$order = Order::findOrFail($id);
 
 			$html = view('backend.orders.detail',compact('order'))->render();
 			return \response()->json($html);

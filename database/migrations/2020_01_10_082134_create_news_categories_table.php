@@ -18,8 +18,6 @@ class CreateNewsCategoriesTable extends Migration
             $table->string('name')->unique();
             $table->string('slug')->index();
             $table->integer('parent_id')->nullable();
-            $table->integer('status')->default(1)->index();
-            $table->integer('total_posts')->default(0);
             $table->string('description')->nullable();
             $table->integer('user_id')->default(1);
             $table->integer('depth')->default(0);

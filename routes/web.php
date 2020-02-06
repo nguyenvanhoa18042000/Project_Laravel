@@ -49,7 +49,8 @@ Route::group([
         Route::get('edit/{id}', 'NewsCategoryController@edit')->name('edit');
         Route::put('update/{id}','NewsCategoryController@update')->name('update');
         Route::get('delete/{id}','NewsCategoryController@destroy')->name('destroy');
-        Route::get('edit_status/{id}','NewsCategoryController@editStatus')->name('edit_status');
+        Route::get('forcedelete/{id}','NewsCategoryController@forceDelete')->name('forcedelete');
+        Route::get('restore/{id}','NewsCategoryController@restore')->name('restore');
         Route::get('show_posts_by_news_category/{news_category_id}','NewsCategoryController@showPosts')->name('show_posts');
     });
 
@@ -68,6 +69,19 @@ Route::group([
         Route::get('restore/{id}','ProductController@restore')->name('restore');
         Route::get('show_images_by_product/{id}','ProductController@showImages')->name('show_images');
         Route::get('change_hot/{id}','ProductController@changeHot')->name('change_hot');
+
+        Route::get('add_image_description/{idProduct}','ProductController@addImageDescription')->name('add.image.description');
+        Route::post('store_image_description','ProductController@storeImageDescription')->name('store.image.description');
+        Route::get('get_image_description/{id}','ProductController@getImageDescription')->name('get.image.description');
+        Route::get('delete_image_description/{id}','ProductController@forceDeleteImageDescription')->name('forcedelete.image.description');
+    });
+
+    Route::group([
+        'prefix' => 'rating',
+        'as' => 'rating.'
+    ],function(){
+        Route::get('index', 'RatingController@index')->name('index');
+        Route::get('forcedelete/{id}', 'RatingController@forceDelete')->name('forcedelete');
     });
 
     Route::group([
@@ -94,10 +108,10 @@ Route::group([
         Route::get('create', 'TrademarkController@create')->name('create');
         Route::post('store', 'TrademarkController@store')->name('store');
         Route::get('edit/{id}', 'TrademarkController@edit')->name('edit');
-        // Route::put('update/{id}','TrademarkController@update')->name('update');
+        Route::put('update/{id}','TrademarkController@update')->name('update');
         Route::get('delete/{id}','TrademarkController@destroy')->name('destroy');
-        // Route::get('edit_status/{id}','TrademarkController@editStatus')->name('edit_status');
-        // Route::get('show_posts_by_news_category/{news_category_id}','NewsCategoryController@showPosts')->name('show_posts');
+        Route::get('forcedelete/{id}','TrademarkController@forceDelete')->name('forcedelete');
+        Route::get('restore/{id}','TrademarkController@restore')->name('restore');
     });
 
     Route::group([
@@ -111,19 +125,18 @@ Route::group([
         Route::put('update/{id}', 'PostController@update')->name('update');
         Route::post('store', 'PostController@store')->name('store');
         Route::get('delete/{id}','PostController@destroy')->name('destroy');
-        Route::get('edit_status/{id}','PostController@editStatus')->name('edit_status');
+        Route::get('forcedelete/{id}','PostController@forceDelete')->name('forcedelete');
+        Route::get('restore/{id}','PostController@restore')->name('restore');
     });
 
     Route::group([
         'prefix' => 'image',
-        'as' => 'image.'
+        'as' => 'product_image.'
     ],function(){
-        Route::get('index', 'ImageController@index')->name('index');
-        Route::get('create', 'ImageController@create')->name('create');
-        Route::get('show/{id}', 'ImageController@show')->name('show');
-        Route::post('store', 'ImageController@store')->name('store');
-        Route::get('delete/{id}','ImageController@destroy')->name('destroy');
-        Route::get('edit_status/{id}','ImageController@editStatus')->name('edit_status');
+        Route::get('index/{id}', 'ProductImageController@index')->name('index');
+        Route::get('create', 'ProductImageController@create')->name('create');
+        Route::post('store', 'ProductImageController@store')->name('store');
+        Route::get('delete/{id}','ProductImageController@destroy')->name('destroy');
     });
 
     Route::group([

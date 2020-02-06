@@ -8,6 +8,25 @@ $(document).ready(function(){
   $('[data-toggle="tooltip"]').tooltip();
 });
 </script>
+
+<script>
+@if(Session::has('message'))
+toastr.options = {
+  "closeButton": true,
+  "progressBar": true,
+  "timeOut": "3000",
+}
+var type="{{Session::get('alert-type')}}"
+switch(type){
+  case 'success':
+    toastr.success("{{ Session::get('message') }}");
+    break;
+  case 'error':
+    toastr.error("{{ Session::get('message') }}");
+    break;
+}
+@endif
+</script>
 @endsection
 @section('content-header')
 
@@ -41,8 +60,8 @@ $(document).ready(function(){
                     <tr>
                       <th>ID</th>
                       <th>Tên thương hiệu</th>
-                      <th>Ảnh</th>
-                      <th>Thao tác</th>
+                      <th>Ảnh</th>                     
+                      <th>@can('delete',App\Models\Trademark::class) Thao tác @endcan</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -54,9 +73,22 @@ $(document).ready(function(){
 		                      <td><img style="width: 27%;height: 40px;" src="{{ asset($trademark->image) }}"></td>
 
 		                      <td>
-		                      	<a href="{{ route('backend.trademark.edit',$trademark->id) }}" class="btn btn_edit btn-sm " data-toggle="tooltip" title="Chỉnh sửa"><i class="fas fa-edit"></i></a>
+                            @can('update',App\Models\Trademark::class)
+                            <a href="{{ route('backend.trademark.edit',$trademark->id) }}" class="btn btn_edit btn-sm " data-toggle="tooltip" title="Chỉnh sửa" style="margin-right: 1%"><i class="fas fa-edit"></i></a>
+                            @endcan
 
-		                      	<a href="{{ route('backend.trademark.destroy',$trademark->id) }}" class="btn btn_delete btn-sm" data-toggle="tooltip" title="Xóa"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                            @if($trademark->deleted_at == NULL)
+                              @can('delete',App\Models\Trademark::class)
+  		                      	 <a href="{{ route('backend.trademark.destroy',$trademark->id) }}" class="btn btn_delete btn-sm" data-toggle="tooltip" title="Đưa vào thùng rác"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                              @endcan
+                            @else
+                              @can('restore',App\Models\Trademark::class)
+                              <a href="{{ route('backend.trademark.restore',$trademark->id) }}" class="btn btn-success btn-sm" data-toggle="tooltip" title="Khôi phục"style="margin-right: 1%"><i class="fa fa-undo" aria-hidden="true" ></i></a>
+                              @endcan
+                              @can('forceDelete',App\Models\Trademark::class)
+                              <a href="{{ route('backend.trademark.forcedelete',$trademark->id) }}" class="btn btn_delete btn-sm" data-toggle="tooltip" title="Xóa"><i class="fa fa-times" aria-hidden="true"></i></a>
+                              @endcan
+                            @endif
 		                      </td>
 		                  	</tr>
 		                @endforeach

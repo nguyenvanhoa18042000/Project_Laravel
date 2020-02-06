@@ -8,6 +8,25 @@ Danh sách bài viết
     $('[data-toggle="tooltip"]').tooltip();
   });
 </script>
+
+<script>
+@if(Session::has('message'))
+toastr.options = {
+  "closeButton": true,
+  "progressBar": true,
+  "timeOut": "3000",
+}
+var type="{{Session::get('alert-type')}}"
+switch(type){
+  case 'success':
+    toastr.success("{{ Session::get('message') }}");
+    break;
+  case 'error':
+    toastr.error("{{ Session::get('message') }}");
+    break;
+}
+@endif
+</script>
 @endsection
 @section('content-header')
 
@@ -73,7 +92,18 @@ Danh sách bài viết
           <td>
             <a href="{{ route('backend.post.edit',$post->id) }}" class="btn btn_edit btn-sm " data-toggle="tooltip" title="Chỉnh sửa"><i class="fas fa-edit"></i></a>
 
-            <a href="{{ route('backend.post.destroy',$post->id) }}" class="btn btn_delete btn-sm" data-toggle="tooltip" title="Xóa"><i class="fa fa-trash" aria-hidden="true"></i></a>
+            @if($post->deleted_at == NULL)
+              @can('delete',$post)
+              <a href="{{ route('backend.post.destroy',$post->id) }}" class="btn btn_delete btn-sm" data-toggle="tooltip" title="Đưa vào thùng rác"><i class="fa fa-trash" aria-hidden="true"></i></a>
+              @endcan
+            @else
+              @can('restore',$post)
+              <a href="{{ route('backend.post.restore',$post->id) }}" class="btn btn-success btn-sm" data-toggle="tooltip" title="Khôi phục"style="margin:0 4% 0% 0"><i class="fa fa-undo" aria-hidden="true" ></i></a>
+              @endcan
+              @can('forceDelete',$post)
+              <a href="{{ route('backend.post.forcedelete',$post->id) }}" class="btn btn_delete btn-sm" data-toggle="tooltip" title="Xóa"><i class="fa fa-times" aria-hidden="true"></i></a>
+              @endcan
+            @endif
           </td>
         </tr>
         @endforeach

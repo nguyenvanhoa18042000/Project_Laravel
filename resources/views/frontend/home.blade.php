@@ -5,7 +5,6 @@ Trang chủ
 @endsection
 @section('script')
 @endsection
-@endsection
 @section('content-header')
 <!-- Begin Slider With Category Menu Area -->
 <div class="slider-with-banner">

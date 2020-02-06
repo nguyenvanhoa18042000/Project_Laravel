@@ -13,6 +13,24 @@ $(document).ready(function(){
   $('[data-toggle="tooltip"]').tooltip();
 });
 </script>
+<script>
+@if(Session::has('message'))
+toastr.options = {
+  "closeButton": true,
+  "progressBar": true,
+  "timeOut": "3000",
+}
+var type="{{Session::get('alert-type')}}"
+switch(type){
+  case 'success':
+    toastr.success("{{ Session::get('message') }}");
+    break;
+  case 'error':
+    toastr.error("{{ Session::get('message') }}");
+    break;
+}
+@endif
+</script>
 @endsection
 @section('content-header')
 
@@ -141,22 +159,25 @@ $(document).ready(function(){
                               </td>
 
                               <td>
-                                <a target="_blank" href="{{ route('frontend.detail_product',$product->id) }}" class="btn btn-primary btn-sm " data-toggle="tooltip" title="Xem chi tiết" style="margin-right: 1%"><i class="fa fa-eye" aria-hidden="true"></i></a>
+                                @can('viewAny',App\Models\Product::class)
+                                <a target="_blank" href="{{ route('frontend.detail_product',$product->id) }}" class="btn btn-primary btn-sm " data-toggle="tooltip" title="Xem chi tiết" style="margin:0 1% 4% 0"><i class="fa fa-eye" aria-hidden="true"></i></a>
+                                <a  href="{{ route('backend.product.get.image.description',$product->id) }}" class="btn btn-sm" data-toggle="tooltip" title="Ảnh mô tả SP" style="margin:0 1% 4% 0;background-color: #80777c;color: white;"><i class="fas fa-image"></i></a>
+                                @endcan
 
                                 @can('update',$product)
-                                 <a href="{{ route('backend.product.edit',$product->id) }}" class="btn btn_edit btn-sm " data-toggle="tooltip" title="Chỉnh sửa" style="margin-right: 1%"><i class="fas fa-edit"></i></a>
+                                 <a href="{{ route('backend.product.edit',$product->id) }}" class="btn btn_edit btn-sm " data-toggle="tooltip" title="Chỉnh sửa" style="margin:0 1% 4% 0"><i class="fas fa-edit"></i></a>
                                 @endcan
                                 
                                 @if($product->deleted_at == NULL)
                                   @can('delete',$product)
-                                  <a href="{{ route('backend.product.destroy',$product->id) }}" class="btn btn_delete btn-sm" data-toggle="tooltip" title="Đưa vào thùng rác"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                                  <a href="{{ route('backend.product.destroy',$product->id) }}" class="btn btn_delete btn-sm" data-toggle="tooltip" title="Đưa vào thùng rác" style="margin:0 1% 4% 0"><i class="fa fa-trash" aria-hidden="true"></i></a>
                                   @endcan
                                 @else
                                   @can('restore',$product)
-                                  <a href="{{ route('backend.product.restore',$product->id) }}" class="btn btn-success btn-sm" data-toggle="tooltip" title="Khôi phục"style="margin-right: 1%"><i class="fa fa-undo" aria-hidden="true" ></i></a>
+                                  <a href="{{ route('backend.product.restore',$product->id) }}" class="btn btn-success btn-sm" data-toggle="tooltip" title="Khôi phục"style="margin:0 1% 4% 0"><i class="fa fa-undo" aria-hidden="true" ></i></a>
                                   @endcan
                                   @can('forceDelete',$product)
-                                  <a href="{{ route('backend.product.forcedelete',$product->id) }}" class="btn btn_delete btn-sm" data-toggle="tooltip" title="Xóa"><i class="fa fa-times" aria-hidden="true"></i></a>
+                                  <a href="{{ route('backend.product.forcedelete',$product->id) }}" class="btn btn_delete btn-sm" data-toggle="tooltip" title="Xóa" style="margin:0 1% 4% 0"><i class="fa fa-times" aria-hidden="true"></i></a>
                                   @endcan
                                 @endif
                               </td>

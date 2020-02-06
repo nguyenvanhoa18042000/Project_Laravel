@@ -13,11 +13,10 @@
 			</tr>
 		</thead>
 		<tbody>
-			@foreach($orders as $order)
 			<tr>
-				
+				{{$order->total_money}}
 			</tr>
-			@endforeach
+			
 		</tbody>
 	</table>
 </div>

@@ -14,7 +14,7 @@ class Trademark extends Model
     protected $dates = ['deleted_at','created_at','updated_at'];
 
     public function categories(){
-    	return $this->belongsToMany(Category::class)->withTimestamps();
+    	return $this->belongsToMany(Category::class)->withTrashed()->withTimestamps();
 	}
 
 	public function products(){

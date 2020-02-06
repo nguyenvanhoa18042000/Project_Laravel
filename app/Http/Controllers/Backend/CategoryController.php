@@ -9,6 +9,7 @@ use App\Models\Category;
 use App\Models\Trademark;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Session;
 
 class CategoryController extends Controller
 {
@@ -47,7 +48,7 @@ class CategoryController extends Controller
         $category->parent_id = $requestCategory->get('parent_id');
         $category->description = $requestCategory->get('description');
         $trademarks = $requestCategory->get('trademarks');
-        $category->save();
+        $save = $category->save();
 
         $sync_data = [];
         for($i = 0; $i < count($trademarks); $i++){
@@ -55,7 +56,14 @@ class CategoryController extends Controller
         }
         $category->trademarks()->sync($sync_data);
 
-    	return redirect()->route('backend.category.index');
+    	if($save){
+            Session::flash('message', 'Thêm mới thành công');
+            Session::flash('alert-type', 'success');
+        }else{
+            Session::flash('message', 'Thêm mới thất bại');
+            Session::flash('alert-type', 'error');
+        }
+        return redirect()->route('backend.category.index');
     }
 
     public function edit($id){
@@ -84,35 +92,61 @@ class CategoryController extends Controller
         $category->parent_id = $requestCategory->get('parent_id');
     	$category->description = $requestCategory->get('description');
         $trademarks = $requestCategory->get('trademarks');
+        $update = $category->update();
 
         $sync_data = [];
         for($i = 0; $i < count($trademarks); $i++){
             $sync_data[$trademarks[$i]] = ['category_id' => $category->id,'trademark_id' => $trademarks[$i]];
         }
         $category->trademarks()->sync($sync_data);
-        $category->update();
 
+        if($update){
+            Session::flash('message', 'Chỉnh sửa thành công');
+            Session::flash('alert-type', 'success');
+        }else{
+            Session::flash('message', 'Chỉnh sửa thất bại');
+            Session::flash('alert-type', 'error');
+        }
         return redirect()->route('backend.category.index');
     }
 
     public function destroy($id){
     	$category = Category::withTrashed()->findOrFail($id);
         $this->authorize('delete', $category);
-        $category->delete();
+        if($category->delete()){
+            Session::flash('message', 'Đưa vào thùng rác thành công');
+            Session::flash('alert-type', 'success');
+        }else{
+            Session::flash('message', 'Đưa vào thùng rác thất bại');
+            Session::flash('alert-type', 'error');
+        }
         return redirect()->back();
     }
 
     public function forceDelete($id){
         $category = Category::onlyTrashed()->findOrFail($id);
         $this->authorize('forceDelete', $category);
-        $category->forceDelete();
+        $category->trademarks()->detach();
+        if($category->forceDelete()){
+            Session::flash('message', 'Xóa thành công');
+            Session::flash('alert-type', 'success');
+        }else{
+            Session::flash('message', 'Xóa thất bại');
+            Session::flash('alert-type', 'error');
+        }
         return redirect()->back();
     }
 
     public function restore($id){
         $category = Category::onlyTrashed()->findOrFail($id);
         $this->authorize('restore', $category);
-        $category->restore();
+        if($category->restore()){
+            Session::flash('message', 'Khôi phục thành công');
+            Session::flash('alert-type', 'success');
+        }else{
+            Session::flash('message', 'Khôi phục thất bại');
+            Session::flash('alert-type', 'error');
+        }
         return redirect()->back();
     }
 }

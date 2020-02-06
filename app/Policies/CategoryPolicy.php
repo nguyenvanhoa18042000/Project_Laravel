@@ -41,7 +41,7 @@ class CategoryPolicy
      */
     public function create(User $user)
     {
-        return $user->role == 2;
+        return $user->role == 2 && $user->status == 1;
     }
 
     /**
@@ -53,7 +53,7 @@ class CategoryPolicy
      */
     public function update(User $user, Category $category)
     {
-        return $user->role == 2 && $user->id == $category->user_id;
+        return ($user->role == 2 && $user->status == 1) && ($user->id == $category->user_id && $user->status == 1);
     }
 
     /**
@@ -65,7 +65,7 @@ class CategoryPolicy
      */
     public function delete(User $user, Category $category)
     {
-        return $user->role == 2 && $user->id == $category->user_id;
+        return ($user->role == 2 && $user->status == 1) && ($user->id == $category->user_id && $user->status == 1);
     }
 
     /**
@@ -77,7 +77,7 @@ class CategoryPolicy
      */
     public function restore(User $user, Category $category)
     {
-        return $user->role == 2 && $user->id == $category->user_id;
+        return ($user->role == 2 && $user->status == 1) && ($user->id == $category->user_id && $user->status == 1);
     }
 
     /**
@@ -89,6 +89,6 @@ class CategoryPolicy
      */
     public function forceDelete(User $user, Category $category)
     {
-        return $user->role == 2 && $user->id == $category->user_id;
+        return ($user->role == 2 && $user->status == 1) && ($user->id == $category->user_id && $user->status == 1);
     }
 }
