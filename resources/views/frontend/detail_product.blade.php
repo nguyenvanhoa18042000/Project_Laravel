@@ -63,6 +63,12 @@ $(function(){
 					alert('gửi đánh giá thành công');
 					location.reload();
 				}
+				if(result.code == 0){
+					var r = confirm('Bạn cần đăng nhập để đánh giá sản phẩm');
+					if (r) {
+						  window.location.href = $(".link-button").attr('href');
+					}
+				}
 			});
 		}
 	});

@@ -22,7 +22,7 @@ Cập nhật bài viết
 	})
 </script>
 <script>
-	function readURL(input) {
+	function readURLOfImage(input) {
 		if (input.files && input.files[0]) {
 			var reader = new FileReader();
 
@@ -33,9 +33,23 @@ Cập nhật bài viết
 			reader.readAsDataURL(input.files[0]);
 		}
 	}
+	function readURLOfBackgroundImgTitle(input) {
+		if (input.files && input.files[0]) {
+			var reader = new FileReader();
+
+			reader.onload = function(e) {
+				$('#out_background_img_title').attr('src', e.target.result);
+			}
+
+			reader.readAsDataURL(input.files[0]);
+		}
+	}
 
 	$("#inp_img").change(function() {
-		readURL(this);
+		readURLOfImage(this);
+	});
+	$("#inp_background_img_title").change(function() {
+		readURLOfBackgroundImgTitle(this);
 	});
 </script>
 @endsection
@@ -103,7 +117,7 @@ Cập nhật bài viết
 										<option value="">--Chọn danh mục bài viết--</option>
 										@if(isset($news_categories))
 											@foreach($news_categories as $news_category)
-												@if($news_category->parent_id == NULL && $news_category->status == 1)
+												@if($news_category->parent_id == NULL)
 												<option value="{{ $news_category->id }}" @if ($post->news_category_id == $news_category->id) selected @endif>
 													{{ $news_category->name }}
 												</option>
@@ -117,13 +131,24 @@ Cập nhật bài viết
 								</div>
 
 								<div style="text-align: center; margin-top: 2%">
-									<img id="out_img" src="{{asset($post->image)}}" style="width:40%; height: 300px;">
+									<img id="out_img" src="{{asset($post->image)}}" style="width:30%; height: 200px;">
 								</div>
 								<div class="form-group">
-									<label for="image">Ảnh sản phẩm (JPEG, JPG, PNG)</label>
+									<label for="image">Ảnh sản phẩm (thumbnail) [JPEG, JPG, PNG]</label>
 									<input id="inp_img" type="file" class="form-control" name="image">
 									@if($errors->has('image'))
 									<div class="error">{{ $errors->first('image') }}</div>
+									@endif
+								</div>
+
+								<div style="text-align: center; margin-top: 2%">
+									<img id="out_background_img_title" src="{{asset($post->background_img_title)}}" style="width:100%; height: 400px;">
+								</div>
+								<div class="form-group">
+									<label for="image" style="margin-top: 1%;">Ảnh nền tiêu đề (ở trang chi tiết bài viết) [jpeg, jpg, png]</label>
+									<input id="inp_background_img_title" type="file" class="form-control" name="background_img_title">
+									@if($errors->has('background_img_title'))
+									<div class="error">{{ $errors->first('background_img_title') }}</div>
 									@endif
 								</div>
 
@@ -147,7 +172,7 @@ Cập nhật bài viết
 
 								<div class="form-group">
 									<div class="custom-control custom-checkbox">
-										<input name="hot" value="1" class="custom-control-input" type="checkbox" id="customCheckbox2" @if($post->hot==1)checked @endif>
+										<input name="hot" class="custom-control-input" type="checkbox" id="customCheckbox2" @if($post->hot==1)checked @endif>
 										<label for="customCheckbox2" class="custom-control-label">Bài viết nổi bật</label>
 									</div>
 								</div>
@@ -155,7 +180,9 @@ Cập nhật bài viết
 						</div>
 					</div>
 					<!-- /.card-body -->
-					<button type="submit" class="btn btn-primary ml-4 mb-4">Lưu thông tin</button>
+					@can('update',$post)
+						<button type="submit" class="btn btn-primary ml-4 mb-4">Lưu thông tin</button>
+					@endcan
 					<a href="{{ route('backend.home') }}" type="button" class="btn btn-danger ml-1 mb-4" style="color: white">Hủy bỏ</a>
 
 				</form>

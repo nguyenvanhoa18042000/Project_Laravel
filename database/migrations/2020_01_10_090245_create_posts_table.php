@@ -19,9 +19,9 @@ class CreatePostsTable extends Migration
             $table->text('description')->nullable();
             $table->text('content')->nullable();
             $table->string('image')->nullable();
+            $table->string('background_img_title')->nullable();
             $table->string('slug')->index();
             $table->integer('news_category_id')->index();
-            $table->integer('status')->default(1)->index();
             $table->integer('user_id')->default(1);
             $table->integer('view_count')->default(0);
             $table->integer('hot')->default(0);

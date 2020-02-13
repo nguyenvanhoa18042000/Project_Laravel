@@ -54,7 +54,7 @@ Tạo danh mục
                 <div class="card-body">
                   <div class="form-group">
                     <label for="exampleInputEmail1">Tên danh mục</label>
-                    <input type="text" class="form-control" name="name" value="{{ old('name',isset($product->name) ? $product->name : '') }}" placeholder="Tên danh mục ...">
+                    <input type="text" class="form-control" name="name" value="{{ old('name',isset($category->name) ? $category->name : '') }}" placeholder="Tên danh mục ...">
                     @if($errors->has('name'))
                         <div class="error">{{ $errors->first('name') }}</div>
                     @endif
@@ -65,11 +65,7 @@ Tạo danh mục
                     <select name="parent_id" class="form-control">
                       <option value="">--Chọn danh mục cha--</option>
                       @if(isset($categories))
-                        @foreach($categories as $category)
-                          @if($category->parent_id == NULL)
-                            <option value="{{ $category->id }}">{{ $category->name }}</option>
-                          @endif
-                        @endforeach
+                        {{Helper::data_tree($categories)}}
                       @endif
                     </select>
                     @if($errors->has('parent_id'))

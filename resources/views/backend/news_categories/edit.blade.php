@@ -54,16 +54,12 @@ Chỉnh sửa danh mục
                   <div class="form-group">
                     <label for="parent_id">Danh mục cha</label>
                     <select name="parent_id" class="form-control">
-                      <option value="">Danh mục cha</option>
-                      @if(isset($news_categories))
-                        @foreach($news_categories as $news_cate)
-                          @if($news_cate->parent_id == NULL)
-                          <option value="{{ $news_cate->id }}" 
-                            @if ($news_category->parent_id == $news_cate->id) selected @endif>{{ $news_cate->name }}
-                          </option>
-                          @endif
-                        @endforeach
+                      @if($news_category->parent_id == NULL)
+                        <option value="" selected>Danh mục cha</option>
+                      @else
+                        <option value="">Danh mục cha</option>
                       @endif
+                      {{Helper::data_tree($news_categories,$news_category->parent_id,$news_category->id)}}
                     </select>
                     @if($errors->has('parent_id'))
                         <div class="error">{{ $errors->first('parent_id') }}</div>

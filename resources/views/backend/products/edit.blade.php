@@ -58,7 +58,7 @@ Cập nhật sản phẩm
 <div class="container-fluid">
   <div class="row mb-2">
     <div class="col-sm-6">
-      <h1 class="m-0 text-dark">Quản lí sản phẩmc</h1>
+      <h1 class="m-0 text-dark">Quản lí sản phẩm</h1>
     </div><!-- /.col -->
     <div class="col-sm-6">
       <ol class="breadcrumb float-sm-right">
@@ -113,15 +113,8 @@ Cập nhật sản phẩm
               <div class="form-group">
                 <label for="category_id">Loại sản phẩm</label>
                 <select name="category_id" id="categories" class="form-control">
-                  @if($product->category->deleted_at != NULL)
-                    <option value="{{$product->category_id}}">{{$product->category->name}}</option>
-                  @endif
                   @if(isset($categories))
-                    @foreach($categories as $category)
-                      <option value="{{ $category->id }}" 
-                        @if ($product->category_id == $category->id) selected @endif>{{ $category->name }}
-                      </option>
-                    @endforeach
+                    {{Helper::data_tree($categories,$product->category->id)}}
                   @endif
                 </select>
                 @if($errors->has('category_id'))

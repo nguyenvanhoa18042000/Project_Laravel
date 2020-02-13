@@ -58,10 +58,16 @@ td > a {
 }
 
 .add-border-radius{
-    border-top-left-radius: 10px;
+    border-top-left-radius:10px;
     border-top-right-radius: 10px;
 }
 .add-background-thead{
     color: white;
     background-color: #6c7ae0;
+}
+.name:hover{
+    color: #3c52f1 !important;
+}
+.to-link:hover{
+    color: #007bff !important;
 }

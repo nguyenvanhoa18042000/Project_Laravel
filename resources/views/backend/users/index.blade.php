@@ -53,6 +53,9 @@ switch(type){
 
   <!-- Default box -->
   <h3 style="text-align: center;">-- Danh sách người dùng --</h3>
+  @can('create',App\Models\User::class)
+    <a href="{{route('backend.user.create')}}" class="btn btn-sm btn-success" style="color: white; float: right;margin:0 1% 1% 0;"><i class="fa fa-plus-circle" aria-hidden="true"></i> Thêm mới người dùng</a>
+  @endcan
   <div class="card">
   </div>
   <!-- /.card-header -->

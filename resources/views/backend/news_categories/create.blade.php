@@ -53,14 +53,8 @@ Tạo danh mục tin tức
                   <div class="form-group">
                     <label for="parent_id">Danh mục cha</label>
                     <select name="parent_id" class="form-control">
-                      <option value="">Danh mục cha</option>
-                      @if(isset($news_categories))
-                        @foreach($news_categories as $news_category)
-                          @if($news_category->parent_id == NULL)
-                            <option value="{{ $news_category->id }}">{{ $news_category->name }}</option>
-                          @endif
-                        @endforeach
-                      @endif
+                      <option value="">--Chọn danh mục cha--</option>
+                      {{Helper::data_tree($news_categories)}}
                     </select>
                     @if($errors->has('parent_id'))
                         <div class="error">{{ $errors->first('parent_id') }}</div>

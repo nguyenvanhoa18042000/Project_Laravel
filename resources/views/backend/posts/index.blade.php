@@ -38,18 +38,21 @@ switch(type){
     <div class="col-sm-6">
       <ol class="breadcrumb float-sm-right">
         <li class="breadcrumb-item"><a href="#">Trang chủ</a></li>
+        <li class="breadcrumb-item active">Quản lí tin tức</li>
         <li class="breadcrumb-item active">Bài viết</li>
         <li class="breadcrumb-item active">Danh sách</li>
       </ol>
     </div><!-- /.col -->
   </div>
 </div>
-
 @endsection
 @section('content')
 
 <section class="content">
   <h3 style="text-align: center;">-- Danh sách bài viết --</h3>
+  @can('create',App\Models\Post::class)
+    <a href="{{route('backend.post.create')}}" class="btn btn-sm btn-success" style="color: white; float: right;margin:0 1% 1% 0;"><i class="fa fa-plus-circle" aria-hidden="true"></i> Thêm mới bài viết</a>
+  @endcan
   <div class="card">
   </div>
   <div class="card-body table-responsive p-0 add-border-radius">
@@ -57,13 +60,11 @@ switch(type){
       <thead class="add-background-thead">
         <tr>
           <th style="width: 5%">ID</th>
-          <th style="width: 20%">Tiêu đề</th>
+          <th style="width: 30%">Tiêu đề</th>
           <th style="width: 15%">Danh mục</th>                     
           <th>Hình ảnh</th>
           <th>Lượt xem</th>
-          <th>Trạng thái</th>
-          <!-- <th>Nổi bật</th> -->
-          <!-- <th>Người đăng</th> -->
+          <th>Nổi bật</th>
           <th>Thao tác</th>
         </tr>
       </thead>
@@ -73,24 +74,39 @@ switch(type){
         <tr>
           <td>{{ $post->id }}</td>
           <td>
-            {{ $post->title }}
+            <a class="name" target="_blank" href="{{route('frontend.detail_post',$post->slug)}}" style="color: #333">{{ (Str::limit($post->title, 80, $end='...')) }}</a>
           </td>
 
           <td>{{ isset($post->news_category->name) ? $post->news_category->name :'' }}
           </td>
           
           <td>
-            <img src="{{asset($post->image)}}" style="width: 100px; height: 100px;">
-          </td>
-
-          <td>{{ $post->status }}
+            <img src="{{asset($post->image)}}" style="width: 120px; height: 70px;">
           </td>
 
           <td>{{ $post->view_count }}
           </td>
 
           <td>
-            <a href="{{ route('backend.post.edit',$post->id) }}" class="btn btn_edit btn-sm " data-toggle="tooltip" title="Chỉnh sửa"><i class="fas fa-edit"></i></a>
+            @if($post->hot == 1)
+              @can('changeHot',$post)
+                <a href="{{ route('backend.post.change_hot',$post->id) }}" class="btn btn-success btn-sm" data-toggle="tooltip" title="Tắt nổi bật">Nổi bật</a>
+              @elsecan('notChangeHot',$post)
+                <a href="javascript:void(0)" style="cursor: default;" class="btn btn-success btn-sm" data-toggle="tooltip">Nổi bật</a>
+              @endcan
+            @else
+              @can('changeHot',$post)
+              <a href="{{ route('backend.post.change_hot',$post->id) }}" class="btn btn-secondary btn-sm" data-toggle="tooltip" title="Bật nổi bật">Không</a>
+              @elsecan('notChangeHot',$post)
+              <a href="javascript:void(0)" style="cursor: default;" class="btn btn-secondary btn-sm" data-toggle="tooltip">Không</a>
+              @endcan
+            @endif
+          </td>
+
+          <td>
+            @can('update',$post)
+              <a href="{{ route('backend.post.edit',$post->id) }}" class="btn btn_edit btn-sm " data-toggle="tooltip" title="Chỉnh sửa"><i class="fas fa-edit"></i></a>
+            @endcan
 
             @if($post->deleted_at == NULL)
               @can('delete',$post)
@@ -110,7 +126,7 @@ switch(type){
         @endif
       </tbody>
     </table>
-    <!-- <div style="float: right; margin-right: 2%">{!! $posts->links() !!}</div> -->
+    <div style="float: right; margin-right: 2%">{!! $posts->links() !!}</div>
   </div>
   <!-- /.card-body -->
   <!-- <div class="card-footer">Danh sách danh mục</div> -->

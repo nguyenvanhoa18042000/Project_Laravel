@@ -18,7 +18,7 @@ class ProductImagePolicy
      */
     public function viewAny(User $user)
     {
-        //
+         
     }
 
     /**

@@ -181,7 +181,7 @@
                             <li class="nav-item">
                                 <a href="#" class="nav-link" style="margin-left: 9%">
                                     <i class="nav-icon fas fa-chart-pie"></i>
-                                    <p>Danh mục</p>
+                                    <p>Danh mục <i class="right fas fa-angle-left"></i></p>
                                 </a>
                                 <ul class="nav nav-treeview">
                                     <li class="nav-item">
@@ -201,7 +201,7 @@
                             <li class="nav-item">
                                 <a href="#" class="nav-link" style="margin-left: 9%">
                                     <i class="nav-icon far fa-newspaper"></i>
-                                    <p>Bài viết</p>
+                                    <p>Bài viết <i class="right fas fa-angle-left"></i></p>
                                 </a>
                                 <ul class="nav nav-treeview">
                                     <li class="nav-item">
@@ -220,6 +220,44 @@
                             </li>
                         </ul>
                     </li>
+
+                    <!-- <li class="nav-item has-treeview">
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon fas fa-paper-plane"></i>
+                            <p>
+                                Quản lý liên hệ
+                                <i class="right fas fa-angle-left"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="#" class="nav-link" style="margin-left: 9%">
+                                    <i class="nav-icon fas fa-chart-pie"></i>
+                                    <p>Chủ đề <i class="right fas fa-angle-left"></i></p>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a href="{{ route('backend.topic.create') }}" class="nav-link" style="margin-left: 17%">
+                                            <i class="nav-icon fas fa-plus"></i>
+                                            <p>Tạo mới</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="{{ route('backend.topic.index') }}" class="nav-link" style="margin-left: 17%">
+                                            <i class="nav-icon fa fa-list-alt" aria-hidden="true"></i>
+                                            <p>Danh sách</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                                <li class="nav-item">
+                                    <a href="{{ route('backend.contact.index') }}" class="nav-link" style="margin-left: 9%">
+                                        <i class="nav-icon fas fa-envelope"></i>
+                                        <p>Liên hệ</p>
+                                    </a>
+                                </li>
+                            </li>                         
+                        </ul>
+                    </li> -->
                 </ul>
             </nav>
             <!-- /.sidebar-menu -->

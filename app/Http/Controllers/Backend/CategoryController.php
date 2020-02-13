@@ -8,8 +8,10 @@ use App\Http\Requests\RequestCategory;
 use App\Models\Category;
 use App\Models\Trademark;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Cache;
 
 class CategoryController extends Controller
 {
@@ -23,7 +25,10 @@ class CategoryController extends Controller
 
 	public function index(){
         $this->authorize('viewAny', Category::class);
-		$categories = Category::withTrashed()->orderBy('updated_at','DESC')->paginate(7);
+        // $categories = Cache::remember('categories', 100, function() {
+        //     return Category::withTrashed()->orderBy('updated_at','DESC')->paginate(7);
+        // });
+		 $categories = Category::withTrashed()->orderBy('updated_at','DESC')->paginate(7);
     	return view('backend.categories.index')->with([
     		'categories' => $categories
     	]);
@@ -43,10 +48,16 @@ class CategoryController extends Controller
         $this->authorize('create', Category::class);
         $category = new Category();
 
+        $parent_id = $requestCategory->get('parent_id');
         $category->name = $requestCategory->get('name');
         $category->slug = str::slug($requestCategory->get('name'));
-        $category->parent_id = $requestCategory->get('parent_id');
+        $category->parent_id = $parent_id;
+        $category->user_id = Auth::user()->id;
         $category->description = $requestCategory->get('description');
+        if ($parent_id != NULL) {
+            $category_of_parent = Category::select('id','depth')->findOrFail($parent_id);
+            $category->depth = $category_of_parent->depth + 1;
+        }
         $trademarks = $requestCategory->get('trademarks');
         $save = $category->save();
 
@@ -87,10 +98,18 @@ class CategoryController extends Controller
     	$category = Category::withTrashed()->findOrFail($id);
 
         $this->authorize('update', $category);
+        $parent_id = $requestCategory->get('parent_id');
     	$category->name = $requestCategory->get('name');
     	$category->slug = str::slug($requestCategory->get('name'));
-        $category->parent_id = $requestCategory->get('parent_id');
+        $category->parent_id = $parent_id;
+        $category->user_id = Auth::user()->id;
     	$category->description = $requestCategory->get('description');
+        if($parent_id != NULL){
+            $category_of_parent = Category::select('id','depth')->findOrFail($parent_id);
+            $category->depth = $category_of_parent->depth + 1;
+        }else{
+            $category->depth = 0;
+        }
         $trademarks = $requestCategory->get('trademarks');
         $update = $category->update();
 

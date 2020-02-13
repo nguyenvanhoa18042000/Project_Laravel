@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Cache;
 
 class ProductController extends Controller
 {
@@ -35,7 +36,7 @@ class ProductController extends Controller
 
 	public function create(){
 		if(Auth::user()->can('create',Product::class)){
-	    	$categories = Category::select('id','name')->get();
+	    	$categories = Category::select('id','name','parent_id')->get();
 	    	$trademarks = Trademark::select('id','name')->get();
 			return view('backend.products.create')->with([
 			'categories' => $categories,
@@ -105,7 +106,11 @@ class ProductController extends Controller
 		$product = Product::withTrashed()->findOrFail($id);
 
 		if(Auth::user()->can('update',$product)){
-			$categories = Category::select('id','name','deleted_at')->get();
+			if($product->category->deleted_at != NULL){
+				$categories = Category::select('id','name','parent_id','deleted_at')->withTrashed()->get();
+			}else{
+				$categories = Category::select('id','name','parent_id')->get();
+			}
 	    	return view('backend.products.edit')->with([
 	    		'product' => $product,
 	    		'categories' => $categories
@@ -134,6 +139,7 @@ class ProductController extends Controller
 			$product->discount_percent = $requestProduct->get('discount_percent');
 
 			if($requestProduct->hasFile('image')){
+				File::delete($product->image);
 				$image = $requestProduct->file('image');
 				$name_image = date('YmdHis')."_".$image->getClientOriginalName();
 				Storage::disk('public')->putFileAs('images/product/main',$image,$name_image);

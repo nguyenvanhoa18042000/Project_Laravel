@@ -55,7 +55,9 @@ $(document).ready(function(){
                             {{ isset($rating->user->name) ? $rating->user->name : '[N\A]' }}
                           </td>
 		                      <td>
-                            {{ isset($rating->product->name) ? $rating->product->name : '[N\A]' }}
+                            <a class="to-link" style="color: #333;" target="_blank" href="{{route('frontend.detail_product',$rating->product->id)}}">
+                              {{ isset($rating->product->name) ? (Str::limit($rating->product->name, 60, $end='...')) : '[N\A]' }}
+                            </a>
                           </td>
                           <td style="max-width: 200px;overflow: auto;">{{ $rating->content }}</td>
                           <td>

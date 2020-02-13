@@ -120,12 +120,8 @@ Tạo sản phẩm
 									<select name="category_id" id="categories" class="form-control">
 										<option value="">--Chọn loại sản phẩm--</option>
 										@if(isset($categories))
-										@foreach($categories as $category)
-										@if($category->parent_id == NULL)
-										<option value="{{ $category->id }}">{{ $category->name }}</option>
-										@endif
-										@endforeach
-										@endif
+				                        	{{Helper::data_tree($categories)}}
+				                        @endif
 									</select>
 									@if($errors->has('category_id'))
 									<div class="error">{{ $errors->first('category_id') }}</div>

@@ -22,7 +22,7 @@ Tạo mới bài viết
 	})
 </script>
 <script>
-	function readURL(input) {
+	function readURLOfImage(input) {
 		if (input.files && input.files[0]) {
 			var reader = new FileReader();
 
@@ -33,9 +33,23 @@ Tạo mới bài viết
 			reader.readAsDataURL(input.files[0]);
 		}
 	}
+	function readURLOfBackgroundImgTitle(input) {
+		if (input.files && input.files[0]) {
+			var reader = new FileReader();
+
+			reader.onload = function(e) {
+				$('#out_background_img_title').attr('src', e.target.result);
+			}
+
+			reader.readAsDataURL(input.files[0]);
+		}
+	}
 
 	$("#inp_img").change(function() {
-		readURL(this);
+		readURLOfImage(this);
+	});
+	$("#inp_background_img_title").change(function() {
+		readURLOfBackgroundImgTitle(this);
 	});
 </script>
 @endsection
@@ -114,13 +128,24 @@ Tạo mới bài viết
 								</div>
 
 								<div style="text-align: center; margin-top: 2%">
-									<img id="out_img" src="{{asset('storage/images/product/default.png')}}" style="width:40%; height: 300px;">
+									<img id="out_img" src="{{asset('storage/images/product/default.png')}}" style="width:30%; height: 200px;">
 								</div>
 								<div class="form-group">
-									<label for="image">Ảnh sản phẩm (jpeg, jpg, png)</label>
+									<label for="image" style="margin-top: 1%;">Ảnh sản phẩm (thumnail) [jpeg, jpg, png]</label>
 									<input id="inp_img" type="file" class="form-control" name="image">
 									@if($errors->has('image'))
 									<div class="error">{{ $errors->first('image') }}</div>
+									@endif
+								</div>
+
+								<div style="text-align: center; margin-top: 2%">
+									<img id="out_background_img_title" src="{{asset('storage/images/product/default.png')}}" style="width:100%; height: 400px;">
+								</div>
+								<div class="form-group">
+									<label for="image" style="margin-top: 1%;">Ảnh nền tiêu đề (ở trang chi tiết bài viết) [jpeg, jpg, png]</label>
+									<input id="inp_background_img_title" type="file" class="form-control" name="background_img_title">
+									@if($errors->has('background_img_title'))
+									<div class="error">{{ $errors->first('background_img_title') }}</div>
 									@endif
 								</div>
 
@@ -150,7 +175,9 @@ Tạo mới bài viết
 						</div>
 					</div>
 					<!-- /.card-body -->
-					<button type="submit" class="btn btn-primary ml-4 mb-4">Lưu thông tin</button>
+					@can('create',App\Models\Post::class)
+						<button type="submit" class="btn btn-primary ml-4 mb-4">Lưu thông tin</button>
+					@endcan
 					<a href="{{ route('backend.home') }}" type="button" class="btn btn-danger ml-1 mb-4" style="color: white">Hủy bỏ</a>
 
 				</form>

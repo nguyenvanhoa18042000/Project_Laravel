@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class RequestCategory extends FormRequest
+class RequestTopic extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,8 +24,7 @@ class RequestCategory extends FormRequest
     public function rules()
     {
         $rules = [
-            'name' => 'bail|required|min:5|max:100|unique:categories,name',
-            'description' => 'bail|required|'
+            'name' => 'bail|required|min:5|max:100|unique:topics,name,'.$this->id,
         ];
         return $rules;
     }
@@ -35,7 +34,7 @@ class RequestCategory extends FormRequest
             'required' => ':attribute không được để trống',
             'min' => ':attribute Không được nhỏ hơn :min kí tự',
             'max' => ':attribute Không được lớn hơn :max kí tự',
-            'unique' => ':attribute đã tồn tại',
+            'unique' => 'Tên chủ đề đã tồn tại',
         ];
         return $messages;
     }
@@ -43,9 +42,7 @@ class RequestCategory extends FormRequest
     public function attributes(){
         $attributes=[
             'name' => 'Tên danh mục',
-            'description' => 'Mô tả danh mục',
         ];
         return $attributes;
     }
-
 }

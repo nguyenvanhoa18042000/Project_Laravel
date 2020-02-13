@@ -1,6 +1,6 @@
 @extends('backend.layouts.master')
 @section('title')
-Chỉnh sửa danh mục
+Cập nhật danh mục
 @endsection
 @section('css')
 <style>
@@ -38,7 +38,7 @@ Chỉnh sửa danh mục
       <!-- Default box -->
       <div class="card">
         <div class="card-header">
-          <h3 class="card-title">Tạo mới danh mục</h3>
+          <h3 class="card-title">Cập nhật danh mục</h3>
 
           <div class="card-tools">
             <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
@@ -66,16 +66,10 @@ Chỉnh sửa danh mục
                     <select name="parent_id" class="form-control">
                       @if($category->parent_id == NULL)
                         <option value="" selected>Danh mục cha</option>
+                      @else
+                        <option value="">Danh mục cha</option>
                       @endif
-                      @if(isset($categories))
-                        @foreach($categories as $cate)
-                          @if($cate->parent_id == NULL)
-                          <option value="{{ $cate->id }}" 
-                            @if ($category->parent_id == $cate->id) selected @endif>{{ $cate->name }}
-                          </option>
-                          @endif
-                        @endforeach
-                      @endif
+                      {{Helper::data_tree($categories,$category->parent_id,$category->id)}}
                     </select>
                     @if($errors->has('parent_id'))
                         <div class="error">{{ $errors->first('parent_id') }}</div>
@@ -127,7 +121,7 @@ Chỉnh sửa danh mục
         <!-- end form -->
 
         <!-- /.card-body -->
-        <div class="card-footer">Tạo mới danh mục</div>
+        <div class="card-footer">Cập nhật danh mục</div>
           
         </div>
       </div>

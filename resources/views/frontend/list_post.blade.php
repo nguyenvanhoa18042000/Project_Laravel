@@ -1,3 +1,4 @@
+<?php Carbon\Carbon::setLocale('vi'); ?>
 @extends('frontend.layouts.master')
 @section('title')
 Trang chủ
@@ -7,240 +8,72 @@ Trang chủ
 @endsection
 @endsection
 @section('content-header')
-<div class="breadcrumb-area">
-	<div class="container">
-		<div class="breadcrumb-content">
-			<ul>
-				<li><a href="index.html">Trang chủ</a></li>
-				<li class="active">Danh sách bài viết</li>
-			</ul>
-		</div>
-	</div>
-</div>
 @endsection
 @section('content')
-<div class="li-main-blog-page pt-60 pb-55">
-	<div class="container">
+<div class="li-main-blog-page pb-10">
+	<div class="container-fluid" style="width: 90%;margin: auto;">
 		<div class="row">
-			<!-- Begin Li's Blog Sidebar Area -->
-			<div class="col-lg-3 order-lg-1 order-2">
-				<div class="li-blog-sidebar-wrapper">
-					<div class="li-blog-sidebar">
-						<div class="li-sidebar-search-form">
-							<form action="#">
-								<input type="text" class="li-search-field" placeholder="search here">
-								<button type="submit" class="li-search-btn"><i class="fa fa-search"></i></button>
-							</form>
-						</div>
+			<ul class="menu">
+				<li>
+					<a @if(!isset($news_cate)) style="background:#fed700;" @endif href="{{route('frontend.news')}}">TIN MỚI</a>
+				</li>
+				@foreach($news_categories as $news_category)
+				@if($news_category->parent_id == NULL && $news_category->deleted_at == NULL)
+				@if($loop->last)
+				<li>
+					<a @if(isset($news_cate) && $news_cate->id == $news_category->id) style="background:#fed700;" @endif href="{{route('frontend.detail_news_category',$news_category->slug)}}">{{$news_category->name}}</a>
+					<label class="menulabel">MỚI</label>
+				</li>
+				@else
+				<li><a @if(isset($news_cate) && $news_cate->id == $news_category->id) style="background:#fed700;" @endif href="{{route('frontend.detail_news_category',$news_category->slug)}}">{{$news_category->name}}</a></li>
+				@endif
+				@endif
+				@endforeach				
+			</ul>
+		</div>
+		<div class="row pb-10">
+			<div class="col-lg-8 order-lg-2 order-1">
+				<div class="row li-main-content" style="width: 100%;">
+					<div class="infopage">
+						@if(isset($news_cate))
+						<h1>{{$news_cate->name}}</h1>
+						<span>{{$news_cate->description}}</span>
+						@else
+						<h1>TIN MỚI</h1>
+						<span>Những bài viết mới nhất</span>
+						@endif
 					</div>
-					<div class="li-blog-sidebar pt-25">
-						<h4 class="li-blog-sidebar-title">Categories</h4>
-						<ul class="li-blog-archive">
-							<li><a href="#">Laptops (10)</a></li>
-							<li><a href="#">TV & Audio (08)</a></li>
-							<li><a href="#">reach (07)</a></li>
-							<li><a href="#">Smartphone (14)</a></li>
-							<li><a href="#">Cameras (10)</a></li>
-							<li><a href="#">Headphone (06)</a></li>
-						</ul>
-					</div>
-					<div class="li-blog-sidebar">
-						<h4 class="li-blog-sidebar-title">Blog Archives</h4>
-						<ul class="li-blog-archive">
-							<li><a href="#">January (10)</a></li>
-							<li><a href="#">February (08)</a></li>
-							<li><a href="#">March (07)</a></li>
-							<li><a href="#">April (14)</a></li>
-							<li><a href="#">May (10)</a></li>
-							<li><a href="#">June (06)</a></li>
-						</ul>
-					</div>
-					<div class="li-blog-sidebar">
-						<h4 class="li-blog-sidebar-title">Recent Post</h4>
-						<div class="li-recent-post pb-30">
-							<div class="li-recent-post-thumb">
-								<a href="blog-details-left-sidebar.html">
-									<img class="img-full" src="frontend/images/product/small-size/3.jpg" alt="Li's Product Image">
-								</a>
-							</div>
-							<div class="li-recent-post-des">
-								<span><a href="blog-details-left-sidebar.html">First Blog Post</a></span>
-								<span class="li-post-date">25.11.2018</span>
-							</div>
-						</div>
-						<div class="li-recent-post pb-30">
-							<div class="li-recent-post-thumb">
-								<a href="blog-details-left-sidebar.html">
-									<img class="img-full" src="frontend/images/product/small-size/2.jpg" alt="Li's Product Image">
-								</a>
-							</div>
-							<div class="li-recent-post-des">
-								<span><a href="blog-details-left-sidebar.html">First Blog Post</a></span>
-								<span class="li-post-date">25.11.2018</span>
-							</div>
-						</div>
-						<div class="li-recent-post pb-30">
-							<div class="li-recent-post-thumb">
-								<a href="blog-details-left-sidebar.html">
-									<img class="img-full" src="frontend/images/product/small-size/5.jpg" alt="Li's Product Image">
-								</a>
-							</div>
-							<div class="li-recent-post-des">
-								<span><a href="blog-details-left-sidebar.html">First Blog Post</a></span>
-								<span class="li-post-date">25.11.2018</span>
-							</div>
-						</div>
-					</div>
-					<div class="li-blog-sidebar">
-						<h4 class="li-blog-sidebar-title">Tags</h4>
-						<ul class="li-blog-tags">
-							<li><a href="#">Gaming</a></li>
-							<li><a href="#">Chromebook</a></li>
-							<li><a href="#">Refurbished</a></li>
-							<li><a href="#">Touchscreen</a></li>
-							<li><a href="#">Ultrabooks</a></li>
-							<li><a href="#">Sound Cards</a></li>  
-						</ul>
-					</div>
-				</div>
-			</div>
-			<!-- Li's Blog Sidebar Area End Here -->
-			<!-- Begin Li's Main Content Area -->
-			<div class="col-lg-9 order-lg-2 order-1">
-				<div class="row li-main-content">
-					<div class="col-lg-6 col-md-6">
-						<div class="li-blog-single-item pb-25">
-							<div class="li-blog-banner">
-								<a href="blog-details-left-sidebar.html"><img class="img-full" src="frontend/images/blog-banner/2.jpg" alt=""></a>
-							</div>
-							<div class="li-blog-content">
-								<div class="li-blog-details">
-									<h3 class="li-blog-heading pt-25"><a href="blog-details-left-sidebar.html">blog image post</a></h3>
-									<div class="li-blog-meta">
-										<a class="author" href="#"><i class="fa fa-user"></i>Admin</a>
-										<a class="comment" href="#"><i class="fa fa-comment-o"></i> 3 comment</a>
-										<a class="post-time" href="#"><i class="fa fa-calendar"></i> 25 nov 2018</a>
-									</div>
-									<p>Donec vitae hendrerit arcu, sit amet faucibus nisl. Cras pretium arcu ex. Aenean posuere libero eu augue condimentum rhoncus. Cras pretium arcu ex.</p>
-									<a class="read-more" href="blog-details-left-sidebar.html">Read More...</a>
+					<ul class="newslist" id="mainlist">
+						@foreach($posts as $post)
+						<li>
+							<a href="{{route('frontend.detail_post',$post->slug)}}">
+								<div class="tempvideo">
+									<img width="250" height="140" src="{{asset($post->image)}}">
 								</div>
-							</div>
-						</div>
-					</div>
-					<div class="col-lg-6 col-md-6">
-						<div class="li-blog-single-item pb-25">
-							<div class="li-blog-gallery-slider slick-dot-style">
-								<div class="li-blog-banner">
-									<a href="blog-details-left-sidebar.html"><img class="img-full" src="frontend/images/blog-banner/1.jpg" alt=""></a>
+								<h3>
+									@if($post->hot == 1)
+									<label class="hot">Hot</label>
+									@endif
+									{{$post->title}}
+								</h3>
+								<figure>
+									{!! $post->description !!}
+								</figure>
+								<div class="timepost">
+									<span><i class="fa fa-calendar"></i> {{ $post->created_at->diffForHumans() }}</span>
+									<span class="namecate">{{$post->news_category->name}}</span>
 								</div>
-								<div class="li-blog-banner">
-									<a href="blog-details-left-sidebar.html"><img class="img-full" src="frontend/images/blog-banner/2.jpg" alt=""></a>
-								</div>
-								<div class="li-blog-banner">
-									<a href="blog-details-left-sidebar.html"><img class="img-full" src="frontend/images/blog-banner/3.jpg" alt=""></a>
-								</div>
-							</div>
-							<div class="li-blog-content">
-								<div class="li-blog-details">
-									<h3 class="li-blog-heading pt-25"><a href="blog-details-left-sidebar.html">blog gallery post</a></h3>
-									<div class="li-blog-meta">
-										<a class="author" href="#"><i class="fa fa-user"></i>Admin</a>
-										<a class="comment" href="#"><i class="fa fa-comment-o"></i> 3 comment</a>
-										<a class="post-time" href="#"><i class="fa fa-calendar"></i> 25 nov 2018</a>
-									</div>
-									<p>Donec vitae hendrerit arcu, sit amet faucibus nisl. Cras pretium arcu ex. Aenean posuere libero eu augue condimentum rhoncus. Cras pretium arcu ex.</p>
-									<a class="read-more" href="blog-details-left-sidebar.html">Read More...</a>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="col-lg-6 col-md-6">
-						<div class="li-blog-single-item pb-25">
-							<div class="li-blog-banner embed-responsive embed-responsive-16by9">
-								<iframe src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/300107209&amp;color=%23ff5500&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false&amp;show_teaser=true&amp;visual=true"></iframe>
-							</div>
-							<div class="li-blog-content">
-								<div class="li-blog-details">
-									<h3 class="li-blog-heading pt-25"><a href="blog-details-left-sidebar.html">blog audio post</a></h3>
-									<div class="li-blog-meta">
-										<a class="author" href="#"><i class="fa fa-user"></i>Admin</a>
-										<a class="comment" href="#"><i class="fa fa-comment-o"></i> 3 comment</a>
-										<a class="post-time" href="#"><i class="fa fa-calendar"></i> 25 nov 2018</a>
-									</div>
-									<p>Donec vitae hendrerit arcu, sit amet faucibus nisl. Cras pretium arcu ex. Aenean posuere libero eu augue condimentum rhoncus. Cras pretium arcu ex.</p>
-									<a class="read-more" href="blog-details-left-sidebar.html">Read More...</a>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="col-lg-6 col-md-6">
-						<div class="li-blog-single-item pb-25">
-							<div class="li-blog-banner embed-responsive embed-responsive-16by9">
-								<iframe src="https://www.youtube.com/embed/DR2c266yWEA" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-							</div>
-							<div class="li-blog-content">
-								<div class="li-blog-details">
-									<h3 class="li-blog-heading pt-25"><a href="blog-details-left-sidebar.html">blog video post</a></h3>
-									<div class="li-blog-meta">
-										<a class="author" href="#"><i class="fa fa-user"></i>Admin</a>
-										<a class="comment" href="#"><i class="fa fa-comment-o"></i> 3 comment</a>
-										<a class="post-time" href="#"><i class="fa fa-calendar"></i> 25 nov 2018</a>
-									</div>
-									<p>Donec vitae hendrerit arcu, sit amet faucibus nisl. Cras pretium arcu ex. Aenean posuere libero eu augue condimentum rhoncus. Cras pretium arcu ex.</p>
-									<a class="read-more" href="blog-details-left-sidebar.html">Read More...</a>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="col-lg-6 col-md-6">
-						<div class="li-blog-single-item pb-25">
-							<div class="li-blog-banner">
-								<a href="blog-details-left-sidebar.html"><img class="img-full" src="frontend/images/blog-banner/5.jpg" alt=""></a>
-							</div>
-							<div class="li-blog-content">
-								<div class="li-blog-details">
-									<h3 class="li-blog-heading pt-25"><a href="blog-details-left-sidebar.html">blog fifth post</a></h3>
-									<div class="li-blog-meta">
-										<a class="author" href="#"><i class="fa fa-user"></i>Admin</a>
-										<a class="comment" href="#"><i class="fa fa-comment-o"></i> 3 comment</a>
-										<a class="post-time" href="#"><i class="fa fa-calendar"></i> 25 nov 2018</a>
-									</div>
-									<p>Donec vitae hendrerit arcu, sit amet faucibus nisl. Cras pretium arcu ex. Aenean posuere libero eu augue condimentum rhoncus. Cras pretium arcu ex.</p>
-									<a class="read-more" href="blog-details-left-sidebar.html">Read More...</a>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="col-lg-6 col-md-6">
-						<div class="li-blog-single-item pb-35">
-							<div class="li-blog-banner">
-								<a href="blog-details-left-sidebar.html"><img class="img-full" src="frontend/images/blog-banner/6.jpg" alt=""></a>
-							</div>
-							<div class="li-blog-content">
-								<div class="li-blog-details">
-									<h3 class="li-blog-heading pt-25"><a href="blog-details-left-sidebar.html">blog second post</a></h3>
-									<div class="li-blog-meta">
-										<a class="author" href="#"><i class="fa fa-user"></i>Admin</a>
-										<a class="comment" href="#"><i class="fa fa-comment-o"></i> 3 comment</a>
-										<a class="post-time" href="#"><i class="fa fa-calendar"></i> 25 nov 2018</a>
-									</div>
-									<p>Donec vitae hendrerit arcu, sit amet faucibus nisl. Cras pretium arcu ex. Aenean posuere libero eu augue condimentum rhoncus. Cras pretium arcu ex.</p>
-									<a class="read-more" href="blog-details-left-sidebar.html">Read More...</a>
-								</div>
-							</div>
-						</div>
-					</div>
+							</a>
+						</li>
+						@endforeach
+					</ul>
 					<!-- Begin Li's Pagination Area -->
 					<div class="col-lg-12">
-						<div class="li-paginatoin-area text-center pt-25">
+						<div class="text-center pt-25">
 							<div class="row">
 								<div class="col-lg-12">
-									<ul class="li-pagination-box">
-										<li><a class="Previous" href="#">Previous</a></li>
-										<li class="active"><a href="#">1</a></li>
-										<li><a href="#">2</a></li>
-										<li><a href="#">3</a></li>
-										<li><a class="Next" href="#">Next</a></li>
+									<ul style="position:relative;left:50%; transform: translateX(-7%);">
+										<li>{!! $posts->links() !!}</li>
 									</ul>
 								</div>
 							</div>
@@ -249,7 +82,96 @@ Trang chủ
 					<!-- Li's Pagination End Here Area -->
 				</div>
 			</div>
-			<!-- Li's Main Content Area End Here -->
+
+			<div class="col-lg-4  order-2">
+				<div class="li-blog-sidebar-wrapper">
+					<div class="li-blog-sidebar">
+						<div class="boxright">
+							<h4 class="topNewsTitle">THẢO LUẬN NHIỀU</h4>
+							<ul class="listpost">
+								<li>
+									<label>1</label>
+									<div class="colu">
+										<a href="">
+											<h3 style="font-weight: normal;font: 14px/18px Arial,Helvetica,sans-serif;color: #333;outline: none;zoom: 1;">Samsung ra mắt máy giặt tích hợp máy sấy có trí tuệ nhân tạo AI</h3>
+										</a>
+									</div>
+									<div class="clr"></div>
+								</li>
+								<li>
+									<label>2</label>
+									<div class="colu">
+										<a href="">
+											<h3 style="font-weight: normal;font: 14px/18px Arial,Helvetica,sans-serif;color: #333;outline: none;zoom: 1;">Nhận ngay 25GB dung lượng Dropbox miễn phí cực đơn giản</h3>
+										</a>
+									</div>
+									<div class="clr"></div>
+								</li>
+								<li>
+									<label>3</label>
+									<div class="colu">
+										<a href="">
+											<h3 style="font-weight: normal;font: 14px/18px Arial,Helvetica,sans-serif;color: #333;outline: none;zoom: 1;">Phát triển thành công ứng dụng xét nghiệm chủng virus corona trên điện thoại</h3>
+										</a>
+									</div>
+									<div class="clr"></div>
+								</li>
+								<li>
+									<label>4</label>
+									<div class="colu">
+										<a href="">
+											<h3 style="font-weight: normal;font: 14px/18px Arial,Helvetica,sans-serif;color: #333;outline: none;zoom: 1;">5 cách khắc phục điện thoại Android không bật được 4G</h3>
+										</a>
+									</div>
+									<div class="clr"></div>
+								</li>
+								<li>
+									<label>5</label>
+									<div class="colu">
+										<a href="">
+											<h3 style="font-weight: normal;font: 14px/18px Arial,Helvetica,sans-serif;color: #333;outline: none;zoom: 1;">Tổng hợp tất cả các phím tắt thông dụng trên Google Chrome, lưu lại để dùng ngay</h3>
+										</a>
+									</div>
+									<div class="clr"></div>
+								</li>
+							</ul>
+						</div>
+						@if(isset($new_posts))
+						<div>
+							<a href="#" class="linkproduct">Bài viết mới nhất</a>
+							<ul class="newspromotion">
+								@foreach($new_posts as $new_post)
+								<li>
+									<a href="{{route('frontend.detail_post',$new_post->slug)}}">
+										<img width="380" height="215" src="{{asset($new_post->image)}}" class="lazy"/>
+										<h3>Đặt trước Samsung Galaxy Z Flip chỉ đến 18h h&#244;m nay (12/02), số lượng cực kỳ giới hạn</h3>
+									</a>
+								</li>
+								@endforeach
+							</ul>
+							<div class="clr"></div>
+						</div>
+						@endif
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<ul class="menu" style="width: 100%;margin: auto;">
+				<li><a @if(!isset($news_cate)) style="background:#fed700;" @endif href="{{route('frontend.news')}}">TIN MỚI</a></li>
+				@foreach($news_categories as $news_category)
+				@if($news_category->parent_id == NULL && $news_category->deleted_at == NULL)
+				@if($loop->last)
+				<li>
+					<a @if(isset($news_cate) && $news_cate->id == $news_category->id) style="background:#fed700;" @endif href="{{route('frontend.detail_news_category',$news_category->slug)}}">{{$news_category->name}}</a>
+					<label class="menulabel">MỚI</label>
+				</li>
+				@else
+				<li><a @if(isset($news_cate) && $news_cate->id == $news_category->id) style="background:#fed700;" @endif href="{{route('frontend.detail_news_category',$news_category->slug)}}">{{$news_category->name}}</a></li>
+				@endif
+				@endif
+				@endforeach				
+			</ul>
 		</div>
 	</div>
 </div>

@@ -18,7 +18,7 @@ class CategoryPolicy
      */
     public function viewAny(User $user)
     {
-        return $user->role > 0;
+        return $user->role > 0 && $user->status == 1;
     }
 
     /**
@@ -30,7 +30,7 @@ class CategoryPolicy
      */
     public function view(User $user, Category $category)
     {
-        return $user->role > 0;
+        return $user->role > 0 && $user->status == 1;
     }
 
     /**

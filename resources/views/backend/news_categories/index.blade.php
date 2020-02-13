@@ -52,6 +52,9 @@ switch(type){
 
       <!-- Default box -->
       <h3 style="text-align: center;">-- Danh sách danh mục tin tức --</h3>
+      @can('create',App\Models\NewsCategory::class)
+        <a href="{{route('backend.news_category.create')}}" class="btn btn-sm btn-success" style="color: white; float: right;margin:0 1% 1% 0;"><i class="fa fa-plus-circle" aria-hidden="true"></i> Thêm mới danh mục tin tức</a>
+      @endcan
       <div class="card">
               </div>
               <!-- /.card-header -->
@@ -71,7 +74,11 @@ switch(type){
 	                  	@foreach($news_categories as $news_category)
 		                    <tr>
 		                      <td>{{ $news_category->id }}</td>
-		                      <td>{{ $news_category->name }}</td>
+		                      <td>
+                            <a class="to-link" style="color: #333;" target="_blank" href="{{route('frontend.detail_news_category',$news_category->slug)}}">
+                              {{ $news_category->name }}
+                            </a>
+                          </td>
                           <td>
                             @if($news_category->parent_id == NULL)
                               Danh mục cha

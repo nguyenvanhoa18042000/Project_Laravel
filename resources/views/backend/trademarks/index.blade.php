@@ -51,6 +51,9 @@ switch(type){
 
       <!-- Default box -->
       <h3 style="text-align: center;">-- Danh sách thương hiệu --</h3>
+      @can('create',App\Models\Trademark::class)
+        <a href="{{route('backend.trademark.create')}}" class="btn btn-sm btn-success" style="color: white; float: right;margin:0 1% 1% 0;"><i class="fa fa-plus-circle" aria-hidden="true"></i> Thêm mới thương hiệu</a>
+      @endcan
       <div class="card">
               </div>
               <!-- /.card-header -->

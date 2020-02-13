@@ -11,10 +11,6 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
 Route::group([
     'namespace' => 'Backend',
     'middleware' => 'auth',
@@ -127,6 +123,7 @@ Route::group([
         Route::get('delete/{id}','PostController@destroy')->name('destroy');
         Route::get('forcedelete/{id}','PostController@forceDelete')->name('forcedelete');
         Route::get('restore/{id}','PostController@restore')->name('restore');
+        Route::get('change_hot/{id}','PostController@changeHot')->name('change_hot');
     });
 
     Route::group([
@@ -153,6 +150,28 @@ Route::group([
     });
 
     Route::group([
+        'prefix' => 'topic',
+        'as' => 'topic.'
+    ],function(){
+        Route::get('index', 'TopicController@index')->name('index');
+        Route::get('create', 'TopicController@create')->name('create');
+        Route::post('store', 'TopicController@store')->name('store');
+        Route::get('edit/{id}', 'TopicController@edit')->name('edit');
+        Route::put('update/{id}','TopicController@update')->name('update');
+        Route::get('delete/{id}','TopicController@destroy')->name('destroy');
+        Route::get('show_contacts_by_topic/{id}','CategoryController@showTopics')->name('show_contacts'); 
+    });
+
+    Route::group([
+        'prefix' => 'contact',
+        'as' => 'contact.'
+    ],function(){
+        Route::get('index', 'ContactController@index')->name('index');
+        // Route::get('i', 'ContactController@index')->name('index');
+        Route::get('delete/{id}','ContactController@destroy')->name('destroy');
+    });
+
+    Route::group([
         'prefix' => 'ajax'
     ],function(){
         Route::get('get_trademarks/{id}', 'TrademarkController@getTrademarks')->name('trademark.get');
@@ -163,12 +182,19 @@ Route::group([
     'namespace' => 'Frontend',
     'as' => 'frontend.'
 ], function (){
-    Route::get('/home', 'HomeController@index')->name('home');
+    Route::get('/', 'HomeController@index')->name('home');
     Route::get('/home/detail_product/{id}', 'HomeController@detailProduct')->name('detail_product');
     Route::get('/home/detail_category/{id}', 'HomeController@detailCategory')->name('detail_category');
     Route::get('/home/detail_category/{idCategory}/trademark/{idTrademark}','HomeController@detailCategoryByTrademark')->name('detail_category_by_trademark');
     Route::get('/home/detail_category/{idCategory}/price/{minPrice}/{maxPrice}','HomeController@detailCategoryByPrice')->name('detail_category_by_price');
     Route::get('/home/detail_category/{idCategory}/trademark/{idTrademark}/price/{minPrice}/{maxPrice}','HomeController@detailCategoryByTrademarkAndPrice')->name('detail_category_by_trademark_and_price');
+
+    Route::get('/home/news', 'HomeController@news')->name('news');
+    Route::get('/home/detail_news_category/{slug}', 'HomeController@detailNewsCategory')->name('detail_news_category');
+    Route::get('/home/detail_post/{slug}', 'HomeController@detailPost')->name('detail_post');
+    
+    Route::get('/contact', 'HomeController@createContact')->name('contact.create');
+    Route::post('/store_contact', 'HomeController@storeContact')->name('contact.store');
 });
 
 Route::group([

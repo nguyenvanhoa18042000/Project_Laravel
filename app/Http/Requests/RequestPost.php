@@ -38,6 +38,7 @@ class RequestPost extends FormRequest
                 'news_category_id' => 'bail|required',
                 'description' => 'bail|required',
                 'image' => 'bail|image|required|mimes:jpeg,png,jpg|max:2048',
+                'background_img_title' => 'bail|image|mimes:jpeg,png,jpg|max:2048',
                 'content' => 'bail|required',
             ];
             break;
@@ -51,6 +52,7 @@ class RequestPost extends FormRequest
                 'news_category_id' => 'bail|required',
                 'description' => 'bail|required',
                 'image' => 'bail|image|mimes:jpeg,png,jpg|max:2048',
+                'background_img_title' => 'bail|image|mimes:jpeg,png,jpg|max:2048',
                 'content' => 'bail|required',
             ];
             break;
@@ -82,6 +84,7 @@ public function attributes(){
         'description' => 'Mô tả bài viết',
         'news_category_id' => 'Danh mục bài viết',
         'image' => 'Ảnh bài viết',
+        'background_img_title' => 'Ảnh nền tiêu đề',
         'content' =>'Nội dung bài viết'
     ];
     return $attributes;

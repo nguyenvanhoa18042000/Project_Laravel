@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Session;
 
 class PostController extends Controller{
 	public function index(){
-		$posts = post::with('news_category:id,name')->withTrashed();
+		$posts = Post::with('news_category:id,name')->withTrashed();
 		$posts = $posts->orderBy('updated_at','DESC')->paginate(4);
 		$news_categories = NewsCategory::all();
 		return view('backend.posts.index')->with([
@@ -49,8 +49,15 @@ class PostController extends Controller{
 
 		$image = $requestPost->file('image');
 		$name_image = date('YmdHis')."_".$image->getClientOriginalName();
-		Storage::disk('public')->putFileAs('images/post/', $requestPost->file('image'), $name_image);
-		$post->image = 'storage/images/post/'.$name_image;
+		Storage::disk('public')->putFileAs('images/post/thumbnail/', $requestPost->file('image'), $name_image);
+		$post->image = 'storage/images/post/thumbnail/'.$name_image;
+
+		if($requestPost->hasFile('background_img_title')){
+			$background_img_title = $requestPost->file('background_img_title');
+			$name_background_img_title = date('YmdHis')."_".$background_img_title->getClientOriginalName();
+			Storage::disk('public')->putFileAs('images/post/background_img_title/', $requestPost->file('background_img_title'), $name_background_img_title);
+			$post->background_img_title = 'storage/images/post/background_img_title/'.$name_background_img_title;
+		}
 
 		$post->save();
     	return redirect()->route('backend.post.index');
@@ -80,10 +87,18 @@ class PostController extends Controller{
 		$post->hot = $requestPost->get('hot') =='on' ? 1 : 0;
 
 		if($requestPost->hasFile('image')){
+			File::delete($post->image);
 			$image = $requestPost->file('image');
 			$name_image = date('YmdHis')."_".$image->getClientOriginalName();
-			Storage::disk('public')->putFileAs('images/post/', $requestPost->file('image'), $name_image);
-			$post->image = 'storage/images/post/'.$name_image;
+			Storage::disk('public')->putFileAs('images/post/thumbnail/', $requestPost->file('image'), $name_image);
+			$post->image = 'storage/images/post/thumbnail/'.$name_image;
+		}
+		if($requestPost->hasFile('background_img_title')){
+			File::delete($post->background_img_title);
+			$background_img_title = $requestPost->file('background_img_title');
+			$name_background_img_title = date('YmdHis')."_".$background_img_title->getClientOriginalName();
+			Storage::disk('public')->putFileAs('images/post/background_img_title/', $requestPost->file('background_img_title'), $name_background_img_title);
+			$post->background_img_title = 'storage/images/post/background_img_title/'.$name_background_img_title;
 		}
 		$post->update();
     	return redirect()->route('backend.post.index');
@@ -98,6 +113,7 @@ class PostController extends Controller{
 	public function forceDelete($id){
 		$post = Post::onlyTrashed()->findOrFail($id);
 		File::delete($post->image);
+		File::delete($post->background_img_title);
 		$post->forceDelete();
 		return redirect()->route('backend.post.index');
 	}
@@ -106,5 +122,15 @@ class PostController extends Controller{
 		$post = Post::onlyTrashed()->findOrFail($id);
 		$post->restore();
 		return redirect()->route('backend.post.index');
+	}
+
+	public function changeHot($id){
+		$post = Post::withTrashed()->findOrFail($id);
+
+		if(Auth::user()->can('changeHot',$post)){
+	    	$post->hot = !$post->hot;
+	    	$post->update();
+	    	return redirect()->back();
+	    }else{abort(403);}
 	}
 }

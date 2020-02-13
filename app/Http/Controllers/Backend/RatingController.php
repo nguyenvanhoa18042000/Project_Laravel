@@ -24,22 +24,26 @@ class RatingController extends Controller{
 
     public function store(Request $requet,$id){
         $product = Product::findOrFail($id);
-    	if($requet->ajax()){
-    		$user = Auth::user();
-    		Rating::insert([
-    			'product_id' => $id,
-    			'number_star' => $requet->number_star,
-    			'content' => $requet->content_rating,
-    			'user_id' => Auth::user()->id,
-    			'created_at' => Carbon::now(),
-    			'updated_at' => Carbon::now()
-    		]);
+        if(!Auth::user()){
+            return response()->json(['code' => '0']);
+        }else{
+        	if($requet->ajax()){
+        		$user = Auth::user();
+        		Rating::insert([
+        			'product_id' => $id,
+        			'number_star' => $requet->number_star,
+        			'content' => $requet->content_rating,
+        			'user_id' => Auth::user()->id,
+        			'created_at' => Carbon::now(),
+        			'updated_at' => Carbon::now()
+        		]);
 
-    		$product->total_rating +=1;
-    		$product->total_number_star += $requet->number_star;
-    		$product->save();
+        		$product->total_rating +=1;
+        		$product->total_number_star += $requet->number_star;
+        		$product->save();
 
-    		return response()->json(['code' => $product->save()]);
-    	}
+        		return response()->json(['code' => $product->save()]);
+            }
+        }
     }
 }

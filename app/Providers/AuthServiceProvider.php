@@ -11,6 +11,10 @@ use App\Models\Trademark;
 use App\Models\ProductImage;
 use App\Models\NewsCategory;
 use App\Models\Post;
+use App\Models\Topic;
+use App\Models\Contact;
+use App\Policies\ContactPolicy;
+use App\Policies\TopicPolicy;
 use App\Policies\PostPolicy;
 use App\Policies\NewsCategoryPolicy;
 use App\Policies\ProductImagePolicy;
@@ -33,6 +37,8 @@ class AuthServiceProvider extends ServiceProvider
         ProductImage::class => ProductImagePolicy::class,
         NewsCategory::class => NewsCategoryPolicy::class,
         Post::class => PostPolicy::class,
+        Topic::class => TopicPolicy::class,
+        Contact::class => ContactPolicy::class,
     ];
 
     /**

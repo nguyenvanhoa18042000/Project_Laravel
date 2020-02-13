@@ -18,7 +18,7 @@ class PostPolicy
      */
     public function viewAny(User $user)
     {
-        return $user->role > 0;
+        return $user->role > 0 && $user->status == 1;
     }
 
     /**
@@ -90,5 +90,13 @@ class PostPolicy
     public function forceDelete(User $user, Post $post)
     {
         return ($user->role == 2 && $user->status == 1);
+    }
+
+    public function changeHot(User $user, Post $post){
+        return ($user->role == 2 && $user->status == 1) || ($user->id == $post->user_id && $user->status == 1) ;
+    }
+
+    public function notChangeHot(User $user, Post $post){
+        return $user->role != 2 || $user->id != $post->user_id ;
     }
 }

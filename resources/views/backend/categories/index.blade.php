@@ -50,6 +50,9 @@ switch(type){
 
       <!-- Default box -->
       <h3 style="text-align: center;">-- Danh sách danh mục --</h3>
+      @can('create',App\Models\Category::class)
+        <a href="{{route('backend.category.create')}}" class="btn btn-sm btn-success" style="color: white; float: right;margin:0 1% 1% 0;"><i class="fa fa-plus-circle" aria-hidden="true"></i> Thêm mới danh mục sản phẩm</a>
+      @endcan
       <div class="card">
               </div>
               <!-- /.card-header -->
@@ -69,7 +72,10 @@ switch(type){
 	                  	@foreach($categories as $category)
 		                    <tr>
 		                      <td>{{ $category->id }}</td>
-		                      <td>{{ $category->name }}</td>
+		                      <td>
+                            <a class="to-link" style="color: #333;" target="_blank" href="{{route('frontend.detail_category',$category->id)}}">{{ $category->name }}
+                            </a>
+                          </td>
                           <td>
                             @if($category->parent_id == NULL)
                               Danh mục cha
