@@ -18,9 +18,9 @@
                         <ul class="ht-menu">
                             <!-- Begin Setting Area -->
                             @if(Auth::user())
-                            <li>
-                                <div class="ht-setting-trigger" style="font-size: 15px;">
-                                    <div style="width: 100px;">
+                            <li style="width: 29%">
+                                <div class="ht-setting-trigger" style="font-size: 15px;width: 100%">
+                                    <div style="text-align: right;">
                                         <img src="{{asset(Auth::user()->avatar)}}" style="width: 30px;height: 30px;border-radius: 50%;margin-right: 6%"><span>{{Auth::user()->name}}</span>
                                     </div>
                                 </div>
@@ -29,7 +29,7 @@
                                         @if(Auth::user()->role == 2 || Auth::user()->role == 1)
                                         <li><a href="{{route('backend.home')}}" style="color: black">Trang hệ thống</a></li>
                                         @else
-                                        <li><a href="" style="color: black">Trang cá nhân</a></li>
+                                        <li><a href="{{route('profile.index')}}" style="color: black">Trang cá nhân</a></li>
                                         @endif
                                         <li>
                                             <a href="{{ route('logout') }}" style="color: black"
@@ -158,59 +158,53 @@
                     <div class="header-middle-right">
                         <ul class="hm-menu">
                             <!-- Begin Header Middle Wishlist Area -->
-                            <li class="hm-wishlist">
+  <!--                           <li class="hm-wishlist">
                                 <a href="wishlist.html">
                                     <span class="cart-item-count wishlist-item-count">0</span>
                                     <i class="fa fa-heart-o"></i>
                                 </a>
-                            </li>
+                            </li> -->
                             <!-- Header Middle Wishlist Area End Here -->
                             <!-- Begin Header Mini Cart Area -->
                             <li class="hm-minicart">
                                 <div class="hm-minicart-trigger">
                                     <span class="item-icon"></span>
-                                    <span class="item-text">£160
-                                        <span class="cart-item-count">2</span>
+                                    <span class="item-text">
+                                        <span class="cart-item-count" style="top: -12px;left: -65px;">{{\Cart::count()}}</span>
                                     </span>
                                 </div>
                                 <span></span>
+                                @if((\Cart::count()) > 0)
                                 <div class="minicart">
                                     <ul class="minicart-product-list">
+                                        @foreach((\Cart::content()) as $product)
                                         <li>
-                                            <a href="single-product.html" class="minicart-product-image">
-                                                <img src="{{asset('frontend/images/product/small-size/3.jpg')}}" alt="cart products">
+                                            <a href="{{route('frontend.detail_product',['category_id' => $product->options->category_id, 'slug' => $product->options->slug])}}" class="minicart-product-image">
+                                                <img src="{{asset($product->options->image)}}" alt="cart products">
                                             </a>
                                             <div class="minicart-product-details">
-                                                <h6><a href="single-product.html">Aenean eu tristique</a></h6>
-                                                <span>£80 x 1</span>
+                                                <h6><a href="{{route('frontend.detail_product',['category_id' => $product->options->category_id, 'slug' => $product->options->slug])}}">{{$product->name}}</a></h6>
+                                                <span>{{number_format($product->price)}}₫ x {{$product->qty}}</span>
                                             </div>
                                             <button class="close">
-                                                <i class="fa fa-close"></i>
+                                                <a href="{{route('frontend.destroy.cart',$product->rowId)}}">
+                                                    <i class="fa fa-close"></i>
+                                                </a>
                                             </button>
                                         </li>
-                                        <li>
-                                            <a href="single-product.html" class="minicart-product-image">
-                                                <img src="{{asset('frontend/images/product/small-size/4.jpg')}}" alt="cart products">
-                                            </a>
-                                            <div class="minicart-product-details">
-                                                <h6><a href="single-product.html">Aenean eu tristique</a></h6>
-                                                <span>£80 x 1</span>
-                                            </div>
-                                            <button class="close">
-                                                <i class="fa fa-close"></i>
-                                            </button>
-                                        </li>
+                                        @endforeach
                                     </ul>
-                                    <p class="minicart-total">SUBTOTAL: <span>£160</span></p>
+                                    <p class="minicart-total">Tổng tiền: <span style="color: #e80f0f">{{\Cart::subtotal()}}₫</span></p>
                                     <div class="minicart-button">
-                                        <a href="checkout.html" class="li-button li-button-dark li-button-fullwidth li-button-sm">
-                                            <span>View Full Cart</span>
+                                        <a href="{{route('frontend.list.cart')}}" class="li-button li-button-dark li-button-fullwidth li-button-sm">
+                                            <span>Giỏ hàng</span>
                                         </a>
-                                        <a href="checkout.html" class="li-button li-button-fullwidth li-button-sm">
-                                            <span>Checkout</span>
+                                        <a href="{{route('frontend.get.form.pay')}}" class="li-button li-button-fullwidth li-button-sm">
+                                            <span>Thanh toán</span>
                                         </a>
                                     </div>
                                 </div>
+                                @endif
                             </li>
                             <!-- Header Mini Cart Area End Here -->
                         </ul>
@@ -234,12 +228,24 @@
             </form>
             <nav style="height: 100%;">
                 @foreach($categories as $category)
-                    @if($category->parent_id == NULL)
-                    <a href="{{route('frontend.detail_category',$category->id)}}" style="vertical-align: middle;" class="mobile" >
-                    {{$category->name}}
+                    @if($category->parent_id == NULL && $category->deleted_at == NULL)
+
+                    <a href="{{route('frontend.detail_category',$category->slug)}}" style="vertical-align: middle;" class="mobile" >
+                        @if($category->image != null)
+                        <img style="background-position: -190px 0;width: 25px;height: 25px;display: block;margin: 2px auto 3px;" src="{{asset($category->image)}}">
+                        @endif
+                        {{$category->name}}
                     </a>
                     @endif
                 @endforeach
+                <a href="{{route('frontend.news')}}" class="news" title="Tin công nghệ" style="vertical-align: middle;">
+                    <img style="background-position: -190px 0;width: 25px;height: 25px;display: block;margin: 2px auto 3px;" src="http://mauweb.monamedia.net/thegioididong/wp-content/uploads/2017/12/folded-newspaper-1.png">
+                    Tin công nghệ
+                </a>
+                <a href="{{route('frontend.contact.create')}}" class="" title="Hỏi đáp" style="vertical-align: middle;">
+                    <img style="background-position: -190px 0;width: 25px;height: 25px;display: block;margin: 2px auto 3px;" src="http://mauweb.monamedia.net/thegioididong/wp-content/uploads/2017/12/discuss-issue-1.png">
+                    Hỏi đáp
+                </a>
             </nav>
             <div id="gifjumping" class="gifjumping" style="display:none;">
                 <div class="gifjumping__Container">

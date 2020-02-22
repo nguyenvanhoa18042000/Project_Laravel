@@ -1,0 +1,1 @@
+<h3>{{$code}} là mặt khẩu mới của bạn</h3>

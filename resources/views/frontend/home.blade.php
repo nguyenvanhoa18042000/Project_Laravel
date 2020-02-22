@@ -10,183 +10,77 @@ Trang chủ
 @endsection
 
 @section('content')
-
-<div class="container">
+<div class="box-home" style="margin-bottom: 2%;">
+<div class="container" style="margin-top: 1%;">
+    <div class="row">
+        <div class="col-8" style=" padding-left: 0;height: 239px;"><img style="width: 100%;height: 239px;" src="https://cdn.tgdd.vn/2020/02/banner/800x300-800x300.jpg"></div>
+        <div class="col-4" style="padding-left: 0;height: 239px;">
+            <img style="margin-bottom: 4%;width: 100%;height: 48%" src="https://cdn.tgdd.vn/2020/02/banner/A01-398-110-398x110-3.png">
+            <img style="width: 100%;height: 44%;" src="https://cdn.tgdd.vn/2020/02/banner/iphone-7plus-398-110-398x110-2.png">
+        </div>
+    </div>
+</div>
+@foreach($categories as $category)
+@if($category->hot == App\Models\Category::HOT)
+<div class="container" style="margin-top: 1%;">
     <div class="row">
         <div class="navigat cate42">
-            <h2>Điện thoại nổi bật nhất</h2>
+            <h2>{{$category->name}} nổi bật nhất</h2>
             <div class="viewallcat">
-
-                <a href="https://www.thegioididong.com/dtdd?s=doc-quyen">Điện thoại độc quyền</a>
-                <a href="https://www.thegioididong.com/dtdd/iphone-11-pro-max">iPhone 11 Pro Max</a>
-                <a href="https://www.thegioididong.com/dtdd/iphone-11">iPhone 11</a>
-                <a href="https://www.thegioididong.com/dtdd-samsung">Điện thoại Samsung</a>
-                <a href="https://www.thegioididong.com/dtdd/samsung-galaxy-note-10-lite">Galaxy Note 10 Lite</a>
-                <a href="/dtdd" class="mobile">Xem tất cả điện thoại</a>
+                @foreach($category->trademarks as $trademark)
+                <a href="{{route('frontend.detail_category',['slug' => $category->slug,'trademark' => $trademark->slug])}}"><span style="text-transform: capitalize;">{{$trademark->name}}</span></a>
+                @endforeach
+                <a href="{{route('frontend.detail_category',$category->slug)}}" class="mobile">Xem tất cả <span style="text-transform: lowercase;">{{$category->name}}</span></a>
             </div>
         </div>
-        <ul class="homeproduct ">
-            <li class="feature" data-id="194251">
-                <a href="/dtdd/samsung-galaxy-s10-lite">
-                    <img width="600" height="275" src="https://cdn.tgdd.vn/Products/Images/42/194251/Feature/s10-lite-spec-ft-480x222-1.jpg" class="lazy" alt="Samsung Galaxy S10 Lite" />
-                    <h3>Samsung Galaxy S10 Lite</h3>
-                    <div class="price"><strong>14.990.000₫</strong></div>
-                    <label class="installment">Trả góp 0%</label>        
-                </a>
-            </li>
-            <li data-id="210441">
-                <!--#region Ngành hàng chính -->
-                <a href="/dtdd/oppo-a5-2020" >
-                    <img width="180" height="180" src="https://cdn.tgdd.vn/Products/Images/42/210441/oppo-a5-2020-white-400x400.jpg" class="lazy" alt="OPPO A5 (2020) 64GB" />
-                    <h3>OPPO A5 (2020) 64GB</h3>
-                    <div class="price">
-                        <strong>3.990.000₫</strong>
-                        <span>4.290.000₫</span>
+        <ul class="homeproduct" style="border-left:1px solid #eee ">
+            @foreach($category->products->take(10) as $product)
+            <li class="product" data-id="210441" style="padding-bottom: 20px;padding-top: 5px;">
+                <a href="{{route('frontend.detail_product',$product->slug)}}" >
+                    <img width="180" height="180" src="{{asset($product->image)}}" />
+                    <h3 class="name_product" style="margin-bottom: 0">{{$product->name}}</h3>
+                    <div class="price" style="padding-bottom: 5px;">
+                        @php 
+                        $price_sale = $product->sale_price - ($product->sale_price * (($product->discount_percent)/100))
+                        @endphp
+                        <strong>
+                            {{number_format($price_sale,0,",","."
+                            )}}₫
+                        </strong>
+                        @if($product->discount_percent > 0)
+                        <span style="font: 14px/18px Helvetica,Arial,'DejaVu Sans','Liberation Sans',Freesans,sans-serif;font-size: 13px;">{{$product->sale_price}}₫</span>
+                        @endif
                     </div>
-
-                    <label class="discount">GIẢM 300.000₫</label>        </a>
-                    <!--#endregion -->
-
-                </li>
-                <li data-id="214908">
-                    <!--#region Ngành hàng chính -->
-                    <a href="/dtdd/samsung-galaxy-a01" >
-                        <img width="180" height="180" src="https://cdn.tgdd.vn/Products/Images/42/214908/samsung-galaxy-a01-600x600-4-400x400.jpg" class="lazy" alt="Samsung Galaxy A01" />
-                        <h3>Samsung Galaxy A01</h3>
-                        <div class="price"><strong>2.790.000₫</strong></div>
-
-
-                        <label class="installment">Trả góp 0%</label>
-                    </a>
-                    <!--#endregion -->
-
-                </li>
-                <li data-id="153856">
-                    <!--#region Ngành hàng chính -->
-                    <a href="/dtdd/iphone-11" >
-                        <img width="180" height="180" src="https://cdn.tgdd.vn/Products/Images/42/153856/iphone-11-red-400x400.jpg" class="lazy" alt="iPhone 11 64GB" />
-                        <h3>iPhone 11 64GB</h3>
-                        <div class="price"><strong>21.990.000₫</strong></div>
-
-
-                        <label class="installment">Trả góp 0%</label>        </a>
-                        <!--#endregion -->
-
-                    </li>
-                    <li class="feature" data-id="202028">
-
-                        <a href="/dtdd/oppo-a9">
-                            <img width="600" height="275" src="https://cdn.tgdd.vn/Products/Images/42/202028/Feature/oppo-a9-2020-ft-480x222-1.jpg" class="lazy" alt="OPPO A9 (2020)" />
-                            <h3>OPPO A9 (2020)</h3>
-                            <div class="price">
-                                <strong>5.990.000₫</strong>
-                                <span>6.990.000₫</span>
-                            </div>
-                            <label class="discount">GIẢM 1.000.000₫</label>        </a>
-
-                        </li>
-                    <!-- <li data-id="218107">
-                        <a href="/dtdd/nokia-c1" >
-                            <img width="180" height="180" data-original="https://cdn.tgdd.vn/Products/Images/42/218107/nokia-c1-600x600-1-400x400.jpg" class="lazy" alt="Nokia C1" />
-                            <h3>Nokia C1</h3>
-                            <div class="price"><strong>1.390.000₫</strong></div>
-
-                            <div class="promo noimage">
-                                <p> Bảo h&#224;nh ch&#237;nh h&#227;ng 1 đổi 1 trong 1 năm</p>
-                            </div>
-                            <label class="new">Mới ra mắt</label>
-                        </a>
-                    </li> -->
-                </ul>
-            </div>
-        </div>
-        <div class="container">
-    <div class="row">
-        <div class="navigat cate42">
-            <h2>Điện thoại nổi bật nhất</h2>
-            <div class="viewallcat">
-
-                <a href="https://www.thegioididong.com/dtdd?s=doc-quyen">Điện thoại độc quyền</a>
-                <a href="https://www.thegioididong.com/dtdd/iphone-11-pro-max">iPhone 11 Pro Max</a>
-                <a href="https://www.thegioididong.com/dtdd/iphone-11">iPhone 11</a>
-                <a href="https://www.thegioididong.com/dtdd-samsung">Điện thoại Samsung</a>
-                <a href="https://www.thegioididong.com/dtdd/samsung-galaxy-note-10-lite">Galaxy Note 10 Lite</a>
-                <a href="/dtdd" class="mobile">Xem tất cả điện thoại</a>
-            </div>
-        </div>
-        <ul class="homeproduct ">
-            <li class="feature" data-id="194251">
-                <a href="/dtdd/samsung-galaxy-s10-lite">
-                    <img width="600" height="275" src="https://cdn.tgdd.vn/Products/Images/42/194251/Feature/s10-lite-spec-ft-480x222-1.jpg" class="lazy" alt="Samsung Galaxy S10 Lite" />
-                    <h3>Samsung Galaxy S10 Lite</h3>
-                    <div class="price"><strong>14.990.000₫</strong></div>
-                    <label class="installment">Trả góp 0%</label>        
-                </a>
-            </li>
-            <li data-id="210441">
-                <!--#region Ngành hàng chính -->
-                <a href="/dtdd/oppo-a5-2020" >
-                    <img width="180" height="180" src="https://cdn.tgdd.vn/Products/Images/42/210441/oppo-a5-2020-white-400x400.jpg" class="lazy" alt="OPPO A5 (2020) 64GB" />
-                    <h3>OPPO A5 (2020) 64GB</h3>
-                    <div class="price">
-                        <strong>3.990.000₫</strong>
-                        <span>4.290.000₫</span>
-                    </div>
-
-                    <label class="discount">GIẢM 300.000₫</label>        </a>
-                    <!--#endregion -->
-
-                </li>
-                <li data-id="214908">
-                    <!--#region Ngành hàng chính -->
-                    <a href="/dtdd/samsung-galaxy-a01" >
-                        <img width="180" height="180" src="https://cdn.tgdd.vn/Products/Images/42/214908/samsung-galaxy-a01-600x600-4-400x400.jpg" class="lazy" alt="Samsung Galaxy A01" />
-                        <h3>Samsung Galaxy A01</h3>
-                        <div class="price"><strong>2.790.000₫</strong></div>
-
-
-                        <label class="installment">Trả góp 0%</label>
-                    </a>
-                    <!--#endregion -->
-
-                </li>
-                <li data-id="153856">
-                    <!--#region Ngành hàng chính -->
-                    <a href="/dtdd/iphone-11" >
-                        <img width="180" height="180" src="https://cdn.tgdd.vn/Products/Images/42/153856/iphone-11-red-400x400.jpg" class="lazy" alt="iPhone 11 64GB" />
-                        <h3>iPhone 11 64GB</h3>
-                        <div class="price"><strong>21.990.000₫</strong></div>
-
-
-                        <label class="installment">Trả góp 0%</label>        </a>
-                        <!--#endregion -->
-
-                    </li>
-                    <li class="feature" data-id="202028">
-
-                        <a href="/dtdd/oppo-a9">
-                            <img width="600" height="275" src="https://cdn.tgdd.vn/Products/Images/42/202028/Feature/oppo-a9-2020-ft-480x222-1.jpg" class="lazy" alt="OPPO A9 (2020)" />
-                            <h3>OPPO A9 (2020)</h3>
-                            <div class="price">
-                                <strong>5.990.000₫</strong>
-                                <span>6.990.000₫</span>
-                            </div>
-                            <label class="discount">GIẢM 1.000.000₫</label>        </a>
-
-                        </li>
-                    <!-- <li data-id="218107">
-                        <a href="/dtdd/nokia-c1" >
-                            <img width="180" height="180" data-original="https://cdn.tgdd.vn/Products/Images/42/218107/nokia-c1-600x600-1-400x400.jpg" class="lazy" alt="Nokia C1" />
-                            <h3>Nokia C1</h3>
-                            <div class="price"><strong>1.390.000₫</strong></div>
-
-                            <div class="promo noimage">
-                                <p> Bảo h&#224;nh ch&#237;nh h&#227;ng 1 đổi 1 trong 1 năm</p>
-                            </div>
-                            <label class="new">Mới ra mắt</label>
-                        </a>
-                    </li> -->
-                </ul>
-            </div>
-        </div>
-        @endsection
+                    <div class="ratingresult" style="padding: 0 10px;">
+                        <?php
+                        $star = 0;
+                        if ($product->total_rating) {
+                          $star = round($product->total_number_star / $product->total_rating,1);
+                      }
+                      ?>
+                      @for($i=1;$i<=5;$i++)
+                      <i class="fa fa-star" style="color:{{ $i <= $star ? '#ff9705' : '#898989'}};"></i>
+                      @endfor
+                      <!-- </span> -->
+                      <span style="text-decoration: none;">{{$product->total_rating}} đánh giá</span>
+                  </div>
+                  @if($product->amount != 0)
+                  @if($product->discount_percent > 0)
+                  <label class="discount">GIẢM {{number_format($product->sale_price - $price_sale,0,",",".")}}₫</label>
+                  @else
+                  <label class="installment">Trả góp 0%</label>
+                  @endif
+                  @else
+                  <label style="background: #22bddb" class="installment">Đang nhập hàng</label> 
+                  @endif
+                  <a href="{{route('frontend.add.cart',$product->id)}}" class="btn btn-store">MUA NGAY</a>       
+              </a>
+          </li>
+          @endforeach
+      </ul>
+    </div>
+</div>
+@endif
+@endforeach
+</div>
+@endsection

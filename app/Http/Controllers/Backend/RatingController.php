@@ -11,8 +11,7 @@ use Carbon\Carbon;
 
 class RatingController extends Controller{
     public function index(){
-        $ratings = Rating::with('user:id,name','product:id,name')->withTrashed()->orderBy('created_at','DESC')->paginate(9);
-
+        $ratings = Rating::with('user','product')->withTrashed()->orderBy('created_at','DESC')->paginate(9);
         return view('backend.ratings.index')->with(['ratings' => $ratings]);
     }
 

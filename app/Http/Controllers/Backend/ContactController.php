@@ -28,9 +28,6 @@ class ContactController extends Controller
     	if($contact->delete()){
             Session::flash('message', 'Xóa thành công');
             Session::flash('alert-type', 'success');
-        }else{
-            Session::flash('message', 'Xóa thất bại');
-            Session::flash('alert-type', 'error');
         }
     	return redirect()->route('backend.contact.index');
     }

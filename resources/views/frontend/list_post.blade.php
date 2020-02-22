@@ -86,7 +86,7 @@ Trang chủ
 			<div class="col-lg-4  order-2">
 				<div class="li-blog-sidebar-wrapper">
 					<div class="li-blog-sidebar">
-						<div class="boxright">
+						<!-- <div class="boxright">
 							<h4 class="topNewsTitle">THẢO LUẬN NHIỀU</h4>
 							<ul class="listpost">
 								<li>
@@ -135,6 +135,20 @@ Trang chủ
 									<div class="clr"></div>
 								</li>
 							</ul>
+						</div> -->
+						<div style="margin-top: 3%;">
+							<a href="#" class="linkproduct">Bài viết được xem nhiều</a>
+							<ul class="newspromotion">
+								@foreach($popular_posts as $popular_post)
+								<li>
+									<a href="{{route('frontend.detail_post',$popular_post->slug)}}">
+										<img width="380" height="215" src="{{asset($popular_post->image)}}" class="lazy"/>
+										<h3>{{ (Str::limit($popular_post->title, 80, $end='...')) }}</h3>
+									</a>
+								</li>
+								@endforeach
+							</ul>
+							<div class="clr"></div>
 						</div>
 						@if(isset($new_posts))
 						<div>
@@ -144,7 +158,7 @@ Trang chủ
 								<li>
 									<a href="{{route('frontend.detail_post',$new_post->slug)}}">
 										<img width="380" height="215" src="{{asset($new_post->image)}}" class="lazy"/>
-										<h3>Đặt trước Samsung Galaxy Z Flip chỉ đến 18h h&#244;m nay (12/02), số lượng cực kỳ giới hạn</h3>
+										<h3>{{ (Str::limit($new_post->title, 80, $end='...')) }}</h3>
 									</a>
 								</li>
 								@endforeach

@@ -89,8 +89,6 @@ switch(type){
                             @endif
                           </td>
 		                      <td>
-                            <a href="{{ route('backend.topic.show_contacts',$topic->id) }}" class="btn btn-success btn-sm " data-toggle="tooltip" title="Liên hệ của chủ đề" style="margin-right: 1%"><i class="fas fa-list"></i></a>
-                            
                             @can('update',$topic)
 		                      	<a href="{{ route('backend.topic.edit',$topic->id) }}" class="btn btn_edit btn-sm " data-toggle="tooltip" title="Chỉnh sửa" style="margin-right: 1%"><i class="fas fa-edit"></i></a>
                             @endcan

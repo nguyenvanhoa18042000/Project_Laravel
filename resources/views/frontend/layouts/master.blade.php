@@ -40,6 +40,7 @@
     <link rel="stylesheet" href="{{asset('frontend/style.css')}}">
     <!-- Responsive CSS -->
     <link rel="stylesheet" href="{{asset('frontend/css/responsive.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{asset('backend/plugins/toastr/toastr.min.css')}}">
      <link rel="stylesheet" href="{{asset('frontend/css/my_css.css')}}">
     <!-- Modernizr js -->
     <script src="{{asset('frontend/js/vendor/modernizr-2.8.3.min.js')}}"></script>
@@ -113,8 +114,27 @@
     <script src="{{asset('frontend/js/jquery.nice-select.min.js')}}"></script>
     <!-- ScrollUp js -->
     <script src="{{asset('frontend/js/scrollUp.min.js')}}"></script>
+    <script type="text/javascript" src="{{asset('backend/plugins/toastr/toastr.min.js')}}"></script>
     <!-- Main/Activator js -->
     <script src="{{asset('frontend/js/main.js')}}"></script>
+    <script>
+    @if(Session::has('message'))
+    toastr.options = {
+      "closeButton": true,
+      "progressBar": true,
+      "timeOut": "3000",
+    }
+    var type="{{Session::get('alert-type')}}"
+    switch(type){
+      case 'success':
+        toastr.success("{{ Session::get('message') }}");
+        break;
+      case 'error':
+        toastr.error("{{ Session::get('message') }}");
+        break;
+    }
+    @endif
+    </script>
     @yield('script')
 </body>
 

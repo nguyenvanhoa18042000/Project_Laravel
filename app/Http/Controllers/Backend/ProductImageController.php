@@ -13,6 +13,5 @@ use Illuminate\Support\Facades\File;
 
 class ProductImageController extends Controller{
     public function index($id){
-    	$product_image = 
     }
 }

@@ -41,7 +41,7 @@ class NewsCategoryPolicy
      */
     public function create(User $user)
     {
-        return ($user->role > 0 && $user->status == 1);
+        return ($user->role == 2 && $user->status == 1);
     }
 
     /**
@@ -53,7 +53,7 @@ class NewsCategoryPolicy
      */
     public function update(User $user, NewsCategory $newsCategory)
     {
-        return ($user->role == 2 && $user->status == 1) || ($user->id == $newsCategory->user_id && $user->status == 1);
+        return ($user->role == 2 && $user->status == 1);
     }
 
     /**

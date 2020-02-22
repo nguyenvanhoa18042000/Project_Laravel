@@ -26,6 +26,7 @@
                          with font-awesome or any other icon font library 
                          thẻ li có class="menu-open" sau has-treeview 
                          thẻ a có class= "active" sau nav-link -->
+                    @if(Auth::user()->role == 2 || Auth::user()->role == 1)
                     <li class="nav-item has-treeview">
                         <a href="{{route('backend.home')}}" class="nav-link add-click">
                             <i class="nav-icon fas fa-home"></i>
@@ -34,6 +35,8 @@
                             </p>
                         </a>
                     </li>
+                    @endif
+                    @if(Auth::user()->role == 2 || Auth::user()->role == 1)
                     <li class="nav-item has-treeview">
                         <a href="#" class="nav-link">
                             <i class="nav-icon fas fa-chart-pie"></i>
@@ -43,12 +46,14 @@
                             </p>
                         </a>
                         <ul class="nav nav-treeview">
+                            @if(Auth::user()->role == 2)
                             <li class="nav-item">
                                 <a href="{{ route('backend.category.create') }}" class="nav-link" style="margin-left: 11%">
                                     <i class="nav-icon fas fa-plus"></i>
                                     <p>Tạo mới</p>
                                 </a>
                             </li>
+                            @endif
                             <li class="nav-item">
                                 <a href="{{ route('backend.category.index') }}" class="nav-link" style="margin-left: 11%">
                                     <i class="nav-icon fa fa-list-alt" aria-hidden="true"></i>
@@ -57,6 +62,8 @@
                             </li>
                         </ul>
                     </li>
+                    @endif
+                    @if(Auth::user()->role == 2 || Auth::user()->role == 1)
                     <li class="nav-item has-treeview">
                         <a href="#" class="nav-link">
                             <i class="nav-icon fab fa-product-hunt"></i>
@@ -83,6 +90,8 @@
 
                         </ul>
                     </li>
+                    @endif
+                    @if(Auth::user()->role == 2 || Auth::user()->role == 1)
                     <li class="nav-item has-treeview">
                         <a href="#" class="nav-link">
                             <i class="nav-icon fa fa-trademark" aria-hidden="true"></i>
@@ -93,12 +102,14 @@
                             </p>
                         </a>
                         <ul class="nav nav-treeview">
+                            @if(Auth::user()->role == 2)
                             <li class="nav-item">
                                 <a href="{{ route('backend.trademark.create') }}" class="nav-link" style="margin-left: 11%">
                                     <i class="nav-icon fas fa-plus"></i>
                                     <p>Tạo mới</p>
                                 </a>
                             </li>
+                            @endif
                             <li class="nav-item">
                                 <a href="{{ route('backend.trademark.index') }}" class="nav-link" style="margin-left: 11%">
                                     <i class="nav-icon fa fa-list-alt" aria-hidden="true"></i>
@@ -108,6 +119,7 @@
 
                         </ul>
                     </li>
+                    @if(Auth::user()->role == 2 || Auth::user()->role == 1)
                     <li class="nav-item has-treeview">
                         <a href="{{route('backend.rating.index')}}" class="nav-link add-click">
                             <i class="fa fa-star nav-icon" aria-hidden="true"></i>
@@ -116,59 +128,18 @@
                             </p>
                         </a>
                     </li>
+                    @endif
+                    @if(Auth::user()->role == 2 || Auth::user()->role == 1)
                     <li class="nav-item has-treeview">
-                        <a href="#" class="nav-link">
+                        <a href="{{ route('backend.order.index') }}" class="nav-link add-click">
                             <i class="nav-icon fa fa-shopping-cart" aria-hidden="true"></i>
                             <p>
-                                Quản lý đơn hàng
-                                <i class="fas fa-angle-left right"></i>
-                                <!-- <span class="badge badge-info right">6</span> -->
+                                Quản lí đơn hàng
                             </p>
                         </a>
-                        <ul class="nav nav-treeview">
-                            <li class="nav-item">
-                                <a href="{{ route('backend.order.create') }}" class="nav-link" style="margin-left: 11%">
-                                    <i class="nav-icon fas fa-plus"></i>
-                                    <p>Tạo mới</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="{{ route('backend.order.index') }}" class="nav-link" style="margin-left: 11%">
-                                    <i class="nav-icon fa fa-list-alt" aria-hidden="true"></i>
-                                    <p>Danh sách</p>
-                                </a>
-                            </li>
-
-                        </ul>
-                    </li>
-                    @if(Auth::user()->role > 0)
-                    <li class="nav-item has-treeview">
-                        <a href="#" class="nav-link">
-                            <i class="nav-icon fas fa-user"></i>
-                            <p>
-                                Quản lý người dùng
-                                <i class="fas fa-angle-left right"></i>
-                            </p>
-                        </a>
-                        <ul class="nav nav-treeview">
-                            @if(Auth::user()->role == 2)
-                            <li class="nav-item">
-                                <a href="{{ route('backend.user.create') }}" class="nav-link" style="margin-left: 11%">
-                                    <i class="nav-icon fas fa-plus"></i>
-                                    <p>Tạo mới</p>
-                                </a>
-                            </li>
-                            @endif
-                            <li class="nav-item">
-                                <a href="{{ route('backend.user.index') }}" class="nav-link" style="margin-left: 11%">
-                                    <i class="nav-icon fa fa-list-alt" aria-hidden="true"></i>
-                                    <p>Danh sách</p>
-                                </a>
-                            </li>
-                        </ul>
                     </li>
                     @endif
-
+                    @if(Auth::user()->role == 2 || Auth::user()->role == 1)
                     <li class="nav-item has-treeview">
                         <a href="#" class="nav-link">
                             <i class="nav-icon fas fa-newspaper"></i>
@@ -184,12 +155,14 @@
                                     <p>Danh mục <i class="right fas fa-angle-left"></i></p>
                                 </a>
                                 <ul class="nav nav-treeview">
+                                    @if(Auth::user()->role == 2)
                                     <li class="nav-item">
                                         <a href="{{ route('backend.news_category.create') }}" class="nav-link" style="margin-left: 17%">
                                             <i class="nav-icon fas fa-plus"></i>
                                             <p>Tạo mới</p>
                                         </a>
                                     </li>
+                                    @endif
                                     <li class="nav-item">
                                         <a href="{{ route('backend.news_category.index') }}" class="nav-link" style="margin-left: 17%">
                                             <i class="nav-icon fa fa-list-alt" aria-hidden="true"></i>
@@ -220,8 +193,9 @@
                             </li>
                         </ul>
                     </li>
-
-                    <!-- <li class="nav-item has-treeview">
+                    @endif
+                    @if(Auth::user()->role == 2 || Auth::user()->role == 1)
+                    <li class="nav-item has-treeview">
                         <a href="#" class="nav-link">
                             <i class="nav-icon fas fa-paper-plane"></i>
                             <p>
@@ -236,12 +210,14 @@
                                     <p>Chủ đề <i class="right fas fa-angle-left"></i></p>
                                 </a>
                                 <ul class="nav nav-treeview">
+                                    @if(Auth::user()->role == 2)
                                     <li class="nav-item">
                                         <a href="{{ route('backend.topic.create') }}" class="nav-link" style="margin-left: 17%">
                                             <i class="nav-icon fas fa-plus"></i>
                                             <p>Tạo mới</p>
                                         </a>
                                     </li>
+                                    @endif
                                     <li class="nav-item">
                                         <a href="{{ route('backend.topic.index') }}" class="nav-link" style="margin-left: 17%">
                                             <i class="nav-icon fa fa-list-alt" aria-hidden="true"></i>
@@ -249,6 +225,7 @@
                                         </a>
                                     </li>
                                 </ul>
+                                @endif
                                 <li class="nav-item">
                                     <a href="{{ route('backend.contact.index') }}" class="nav-link" style="margin-left: 9%">
                                         <i class="nav-icon fas fa-envelope"></i>
@@ -257,7 +234,51 @@
                                 </li>
                             </li>                         
                         </ul>
-                    </li> -->
+                    </li>
+                    @endif
+                    @if(Auth::user()->role == 2 || Auth::user()->role == 1)
+                    <li class="nav-item has-treeview">
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon fas fa-user"></i>
+                            <p>
+                                Quản lý người dùng
+                                <i class="fas fa-angle-left right"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            @if(Auth::user()->role == 2)
+                            <li class="nav-item">
+                                <a href="{{ route('backend.user.create') }}" class="nav-link" style="margin-left: 11%">
+                                    <i class="nav-icon fas fa-plus"></i>
+                                    <p>Tạo mới</p>
+                                </a>
+                            </li>
+                            @endif
+                            <li class="nav-item">
+                                <a href="{{ route('backend.user.index') }}" class="nav-link" style="margin-left: 11%">
+                                    <i class="nav-icon fa fa-list-alt" aria-hidden="true"></i>
+                                    <p>Danh sách</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    @endif
+                    <li class="nav-item has-treeview">
+                        <a href="{{route('backend.user.change.password')}}" class="nav-link add-click">
+                            <i class="nav-icon fas fa-key"></i>
+                            <p>
+                                Cập nhật mật khẩu
+                            </p>
+                        </a>
+                    </li>
+                    <li class="nav-item has-treeview">
+                        <a href="{{route('backend.user.form.setting.user')}}" class="nav-link add-click">
+                            <i class="nav-icon fas fa-user-cog"></i>
+                            <p>
+                                Cài đặt thông tin
+                            </p>
+                        </a>
+                    </li>
                 </ul>
             </nav>
             <!-- /.sidebar-menu -->

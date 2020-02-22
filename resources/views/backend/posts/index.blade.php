@@ -6,6 +6,10 @@ Danh sách bài viết
 <script>
   $(document).ready(function(){
     $('[data-toggle="tooltip"]').tooltip();
+    $("#form-search").submit(function() {
+        $(this).find(":input").filter(function(){return !this.value;}).attr("disabled", "disabled");
+    });
+    $("#form-search").find(":input").prop("disabled", false);
   });
 </script>
 
@@ -55,6 +59,25 @@ switch(type){
   @endcan
   <div class="card">
   </div>
+  <form id="form-search" class="form-inline" action="" style="margin-bottom: 1%; margin-left: 1%">
+    <div class="form-group">
+      <input type="text" name="title" placeholder="Tiêu đề bài viết" class="form-control" id="title" value="{{(\Request::get('title')!='') ? \Request::get('title') : '' }}">
+    </div>
+    <div class="form-group">
+      <select class="form-control" name="news_category_id" id="search-news-category">
+        <option value="">-- Danh mục --</option>
+        @if(isset($news_categories))
+        @foreach ($news_categories as $news_category)
+        @if($news_category->parent_id == NULL)
+        <option value="{{$news_category->id}}" @if (\Request::get('news_category_id') == $news_category->id ) selected @endif>{{$news_category->name}}</option>
+        @endif
+        @endforeach
+        @endif
+
+      </select>
+    </div>
+    <button type="submit" class="btn btn-default"><i class="fas fa-search"></i></button>
+  </form>
   <div class="card-body table-responsive p-0 add-border-radius">
     <table class="table table-hover">
       <thead class="add-background-thead">

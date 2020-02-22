@@ -142,7 +142,7 @@ Tạo sản phẩm
 									<img id="out_img" src="{{ asset('storage/images/product/default.png') }}" style="width:59%; height: 261px;">
 								</div>
 								<div class="form-group">
-									<label for="image">Ảnh sản phẩm (JPEG, JPG, PNG)</label>
+									<label for="image">Ảnh sản phẩm (jpeg, jpg, png)</label>
 									<input id="inp_img" type="file" class="form-control" name="image">
 									@if($errors->has('image'))
 									<div class="error">{{ $errors->first('image') }}</div>

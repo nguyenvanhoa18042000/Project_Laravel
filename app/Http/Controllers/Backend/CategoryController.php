@@ -10,6 +10,7 @@ use App\Models\Trademark;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Cache;
 
@@ -50,7 +51,11 @@ class CategoryController extends Controller
 
         $parent_id = $requestCategory->get('parent_id');
         $category->name = $requestCategory->get('name');
-        $category->slug = str::slug($requestCategory->get('name'));
+        if($requestCategory->filled('slug')){
+            $category->slug = $requestCategory->get('slug');
+        }else{
+            $category->slug = str::slug($requestCategory->get('name'));
+        }
         $category->parent_id = $parent_id;
         $category->user_id = Auth::user()->id;
         $category->description = $requestCategory->get('description');
@@ -59,6 +64,12 @@ class CategoryController extends Controller
             $category->depth = $category_of_parent->depth + 1;
         }
         $trademarks = $requestCategory->get('trademarks');
+
+        $image = $requestCategory->file('image');
+        $name_image = date('YmdHis')."_".$image->getClientOriginalName();
+        Storage::disk('public')->putFileAs('images/category', $image , $name_image);
+        $category->image = 'storage/images/category/'.$name_image;
+
         $save = $category->save();
 
         $sync_data = [];
@@ -100,7 +111,9 @@ class CategoryController extends Controller
         $this->authorize('update', $category);
         $parent_id = $requestCategory->get('parent_id');
     	$category->name = $requestCategory->get('name');
-    	$category->slug = str::slug($requestCategory->get('name'));
+        if($requestCategory->filled('slug')){
+            $category->slug = $requestCategory->get('slug');
+        }  	
         $category->parent_id = $parent_id;
         $category->user_id = Auth::user()->id;
     	$category->description = $requestCategory->get('description');
@@ -111,6 +124,14 @@ class CategoryController extends Controller
             $category->depth = 0;
         }
         $trademarks = $requestCategory->get('trademarks');
+
+        if($requestCategory->hasFile('image')){
+            File::delete($category->image);
+            $image = $requestCategory->file('image');
+            $name_image = date('YmdHis')."_".$image->getClientOriginalName();
+            Storage::disk('public')->putFileAs('images/category',$image,$name_image);
+            $category->image = 'storage/images/category/'.$name_image;
+        }
         $update = $category->update();
 
         $sync_data = [];
@@ -145,6 +166,7 @@ class CategoryController extends Controller
     public function forceDelete($id){
         $category = Category::onlyTrashed()->findOrFail($id);
         $this->authorize('forceDelete', $category);
+        File::delete($category->image);
         $category->trademarks()->detach();
         if($category->forceDelete()){
             Session::flash('message', 'Xóa thành công');

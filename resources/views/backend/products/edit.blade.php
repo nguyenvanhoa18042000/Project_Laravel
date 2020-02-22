@@ -104,7 +104,7 @@ Cập nhật sản phẩm
 
               <div class="form-group">
                 <label for="slug">Slug</label>
-                <input type="text" placeholder="" class="form-control" name="slug" value="{{ old('name',$product->slug) }}">
+                <input type="text" placeholder="" class="form-control" name="slug" value="{{ old('slug',$product->slug) }}">
               </div>
               @if($errors->has('slug'))
               <div class="error">{{ $errors->first('slug') }}</div>

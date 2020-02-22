@@ -31,7 +31,6 @@ Route::group([
     	Route::get('delete/{id}','CategoryController@destroy')->name('destroy');
         Route::get('forcedelete/{id}','CategoryController@forceDelete')->name('forcedelete');
         Route::get('restore/{id}','CategoryController@restore')->name('restore');
-        Route::get('show_products_by_category/{category_id}','CategoryController@showProducts')->name('show_products');
         
     });
 
@@ -47,7 +46,6 @@ Route::group([
         Route::get('delete/{id}','NewsCategoryController@destroy')->name('destroy');
         Route::get('forcedelete/{id}','NewsCategoryController@forceDelete')->name('forcedelete');
         Route::get('restore/{id}','NewsCategoryController@restore')->name('restore');
-        Route::get('show_posts_by_news_category/{news_category_id}','NewsCategoryController@showPosts')->name('show_posts');
     });
 
     Route::group([
@@ -94,6 +92,10 @@ Route::group([
         Route::get('edit_status/{id}','UserController@editStatus')->name('edit_status');
         Route::get('open_or_block/{id}','UserController@openOrBlock')->name('open_or_block');
         Route::get('show_products_by_user_id/{id}','UserController@showProducts')->name('show_products');
+        Route::get('/change-password', 'UserController@formChangePassword')->name('change.password');
+        Route::post('/perform-change-password', 'UserController@performChangePassword')->name('perform.change.password');
+        Route::get('/setting-user', 'UserController@formSettingUser')->name('form.setting.user');
+        Route::post('/perform-setting-user', 'UserController@performSettingUser')->name('perform.setting.user');
     });
 
     Route::group([
@@ -146,7 +148,8 @@ Route::group([
         Route::post('store', 'OrderController@store')->name('store');
         Route::get('edit/{id}', 'OrderController@edit')->name('edit');
         Route::put('update/{id}', 'OrderController@update')->name('update');
-        Route::get('show_products_by_order_id/{order_id}', 'OrderController@showProducts')->name('show_products');
+        Route::get('xoa-don-hang/{id}', 'OrderController@destroy')->name('destroy');
+        Route::post('xu-li-don-hang', 'OrderController@handleOrder')->name('handle');
     });
 
     Route::group([
@@ -159,7 +162,6 @@ Route::group([
         Route::get('edit/{id}', 'TopicController@edit')->name('edit');
         Route::put('update/{id}','TopicController@update')->name('update');
         Route::get('delete/{id}','TopicController@destroy')->name('destroy');
-        Route::get('show_contacts_by_topic/{id}','CategoryController@showTopics')->name('show_contacts'); 
     });
 
     Route::group([
@@ -183,19 +185,54 @@ Route::group([
     'as' => 'frontend.'
 ], function (){
     Route::get('/', 'HomeController@index')->name('home');
-    Route::get('/home/detail_product/{id}', 'HomeController@detailProduct')->name('detail_product');
-    Route::get('/home/detail_category/{id}', 'HomeController@detailCategory')->name('detail_category');
-    Route::get('/home/detail_category/{idCategory}/trademark/{idTrademark}','HomeController@detailCategoryByTrademark')->name('detail_category_by_trademark');
-    Route::get('/home/detail_category/{idCategory}/price/{minPrice}/{maxPrice}','HomeController@detailCategoryByPrice')->name('detail_category_by_price');
-    Route::get('/home/detail_category/{idCategory}/trademark/{idTrademark}/price/{minPrice}/{maxPrice}','HomeController@detailCategoryByTrademarkAndPrice')->name('detail_category_by_trademark_and_price');
+    Route::get('/trang-chu/san-pham/{slug}', 'HomeController@detailProduct')->name('detail_product');
+    Route::get('/danh-muc/{slug}/{trademark?}', 'HomeController@detailCategory')->name('detail_category');
 
-    Route::get('/home/news', 'HomeController@news')->name('news');
-    Route::get('/home/detail_news_category/{slug}', 'HomeController@detailNewsCategory')->name('detail_news_category');
-    Route::get('/home/detail_post/{slug}', 'HomeController@detailPost')->name('detail_post');
+    Route::get('/tin-tuc', 'HomeController@news')->name('news');
+    Route::get('/tin-tuc/{slug}', 'HomeController@detailNewsCategory')->name('detail_news_category');
+    Route::get('/trang-chu/tin-tuc/{slug}', 'HomeController@detailPost')->name('detail_post');
     
-    Route::get('/contact', 'HomeController@createContact')->name('contact.create');
-    Route::post('/store_contact', 'HomeController@storeContact')->name('contact.store');
+    Route::get('/lien-he', 'HomeController@createContact')->name('contact.create');
+    Route::post('/trang-chu/lien-he/gui', 'HomeController@storeContact')->name('contact.store');
+
+    Route::group([
+        'prefix' => '',
+    ],function(){
+        Route::get('/them-vao-gio-hang/{id}', 'CartController@addProduct')->name('add.cart');
+        Route::post('/them-vao-gio-hang-co-sl/{id}', 'CartController@addProductWithQuantity')->name('add.cart.with.quantity');
+        Route::get('/cart', 'CartController@index')->name('list.cart');
+        Route::get('/xoa-san-pham-trong-gio-hang/{id}', 'CartController@destroy')->name('destroy.cart');
+    });
+
+    Route::group([
+        'prefix' => 'gio-hang',
+        'middleware' => 'CheckLoginUser',
+    ],function(){
+        Route::get('/pay', 'CartController@getFormPay')->name('get.form.pay');
+        Route::post('/update-quantity-product', 'CartController@updateQuantityProduct')->name('update.quantity.cart');
+        Route::post('/luu-don-hang', 'CartController@saveInfoShoppingCart')->name('save.info.shopping.cart');
+    });
 });
+
+Route::group([
+    'prefix' => 'profile',
+    'namespace' => 'Backend',
+    'middleware' => 'auth',
+],function(){
+    Route::get('/', 'ProfileController@index')->name('profile.index');
+    Route::get('/order', 'ProfileController@userOrder')->name('profile.user.order');
+    Route::get('/rating', 'ProfileController@userRating')->name('profile.user.rating');
+    Route::get('/rating/deleted/{id}', 'ProfileController@forceDelete')->name('profile.user.rating.forcedelete');
+    Route::get('/order/show/{id}', 'ProfileController@showOrder')->name('profile.user.order.show');
+    Route::get('/order/edit/{id}', 'ProfileController@editOrder')->name('profile.user.order.edit');
+    Route::put('/order/update/{id}', 'ProfileController@updateOrder')->name('profile.user.order.update');
+    Route::get('/order/deleted/{id}', 'ProfileController@deleteOrder')->name('profile.user.order.delete');
+    Route::get('/change-password', 'ProfileController@formChangePassword')->name('profile.change.password');
+    Route::post('/perform-change-password', 'ProfileController@performChangePassword')->name('profile.perform.change.password');
+    Route::get('/setting-user', 'ProfileController@formSettingUser')->name('profile.form.setting.user');
+    Route::post('/perform-setting-user', 'ProfileController@performSettingUser')->name('profile.perform.setting.user');
+});
+Route::post('profile/password/forgot', 'Backend\ProfileController@performForgotPassword')->name('profile.perform.forgot.password');
 
 Route::group([
 'namespace' => 'Backend',

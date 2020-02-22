@@ -13,6 +13,25 @@ Cập nhật danh mục
   }
 </style>
 @endsection
+@section('script')
+<script>
+  function readURL(input) {
+    if (input.files && input.files[0]) {
+      var reader = new FileReader();
+
+      reader.onload = function(e) {
+        $('#out_img').attr('src', e.target.result);
+      }
+
+      reader.readAsDataURL(input.files[0]);
+    }
+  }
+
+  $("#inp_img").change(function() {
+    readURL(this);
+  });
+</script>
+@endsection
 @section('content-header')
 
     <div class="container-fluid">
@@ -48,7 +67,7 @@ Cập nhật danh mục
           </div>
         </div>
         <!-- form start -->
-              <form role="form" method="POST" action="{{ route('backend.category.update',$category->id) }}">
+              <form role="form" method="POST" action="{{ route('backend.category.update',$category->id) }}" enctype="multipart/form-data">
                 {{ csrf_field() }}
                 {{ method_field('PUT') }}
 
@@ -58,6 +77,14 @@ Cập nhật danh mục
                     <input type="text" class="form-control" name="name" value="{{ old('name',$category->name) }}">
                     @if($errors->has('name'))
                         <div class="error">{{ $errors->first('name') }}</div>
+                    @endif
+                  </div>
+
+                  <div class="form-group">
+                    <label for="exampleInputEmail1">Slug</label>
+                    <input type="text" class="form-control" name="slug" value="{{ old('slug',$category->slug) }}">
+                    @if($errors->has('slug'))
+                        <div class="error">{{ $errors->first('slug') }}</div>
                     @endif
                   </div>
 
@@ -104,6 +131,17 @@ Cập nhật danh mục
                     @endif
                   </select>
                 </div>
+
+                <div style="text-align: center; margin-top: 2%">
+                    <img id="out_img" src="{{ asset($category->image) }}" style="width:64px; height: 64px;">
+                  </div>
+                  <div class="form-group">
+                    <label for="image">Ảnh nhỏ (png , size 24x24)</label>
+                    <input id="inp_img" type="file" class="form-control" name="image">
+                    @if($errors->has('image'))
+                    <div class="error">{{ $errors->first('image') }}</div>
+                    @endif
+                  </div>
 
                   <div class="form-group">
                     <label for="exampleInputEmail1">Mô tả</label>

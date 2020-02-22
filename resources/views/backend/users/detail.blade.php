@@ -119,21 +119,5 @@ Chi tiết người dùng
   </div>
   </div>
   
-  <div class="card-body table-responsive p-0 add-border-radius mt-4">
-    <table class="table table-hover">
-      <thead class="add-background-thead">
-        <tr>
-          <th>ID</th>
-          <th>Tên người dùng</th>
-          <th>Trạng thái</th>
-          <th>Quyền</th>
-          <th>Thao tác</th>
-        </tr>
-      </thead>
-      <tbody>
-
-      </tbody>
-    </table>
-  </div>
 </section>
 @endsection

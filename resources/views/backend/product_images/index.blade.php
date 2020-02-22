@@ -4,11 +4,6 @@ Danh sách ảnh mô tả
 @endsection
 @section('script')
 <script>
-$(document).ready(function(){
-  $('[data-toggle="tooltip"]').tooltip();
-});
-</script>
-<script>
 @if(Session::has('message'))
 toastr.options = {
   "closeButton": true,

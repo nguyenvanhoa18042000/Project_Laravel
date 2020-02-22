@@ -23,7 +23,7 @@ class RequestUser extends FormRequest
     public function rules()
     {
         $rules=[
-            'name'=>'required|min:10|max:100',
+            'name'=>'required|min:3|max:100',
             'email'=>'required|email|unique:users,email,'.$this->id,
             'avatar' => 'bail|image|mimes:jpeg,png,jpg|max:2048',
             'password'=>'required|confirmed|min:8',

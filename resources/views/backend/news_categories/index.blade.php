@@ -94,9 +94,9 @@ switch(type){
                           </td>
 		                      <td>{{ $news_category->description }}</td>
 		                      <td>
-                            <a href="{{ route('backend.news_category.show_posts',$news_category->id) }}" class="btn btn-success btn-sm " data-toggle="tooltip" title="Bài viết của danh mục" style="margin-right: 4%"><i class="fas fa-list"></i></a>
-
+                            @can('update',$news_category)
 		                      	<a href="{{ route('backend.news_category.edit',$news_category->id) }}" class="btn btn_edit btn-sm " data-toggle="tooltip" title="Chỉnh sửa"><i class="fas fa-edit"></i></a>
+                            @endcan
 
 		                      	@if($news_category->deleted_at == NULL)
                               @can('delete',$news_category)

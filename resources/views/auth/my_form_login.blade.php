@@ -35,7 +35,7 @@
                         </span>
                     @endif
 					<input type="submit" name="" value="Sign In">
-					<a href="#">Forget Password</a>
+					<a href="{{ route('password.request') }}">Forget Password</a>
 				</form>
 			</div>
 		</div>

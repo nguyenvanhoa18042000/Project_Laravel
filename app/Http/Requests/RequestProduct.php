@@ -34,7 +34,7 @@ class RequestProduct extends FormRequest
             {
             $rules = [
                 'name' => 'bail|required|min:5|max:255|unique:products,name,'.$this->id,
-                // 'slug' => 'bail|alpha_dash',
+                'slug' => 'bail|unique:products,slug,'.$this->id,
                 'category_id' => 'bail|required',
                 'trademark_id' => 'bail|required',
                 'description' => 'bail|required',
@@ -53,7 +53,7 @@ class RequestProduct extends FormRequest
              $rules = [
                 'name' => 'bail|required|min:5|max:255|unique:products,name,'.$this->id,
                 'category_id' => 'bail|required',
-                // 'trademark_id' => 'bail|required',
+                'slug' => 'bail|unique:products,slug,'.$this->id,
                 'description' => 'bail|required',
                 'amount' => 'bail|required|numeric|min:0',
                 'image' => 'bail|image|mimes:jpeg,png,jpg|max:2048',

@@ -71,7 +71,8 @@
                     <!-- Begin Footer Logo Area -->
                     <div class="col-lg-4 col-md-6">
                         <div class="footer-logo">
-                            <img src="{{asset('frontend/images/menu/logo/1.jpg')}}" alt="Footer Logo">
+                                <img style="width: 50%;height: 55px;" class="icon-logo" src="http://mauweb.monamedia.net/thegioididong/wp-content/uploads/2018/01/logo-mona-dmx-tgdd-white.png">
+
                             <p class="info">
                                 Cửa hàng chúng tôi luôn muốn khách hàng hài lòng khi mua sản phẩm . Nếu có đóng góp ý kiến nào vui lòng liên hệ tới chúng tôi.
                             </p>
@@ -111,7 +112,7 @@
                             <h3 class="footer-block-title">Công ty</h3>
                             <ul>
                                 <li><a href="#">Giới thiệu</a></li>
-                                <li><a href="#">Liên hệ</a></li>
+                                <li><a href="{{route('frontend.contact.create')}}">Liên hệ</a></li>
                             </ul>
                         </div>
                     </div>

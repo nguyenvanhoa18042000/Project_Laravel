@@ -25,8 +25,8 @@ class ProductController extends Controller
 			$products = Product::with('category:id,name')->withTrashed();
 			if($request->name) $products->where('name','like','%'.$request->name.'%');
 			if($request->category_id) $products->where('category_id',$request->category_id);
-			$products = $products->orderBy('updated_at','DESC')->paginate(4);
-			$categories = Category::select('id','name')->withTrashed();
+			$products = $products->orderBy('updated_at','DESC')->paginate(10);
+			$categories = Category::select('id','name')->withTrashed()->get();
 			return view('backend.products.index')->with([
 				'products' => $products,
 				'categories' =>$categories

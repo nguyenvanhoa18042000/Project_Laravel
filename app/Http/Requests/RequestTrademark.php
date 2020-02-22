@@ -33,7 +33,7 @@ class RequestTrademark extends FormRequest
             case 'POST':
             {
             $rules = [
-                'name' => 'bail|required|min:5|max:100|unique:trademarks,name,'.$this->id,
+                'name' => 'bail|required|min:3|max:100|unique:trademarks,name,'.$this->id,
                 'image' => 'bail|required|image|mimes:jpeg,png,jpg|max:2048',
             ];
             break;
@@ -42,7 +42,7 @@ class RequestTrademark extends FormRequest
             case 'PATCH':
             {
              $rules = [
-                'name' => 'bail|required|min:5|max:100|unique:trademarks,name,'.$this->id,
+                'name' => 'bail|required|min:3|max:100|unique:trademarks,name,'.$this->id,
                 'image' => 'bail|image|mimes:jpeg,png,jpg|max:2048',
             ];
             break;

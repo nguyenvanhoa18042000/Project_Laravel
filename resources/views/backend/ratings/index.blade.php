@@ -28,7 +28,6 @@ $(document).ready(function(){
     </div>
 @endsection
 @section('content')
-
 <section class="content">
 
       <!-- Default box -->
@@ -55,7 +54,7 @@ $(document).ready(function(){
                             {{ isset($rating->user->name) ? $rating->user->name : '[N\A]' }}
                           </td>
 		                      <td>
-                            <a class="to-link" style="color: #333;" target="_blank" href="{{route('frontend.detail_product',$rating->product->id)}}">
+                            <a class="to-link" style="color: ##007bff;" target="_blank" href="{{route('frontend.detail_product',$rating->product->slug)}}">
                               {{ isset($rating->product->name) ? (Str::limit($rating->product->name, 60, $end='...')) : '[N\A]' }}
                             </a>
                           </td>
@@ -82,6 +81,5 @@ $(document).ready(function(){
         </div>
       </div>
       <!-- /.card -->
-
-    </section>
+</section>
 @endsection

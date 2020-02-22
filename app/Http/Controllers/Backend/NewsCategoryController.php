@@ -13,20 +13,15 @@ use Illuminate\Support\Facades\Session;
 class NewsCategoryController extends Controller{
 
 	public function index(){
+        $this->authorize('viewAny',NewsCategory::class);
 		$news_categories = NewsCategory::withTrashed()->orderBy('updated_at','DESC')->select('id','name','slug','parent_id','description','deleted_at')->paginate(7);
     	return view('backend.news_categories.index')->with([
     		'news_categories' => $news_categories
     	]);
     }
 
-    public function showPosts($mews_category_id){
-        // $products = Category::find($category_id)->products()->orderBy('updated_at','DESC')->paginate(4);
-        // return view('backend.products.index')->with([
-        //     'products' => $products
-        // ]);
-    }
-
     public function create(){
+        $this->authorize('create',NewsCategory::class);
         $news_categories = NewsCategory::orderBy('updated_at','DESC')->select('id','name','parent_id','depth')->get();
     	return view('backend.news_categories.create')->with([
             'news_categories' => $news_categories
@@ -34,6 +29,7 @@ class NewsCategoryController extends Controller{
     }
 
     public function store(RequestNewsCategory $requestNewsCategory){
+        $this->authorize('create',NewsCategory::class);
         $news_category = new NewsCategory();
 
         $parent_id = $requestNewsCategory->get('parent_id');
@@ -50,7 +46,8 @@ class NewsCategoryController extends Controller{
     }
 
     public function edit($id){
-    	$news_category = NewsCategory::withTrashed()->find($id);      
+    	$news_category = NewsCategory::withTrashed()->find($id); 
+        $this->authorize('update',$news_category);     
         $news_categories = NewsCategory::orderBy('updated_at','DESC')->select('id','name','parent_id','depth')->get();
     	return view('backend.news_categories.edit')->with([
     		'news_category' => $news_category,
@@ -60,7 +57,7 @@ class NewsCategoryController extends Controller{
 
     public function update(RequestNewsCategory $requestNewsCategory, $id){
         $news_category = NewsCategory::withTrashed()->findOrFail($id);
-
+        $this->authorize('update',$news_category);  
         $parent_id = $requestNewsCategory->get('parent_id');
     	$news_category->name = $requestNewsCategory->get('name');
         $news_category->slug = str::slug($requestNewsCategory->get('name'));
@@ -76,20 +73,23 @@ class NewsCategoryController extends Controller{
     	return redirect()->route('backend.news_category.index');
     }
 
-    public function destroy($id){
+    public function destroy($id){ 
     	$news_category = NewsCategory::find($id);
+        $this->authorize('delete',$news_category); 
         $news_category->delete();
         return redirect()->back();
     }
 
     public function forceDelete($id){
         $news_category = NewsCategory::onlyTrashed()->findOrFail($id);
+        $this->authorize('forceDelete',$news_category); 
         $news_category->forceDelete();
         return redirect()->back();
     }
 
     public function restore($id){
         $news_category = NewsCategory::onlyTrashed()->findOrFail($id);
+        $this->authorize('restore',$news_category); 
         $news_category->restore();
         return redirect()->back();
     }

@@ -1,3 +1,76 @@
+/*responsive*/
+@media only screen and (min-width: 1501px) {
+.container {
+    max-width: 1400px;
+    padding-left: 0;
+    padding-right: 0;
+}
+}
+/*end responsive*/
+/*chi tiết bài viết*/
+.qty_product_at_detail_product{
+    width: 12%;
+    margin-right: 7%;
+    float: left;
+    height: 47px;
+    border: 1px solid #999;
+    background: white;
+    border-radius: 10px;
+}
+.qty_product_at_detail_product:focus{
+    border: 1px solid #999;
+}
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button {  
+
+   opacity: 1 !important;
+
+}
+/*end chi tiết bài viết*/
+
+/*css phan trang*/
+.area_article ,.area_articleFull{
+    margin: auto!important;
+}
+.description{
+    color: #333 !important;
+    font-size: 15px !important;
+}
+.description > span{
+    font-size: 15px !important;
+    color: #333 !important;
+}
+nav{
+    background: none !important;
+}
+#pagination-detail-category{
+    position: relative;
+}
+#pagination-detail-category > li {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+#pagination-detail-category nav{
+    position: relative !important;
+}
+#pagination-detail-category ul{
+    position: absolute !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+}
+.pagination > .page-item{
+    width: 34px !important;
+    height: 34px !important;
+}
+.pagination > .page-item > a{
+    height: 100% !important;
+    width: 100% !important;
+}
+.pagination > .page-item > .page-link{
+    font-size: 13px !important;
+}
+/*end css phan trang*/
 .list_text{
     display: inline-block;
     margin-left: 10px;
@@ -968,6 +1041,25 @@ article p, article h2, article h3 {
 .hb-menu nav > ul > li > a::after {
     display: none !important;
 }
+.btn-store{
+    border: 1px solid #f89406;
+    width: 45%;
+    margin: auto;
+    padding: 5px !important;
+    color: #f89406;
+    font-size: 12px;
+}
+.btn-store:hover {
+    color: #fff;
+    background: #f89406;
+}
+.product:hover img{
+    margin-top: 1px;
+    margin-bottom: 29px;
+}
+.product:hover .name_product{
+    color: #288ad6;
+}
 /*end css home page*/
 
 css menu -->
@@ -1177,6 +1269,109 @@ nav a:hover, nav a.actmenu {
     color: #333;
 }
 /*end css menu*/
+
+/*css gio hàng*/
+.quantity-block {
+    width: 91px;
+    float: right;
+}
+.input-group{
+    position: relative;
+}
+.tiki-cart .wrap .bootstrap-touchspin{
+    float: right;
+}
+.input-group {
+    display: table;
+    border-collapse: separate;
+}
+.input-group-addon, .input-group-btn {
+    width: 1%;
+}
+.bootstrap-touchspin .input-group-btn {
+    position: relative;
+    white-space: nowrap;
+    vertical-align: middle;
+    display: table-cell;
+    font-size:0;
+}
+.bootstrap-touchspin .input-group-btn>.btn {
+    display: block;
+    float: none;
+    width: 100%;
+    max-width: 100%;
+    line-height: 15px;
+    font-size: 14px;
+    font-weight: 300;
+    height: 28px;
+    position: relative;
+}
+.bootstrap-touchspin .input-group-btn .bootstrap-touchspin-down {
+    border-radius: 4px 0 0 4px;
+    border: 1px solid #dfdfdf;
+    background: #fff;
+    padding: 0 10px;
+}
+.tiki-cart .wrap .bootstrap-touchspin .bootstrap-touchspin-down {
+    border-radius: 3px 0 0 3px;
+    border-right: 0;
+}
+.tiki-cart .wrap .bootstrap-touchspin .bootstrap-touchspin-down{
+    border-color: #c8c8c8;
+    color: #999;
+    line-height: 20px;
+    padding: 3px 9px;
+    margin: 0;
+    width: 28px;
+}
+.input-group-addon:not(:first-child):not(:last-child), .input-group-btn:not(:first-child):not(:last-child) {
+    border-radius: 0;
+}
+
+.tiki-cart .wrap .quantity {
+    padding-right: 5px;
+    padding-left: 5px;
+    text-align: center;
+    border-radius: 0;
+    width: 35px;
+}
+.input-group-addon{
+    width: 1%;
+    white-space: nowrap;
+    vertical-align: middle;
+}
+.input-group-addon {
+    padding: 6px 12px;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1;
+    color: #555;
+    text-align: center;
+    background-color: #eee;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+.input-group .form-control {
+    position: relative;
+    z-index: 2;
+    float: left;
+    width: 100%;
+    margin-bottom: 0;
+}
+.cart-body strong{
+    font-weight: normal;
+    color: black;
+}
+.item-text::before {
+    content: "";
+    position: absolute;
+    left: -10px;
+    height: 22px;
+    width: 2px;
+    background: white;
+    top: 11px;
+}
+/*end css gio hàng*/
 
 
 

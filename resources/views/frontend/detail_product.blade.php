@@ -1,6 +1,6 @@
 @extends('frontend.layouts.master')
 @section('title')
-Trang chủ
+Chi tiết sản phẩm
 @section('css')
 @endsection
 @section('script')
@@ -78,6 +78,12 @@ $(function(){
 		  	behavior: 'smooth' 
 		});
     });
+    $(".qty_product_at_detail_product").change(function(){
+    	var quantity_product = $(this).val();
+    	if (quantity_product < 1) {
+    		alert('Số lượng sản phẩm phải lớn hơn 0');
+    	}
+    })
 });
 </script>
 @endsection
@@ -134,7 +140,7 @@ $(function(){
 			<div class="col-lg-7 col-md-6">
 				<div class="product-details-view-content sp-normal-content pt-60">
 					<div class="product-info">
-						<h2 style="font-size: 25px;">{{$product->name}}</h2>
+						<h2 style="font-size: 25px;">{{$product->category->name}} {{$product->name}}</h2>
 						<div class="rating-box">
                             <ul class="rating rating-with-review-item">
                                 <li>
@@ -168,26 +174,24 @@ $(function(){
 						</div>
 						<div class="product-desc">
 							<p>
-								<span>
+								<span class="description">
 									{!! $product->description !!}
 								</span>
 							</p>
 						</div>
 						<div class="single-add-to-cart">
-							<form action="#" class="cart-quantity">
+							<form action="{{route('frontend.add.cart.with.quantity',$product->id)}}" class="cart-quantity" method="POST">
+								@csrf
 								<div class="quantity">
 									<label>Số lượng</label>
-									<div class="cart-plus-minus">
-										<input class="cart-plus-minus-box" value="1" type="text">
-										<div class="dec qtybutton"><i class="fa fa-angle-down"></i></div>
-										<div class="inc qtybutton"><i class="fa fa-angle-up"></i></div>
+									<div>
+										<input class="qty_product_at_detail_product" value="1" type="number" min="1" name="quantity_product">
 									</div>
 								</div>
 								<button class="add-to-cart" type="submit">Thêm vào giỏ hàng</button>
 							</form>
 						</div>
 						<div class="product-additional-info pt-25">
-							<a class="wishlist-btn" href="wishlist.html"><i class="fa fa-heart-o"></i>Thêm vào danh sách yêu thích</a>
 							<div class="product-social-sharing pt-25">
 								<ul>
 									<li class="facebook"><a href="#"><i class="fa fa-facebook"></i>Facebook</a></li>
@@ -378,7 +382,7 @@ $(function(){
 							<!-- single-product-wrap star -->
 							<div class="single-product-wrap">
 								<div class="product-image">
-									<a href="{{route('frontend.detail_product',$product->id)}}">
+									<a href="{{route('frontend.detail_product',$product->slug)}}">
 										<img width="206px" height="206px" src="{{asset($product->image)}}" alt="Li's Product Image">
 									</a>
 									<span class="sticker">New</span>
@@ -387,7 +391,7 @@ $(function(){
 									<div class="product_desc_info">
 										<div class="product-review">
 											<h5 class="manufacturer">
-												<a href="{{route('frontend.detail_product',$product->id)}}">{{$product->total_rating}} đánh giá</a>
+												<a href="{{route('frontend.detail_product',$product->slug)}}">{{$product->total_rating}} đánh giá</a>
 											</h5>
 											<div class="rating-box">
 												<ul class="rating">
@@ -410,7 +414,7 @@ $(function(){
 												</ul>
 											</div>
 										</div>
-										<h4><a class="product_name" href="{{route('frontend.detail_product',$product->id)}}">{{$product->name}}</a></h4>
+										<h4><a class="product_name" href="{{route('frontend.detail_product',$product->slug)}}">{{$product->name}}</a></h4>
 										<div class="price-box">
 											<span class="new-price" style="color: #e80f0f">
 												{{number_format(

@@ -116,7 +116,6 @@ $("#inp_img").change(function() {
                             <div class="form-group">
                                 <label>Quyền</label>
                                 <select class="form-control" style="width: 100%;" name="role">
-                                    <option value="2">Quản lý</option>
                                     <option value="1" selected>Quản trị viên</option>
                                     <option value="0">Khách hàng</option>
                                 </select>

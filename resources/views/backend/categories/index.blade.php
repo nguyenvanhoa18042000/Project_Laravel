@@ -73,7 +73,7 @@ switch(type){
 		                    <tr>
 		                      <td>{{ $category->id }}</td>
 		                      <td>
-                            <a class="to-link" style="color: #333;" target="_blank" href="{{route('frontend.detail_category',$category->id)}}">{{ $category->name }}
+                            <a class="to-link" style="color: #333;" target="_blank" href="{{route('frontend.detail_category',$category->slug)}}">{{ $category->name }}
                             </a>
                           </td>
                           <td>
@@ -91,8 +91,6 @@ switch(type){
                           </td>
 		                      <td>{{ $category->description }}</td>
 		                      <td>
-                            <a href="{{ route('backend.category.show_products',$category->id) }}" class="btn btn-success btn-sm " data-toggle="tooltip" title="Sản phẩm của danh mục" style="margin-right: 1%"><i class="fas fa-list"></i></a>
-                            
                             @can('update',$category)
 		                      	<a href="{{ route('backend.category.edit',$category->id) }}" class="btn btn_edit btn-sm " data-toggle="tooltip" title="Chỉnh sửa" style="margin-right: 1%"><i class="fas fa-edit"></i></a>
                             @endcan

@@ -13,6 +13,8 @@ use App\Models\NewsCategory;
 use App\Models\Post;
 use App\Models\Topic;
 use App\Models\Contact;
+use App\Models\Order;
+use App\Policies\OrderPolicy;
 use App\Policies\ContactPolicy;
 use App\Policies\TopicPolicy;
 use App\Policies\PostPolicy;
@@ -39,6 +41,7 @@ class AuthServiceProvider extends ServiceProvider
         Post::class => PostPolicy::class,
         Topic::class => TopicPolicy::class,
         Contact::class => ContactPolicy::class,
+        Order::class => OrderPolicy::class,
     ];
 
     /**

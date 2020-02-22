@@ -14,6 +14,25 @@ Tạo danh mục
   }
 </style>
 @endsection
+@section('script')
+<script>
+  function readURL(input) {
+    if (input.files && input.files[0]) {
+      var reader = new FileReader();
+
+      reader.onload = function(e) {
+        $('#out_img').attr('src', e.target.result);
+      }
+
+      reader.readAsDataURL(input.files[0]);
+    }
+  }
+
+  $("#inp_img").change(function() {
+    readURL(this);
+  });
+</script>
+@endsection
 @section('content-header')
 
     <div class="container-fluid">
@@ -49,7 +68,7 @@ Tạo danh mục
           </div>
         </div>
         <!-- form start -->
-              <form role="form" method="POST" action="{{ route('backend.category.store') }}">
+              <form role="form" method="POST" action="{{ route('backend.category.store') }}" enctype="multipart/form-data">
                 {{ csrf_field() }}
                 <div class="card-body">
                   <div class="form-group">
@@ -57,6 +76,14 @@ Tạo danh mục
                     <input type="text" class="form-control" name="name" value="{{ old('name',isset($category->name) ? $category->name : '') }}" placeholder="Tên danh mục ...">
                     @if($errors->has('name'))
                         <div class="error">{{ $errors->first('name') }}</div>
+                    @endif
+                  </div>
+
+                  <div class="form-group">
+                    <label for="exampleInputEmail1">Slug</label>
+                    <input type="text" class="form-control" name="slug" value="{{ old('slug',isset($category->slug) ? $category->slug : '') }}" placeholder="">
+                    @if($errors->has('slug'))
+                        <div class="error">{{ $errors->first('slug') }}</div>
                     @endif
                   </div>
 
@@ -82,6 +109,17 @@ Tạo danh mục
                       @endforeach
                     @endif
                   </select>
+                </div>
+
+                <div style="text-align: center; margin-top: 2%">
+                  <img id="out_img" src="{{ asset('storage/images/product/default.png') }}" style="width:64px; height: 64px;">
+                </div>
+                <div class="form-group">
+                  <label for="image">Ảnh nhỏ (png , size 24x24)</label>
+                  <input id="inp_img" type="file" class="form-control" name="image">
+                  @if($errors->has('image'))
+                  <div class="error">{{ $errors->first('image') }}</div>
+                  @endif
                 </div>
 
                   <div class="form-group">

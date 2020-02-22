@@ -11,7 +11,12 @@ Danh sách sản phẩm
 <script>
   $(document).ready(function(){
     $('[data-toggle="tooltip"]').tooltip();
+    $("#form-search").submit(function() {
+        $(this).find(":input").filter(function(){return !this.value;}).attr("disabled", "disabled");
+    });
+    $("#form-search").find(":input").prop("disabled", false);
   });
+
 </script>
 <script>
   @if(Session::has('message'))
@@ -60,12 +65,12 @@ Danh sách sản phẩm
   <div class="card">
   </div>
   <!-- /.card-header -->
-  <form class="form-inline" action="" style="margin-bottom: 1%; margin-left: 1%">
+  <form id="form-search" class="form-inline" action="" style="margin-bottom: 1%; margin-left: 1%">
     <div class="form-group">
       <input type="text" name="name" placeholder="Tên sản phẩm" class="form-control" id="name" value="{{(\Request::get('name')!='') ? \Request::get('name') : '' }}">
     </div>
     <div class="form-group">
-      <select class="form-control" name="category_id" id="">
+      <select class="form-control" name="category_id" id="search-category">
         <option value="">-- Danh mục --</option>
         @if(isset($categories))
         @foreach ($categories as $category)
@@ -110,7 +115,7 @@ Danh sách sản phẩm
           </td>
 
           <td>
-            <a class="to-link" style="color: #333;" target="_blank" href="{{route('frontend.detail_product',$product->id)}}">
+            <a class="to-link" style="color: #333;" target="_blank" href="{{route('frontend.detail_product',$product->slug)}}">
               {{ (Str::limit($product->name, 50, $end='...')) }}
             </a>
             <ul style="padding-left: 10%;">
@@ -127,7 +132,6 @@ Danh sách sản phẩm
               </li>
             </ul>
           </td>
-        </td>
 
         <td>{{ isset($product->category->name) ? $product->category->name :'' }}
         </td>
@@ -165,7 +169,7 @@ Danh sách sản phẩm
 
         <td>
           @can('viewAny',App\Models\Product::class)
-          <a target="_blank" href="{{ route('frontend.detail_product',$product->id) }}" class="btn btn-primary btn-sm " data-toggle="tooltip" title="Xem chi tiết" style="margin:0 1% 4% 0"><i class="fa fa-eye" aria-hidden="true"></i></a>
+          <a target="_blank" href="{{ route('frontend.detail_product',$product->slug) }}" class="btn btn-primary btn-sm " data-toggle="tooltip" title="Xem chi tiết" style="margin:0 1% 4% 0"><i class="fa fa-eye" aria-hidden="true"></i></a>
           <a  href="{{ route('backend.product.get.image.description',$product->id) }}" class="btn btn-sm" data-toggle="tooltip" title="Ảnh mô tả SP" style="margin:0 1% 4% 0;background-color: #80777c;color: white;"><i class="fas fa-image"></i></a>
           @endcan
 

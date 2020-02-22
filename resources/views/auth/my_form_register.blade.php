@@ -9,7 +9,7 @@
 <body>
 	<div class="wrapper">
 		<div class="header-area">
-			<h2>HÒA PHÁT</h2>
+			<h2>Mono Online</h2>
 			<p>Chúng tôi luôn cố gắng hơn</p>
 		</div>
 		<div class="social-area">

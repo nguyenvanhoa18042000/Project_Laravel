@@ -110,10 +110,6 @@ switch(type){
          <a href="{{ route('backend.user.show',$user->id) }}" class="btn btn-primary btn-sm js_user_item" data-toggle="tooltip" data-id="{{$user->id}}" title="Xem chi tiết" style="margin-right: 5%"><i class="fas fa-eye"></i></a>
         @endcan
 
-        @can('viewAny',App\Models\User::class)
-         <a href="{{ route('backend.user.show_products',$user->id) }}" class="btn btn-success btn-sm " data-toggle="tooltip" title="Các sản phẩm đã đăng" style="margin-right: 5%"><i class="fas fa-list"></i></a>
-        @endcan
-
 
         @can('isAdmin',App\Models\User::class)
          @if($user->trashed() && $user->role!=2)

@@ -6,10 +6,13 @@ use App\Models\Category;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Requests\RequestUser;
+use App\Http\Requests\RequestPassword;
+use App\Http\Requests\RequestSettingUser;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Session;
-
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -134,4 +137,46 @@ class UserController extends Controller
         ]);
     }
 
+    public function formChangePassword(){
+        return view('backend.users.form_change_password');
+    }
+
+    public function performChangePassword(RequestPassword $requestPassword){
+        $user = Auth::user();
+        if (Hash::check($requestPassword->password_old, $user->password)) {
+            $info_user = User::findOrFail($user->id);
+            $info_user->password = bcrypt($requestPassword->password);
+            $info_user->update();
+            Session::flash('message', 'Cập nhật mật khẩu thành công');
+            Session::flash('alert-type', 'success');
+            return redirect()->route('backend.home');      
+        }else{
+            Session::flash('message', 'Mật khẩu cũ không chính xác');
+            Session::flash('alert-type', 'error');
+            return redirect()->route('backend.user.change.password');
+        }
+    }
+
+    public function formSettingUser(){
+        $user = User::findOrFail(Auth::user()->id);
+        return view('backend.users.info')->with([
+            'user' => $user,
+        ]);
+    }
+
+    public function performSettingUser(RequestSettingUser $requestSettingUser){
+        $user = User::findOrFail(Auth::user()->id);
+        $user->name = $requestSettingUser->get('name');
+        $user->phone = $requestSettingUser->get('phone');
+        $user->address = $requestSettingUser->get('address');
+        if ($requestSettingUser->hasFile('avatar')){
+            File::delete($user->avatar);
+            $avatar = $requestSettingUser->file('avatar');
+            $name_avatar = date('YmdHis')."_".$avatar->getClientOriginalName();
+            Storage::disk('public')->putFileAs('images/user_avatar/',$avatar,$name_avatar);
+            $user->avatar = 'storage/images/user_avatar/'.$name_avatar;
+        }
+        $user->update();
+        return redirect()->route('backend.home');
+    }
 }
